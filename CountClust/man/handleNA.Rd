@@ -20,6 +20,11 @@ all features with NA values. The default value of threshold proportion is 0.
 \details{
 This function removes NAs from the counts data
 }
+\examples{
+mat <- rbind(c(2,4,NA),c(4,7,8),c(3,NA,NA));
+handleNA(mat,thresh_prop=0.5)
+handleNA(mat)
+}
 \author{
 Kushal K Dey
 }

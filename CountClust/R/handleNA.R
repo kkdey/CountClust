@@ -15,8 +15,10 @@
 #' @keywords counts data, clustering
 #' 
 #' @export
-#' 
-#' 
+#' @examples 
+#' mat <- rbind(c(2,4,NA),c(4,7,8),c(3,NA,NA));
+#' handleNA(mat,thresh_prop=0.5)
+#' handleNA(mat)
 #'   
 
 

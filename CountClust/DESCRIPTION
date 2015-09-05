@@ -4,9 +4,9 @@ Title: Aimed at clustering/ visualization of counts data
 Version: 0.1
 Date: 2015-09-04
 Authors@R: c(
-    person("Kushal", "Dey", email = "kkdey@uchicago.edu", role = c("aut",cre")),
-    person("HSiao", "Joyce", email = "joyce.hsiao1@gmail.com", role = "ctb"))
-Maintainer: kkdey@uchicago.edu
+    person("Kushal", "Dey", email = "kkdey@uchicago.edu", role = c("aut","cre")),
+    person("Matthew", "Stephens", email = "stephens999@gmail.com", role ="aut"),
+    person("Joyce", "Hsiao", email = "joyce.hsiao1@gmail.com", role = "ctb"))
 Description: Takes any count table data as input, does data preprocessing, and uses topic model clustering
  (due to maptpx package of Matt Taddy) to produce Structure plot, t-SNE plot, PCA plot, and also gives a list 
  of top features driving the clusters
