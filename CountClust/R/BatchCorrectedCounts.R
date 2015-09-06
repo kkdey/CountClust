@@ -3,7 +3,7 @@
 #'
 #' @param data counts data, with samples along the rows and features along the columns.
 #' @param expand_factor a expanding factor required to convert batch corrected CPM values to batch corrected counts (default=100)
-#' @param batch_labs the batch label vector
+#' @param batch_lab the batch label vector
 #' 
 #' 
 #' @description This function first converts counts data to CPM data, then apply a linear model with the batch effect as a factor. The batch corrected 
@@ -16,15 +16,15 @@
 #' 
 
 
-BatchCorrectedCounts <- function(data, expand_factor, batch_labs)
+BatchCorrectedCounts <- function(data, expand_factor, batch_lab)
 {
   cpm_data <- voom(data)$E;
   batch_removed_cpm <- matrix(0,dim(cpm_data)[1], dim(cpm_data)[2]);
   if(use_parallel){
-    batch_removed_cpm <- do.call(cbind,mclapply(1:dim(cpm_data)[2],function(g) as.numeric(lm(cpm_data[,g] ~ individual_id+batch_id)$residuals),mc.cores=detectCores()));
+    batch_removed_cpm <- do.call(cbind,mclapply(1:dim(cpm_data)[2],function(g) as.numeric(lm(cpm_data[,g] ~ batch_lab)$residuals),mc.cores=detectCores()));
   }
   if(!use_parallel){
-    batch_removed_cpm <- do.call(cbind,lapply(1:dim(cpm_data)[2],function(g) as.numeric(lm(cpm_data[,g] ~ individual_id+batch_id)$residuals)));
+    batch_removed_cpm <- do.call(cbind,lapply(1:dim(cpm_data)[2],function(g) as.numeric(lm(cpm_data[,g] ~ batch_lab)$residuals)));
   }
   
   if (dim(batch_removed_cpm)[2]!=dim(cpm_data)[2])
