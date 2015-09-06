@@ -6,6 +6,7 @@
 #' @param  thresh_prop   threshold proportion of NAs for removal of feature or replacing the NA values
 #' 
 #' @author Kushal K Dey
+
 #' 
 #' @description This function deals with NA values in the counts dataset. If for a feature, the proportion of 
 #' NAs is greater than threshold proportion, then we remove the feature, otherwise we use MAR substitution scheme 
@@ -27,7 +28,8 @@ handleNA <- function(data, thresh_prop=0)
   na_count_cols <- apply(data,2,function(x) length(which(is.na(x)==TRUE)));
   if(max(na_count_cols)==0){
     message('there are no NA in the data : using full data', domain = NULL, appendLF = TRUE)
-    return(data)
+    ll <- list("data"=data,"na_removed_cols"=as.numeric(),"na_sub_cols"=as.numeric())
+    return(ll)
   } else{
   na_indices <- which(na_count_cols > 0);
   na_to_remove <- which(na_count_cols/ncol(data) > thresh_prop)
