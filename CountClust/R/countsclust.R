@@ -45,7 +45,9 @@ countsclust <- function(data,
                         use_pca=TRUE, 
                         thresh_prop=0, 
                         filter_prop=0.9,
-                        expand_factor=100)
+                        expand_factor=100,
+                        feature_extr_method=c("poisson","bernoulli"),
+                        top_genes=10)
 {
   data_preprocessed <- handleNA(data,thresh_prop=thresh_prop)$data;
   data_filtered <- RemoveSparseFeatures(data_preprocessed,filter_prop = filter_prop)$data;
@@ -54,38 +56,63 @@ countsclust <- function(data,
   rm(data_filtered)
   
   if(!dir.exists("Structure")) dir.create("Structure")
-  if(!dir.exists("Structure/topic_data")) dir.create("Structure/topic_data")
-  if(!dir.exists("Structure/plots")) dir.create("Structure/plots")
+  if(!dir.exists("Structure/batch_uncorrected")) dir.create("Structure/batch_uncorrected")
   
   bayesfac_batch_uncorrected <- array(0,length(nclus_vec));
   tsne_out <- vector("list", length(nclus_vec)); 
+  imp_features <- vector("list", length(nclus_vec));
   
   if(!dir.exists("tSNE")) dir.create("tSNE")
   if(!dir.exists("tSNE/batch_uncorrected")) dir.create("tSNE/batch_uncorrected")
   
   for(num in 1:length(nclus_vec))
   {
+    if(!dir.exists(paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]))) dir.create(paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]))
     obj <- StructureObj(counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab);
     bayesfac[num] <- obj$bf;
     if(!dir.exists(paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]))) dir.create(paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]))
     tsne_out[[num]] <- tsne_struct(obj$omega,samp_lab_tsne,paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]));
+    if(feature_extr_method=="poisson")
+      imp_features[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_genes=top_genes,method="poisson")))
+    else
+      imp_features[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_genes=top_genes,method="bernoulli")))
+    
   }
   
+  if(is.null(batch_lab))
+  {
+    ll <- list("tsne"=tsne_out,"tsne_batchcorrect"=as.numeric(),"imp_features"=imp_features,"imp_features_batchcorrect"=as.numeric(),
+               "bayes.fac"=bayesfac,"bayes.fac.batchcorrect"=as.numeric())
+    return(ll)
+  }
+  
+  if(!is.null(batch_lab)){
   batch_corrected_counts <- BatchCorrectedCounts(counts,expand_factor = expand_factor,batch_lab)
+  if(!dir.exists("Structure/batch_corrected")) dir.create("Structure/batch_corrected")
   if(!dir.exists("tSNE/batch_corrected")) dir.create("tSNE/batch_uncorrected")
   
   bayesfac_batchcorrect <- array(0,length(nclus_vec));
   tsne_out_batchcorrect <- vector("list", length(nclus_vec)); 
+  imp_features_batchcorrect <- vector("list", length(nclus_vec));
   
   for(num in 1:length(nclus_vec))
   {
+    if(!dir.exists(paste0("Structure/batch_corrected/clus_",nclus_vec[num]))) dir.create(paste0("Structure/batch_corrected/clus_",nclus_vec[num]))
     obj <- StructureObj(batch_corrected_counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab);
     bayesfac_batchcorrect[num] <- obj$bf;
     if(!dir.exists(paste0("tSNE/batch_corrected/clus_",nclus_vec[num]))) dir.create(paste0("tSNE/batch_corrected/clus_",nclus_vec[num]))
     tsne_out_batchcorrect[[num]] <- tsne_struct(obj$omega,samp_lab_tsne,paste0("tSNE/batch_corrected/clus_",nclus_vec[num]));
+    if(feature_extr_method=="poisson")
+      imp_features_batchcorrect[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_genes=top_genes,method="poisson")))
+    else
+      imp_features_batchcorrect[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_genes=top_genes,method="bernoulli")))
+    
   }
   
-  
+  ll <- list("tsne"=tsne_out,"tsne_batchcorrect"=tsne_out_batchcorrect,"imp_features"=imp_features,"imp_features_batchcorrect"=imp_features_batchcorrect,
+             "bayes.fac"=bayesfac,"bayes.fac.batchcorrect"=bayesfac_batchcorrect)
+  return(ll)
+  }
   
 }
   

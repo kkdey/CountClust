@@ -4,12 +4,14 @@
 \alias{tsne_struct}
 \title{Apply t-SNE on the topic proportions from structure}
 \usage{
-tsne_struct(omega, samp_metadata)
+tsne_struct(omega, samp_metadata, path)
 }
 \arguments{
 \item{omega}{the topic proportion matrix obtained from StructureObj/ topics ()  in maptpx}
 
 \item{samp_metadata}{The sample labels used for identifying labels in tSNE plot}
+
+\item{path}{The path where you want to save the t-SNE plot}
 }
 \description{
 This function transforms the simplex matrix omega to unconstrained matrix and then applies t-SNE (Van der Maaten) and plots the results on 2D

@@ -4,14 +4,14 @@
 \alias{BatchCorrectedCounts}
 \title{Obtaining Batch effect Corrected counts!}
 \usage{
-BatchCorrectedCounts(data, expand_factor, batch_labs)
+BatchCorrectedCounts(data, expand_factor, batch_lab)
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
 
 \item{expand_factor}{a expanding factor required to convert batch corrected CPM values to batch corrected counts (default=100)}
 
-\item{batch_labs}{the batch label vector}
+\item{batch_lab}{the batch label vector}
 }
 \description{
 This function first converts counts data to CPM data, then apply a linear model with the batch effect as a factor. The batch corrected

@@ -4,7 +4,7 @@
 \alias{StructureObj}
 \title{Topic model fitting and Structure Plot!}
 \usage{
-StructureObj(data, nclus, samp_metadata, tol, batch_lab)
+StructureObj(data, nclus, samp_metadata, tol, batch_lab, path)
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
@@ -17,6 +17,8 @@ that will be used to arrange the Structure plot columns (one plot for one arrang
 \item{tol}{the tolerance value for topic model fit (set to 0.001 as default)}
 
 \item{batch_lab}{the batch labels, the output will have one Structure plot arranged by batch labels too.}
+
+\item{path}{The directory path where we want to save the data and Structure plots.}
 }
 \description{
 This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or
