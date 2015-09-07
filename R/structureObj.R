@@ -50,7 +50,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path, parti
             las=1,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
             cex.axis=0.3,cex.main=1.4);
     labels = match(unique(metadata_ordered), metadata_ordered);
-    abline(v=labels-1)
+    if(partition[num]=='TRUE') abline(v=labels-1)
 
     labels_low=labels-1;
     labels_up=c(labels_low[2:length(labels_low)],dim(docweights_ordered)[1]);
@@ -70,7 +70,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path, parti
             las=1,ylim=c(0,1),ylab="admix prop", xlab="batch",
             cex.axis=0.3,cex.main=1.4);
     labels = match(unique(batch_vec_ordered), batch_vec_ordered);
-    abline(v=labels-1)
+    if(partition[num]=='TRUE')  abline(v=labels-1)
 
     labels_low=labels-1;
     labels_up=c(labels_low[2:length(labels_low)],dim(docweights_ordered)[1]);
