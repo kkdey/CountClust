@@ -28,12 +28,11 @@
 
 StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path)
 {
+  message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
   Topic_clus <- topics(data, K=nclus, tol=tol);
   docweights <- Topic_clus$omega;
-  message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
   write.table(Topic_clus$omega,paste0(path,'/omega_mat.txt'));
   write.table(Topic_clus$theta,paste0(path,'/theta_mat.txt'));
-  dir.create(paste0('Structure/plots/clus_',nclus));
   num_metadata <- dim(samp_metadata)[2];
 
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
@@ -57,8 +56,8 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path)
 
   }
 
-  if(!is.null(batch_labs)){
-    batch_vec <- batch_labs;
+  if(!is.null(batch_lab)){
+    batch_vec <- batch_lab;
     batch_vec_ordered <- batch_vec[order(batch_vec)];
     docweights_ordered <- docweights[order(batch_vec),];
     png(filename=paste0(path,'/struct_clus_',nclus,'_batch.png'));
