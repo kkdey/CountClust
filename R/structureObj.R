@@ -42,9 +42,11 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path)
     metadata_vec <- samp_metadata[,num];
     metadata_ordered <- metadata_vec[order(metadata_vec)];
     docweights_ordered <- docweights[order(metadata_vec),];
-    png(filename=paste0(path,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'));
-    barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,main=paste("Structure arranged by",colnames(samp_metadata)[num],
-                                                                                       ": topics=",nclus),las=1,ylim=c(0,1),cex.axis=0.3,cex.main=1.4);
+    png(filename=paste0(path,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=500, height=300);
+    barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
+            main=paste("Structure arranged by",colnames(samp_metadata)[num],": topics=",nclus),
+            las=1,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
+            cex.axis=0.3,cex.main=1.4);
     labels = match(unique(metadata_ordered), metadata_ordered);
     abline(v=labels-1)
 
@@ -60,9 +62,11 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path)
     batch_vec <- batch_lab;
     batch_vec_ordered <- batch_vec[order(batch_vec)];
     docweights_ordered <- docweights[order(batch_vec),];
-    png(filename=paste0(path,'/struct_clus_',nclus,'_batch.png'));
-    barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,main=paste("Structure arranged by batch",
-                                                                                       ": topics=",nclus),las=1,ylim=c(0,1),cex.axis=0.3,cex.main=1.4);
+    png(filename=paste0(path,'/struct_clus_',nclus,'_batch.png'),width=500, height=300);
+    barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
+            main=paste("Structure arranged by batch",": topics=",nclus),
+            las=1,ylim=c(0,1),ylab="admix prop", xlab="batch",
+            cex.axis=0.3,cex.main=1.4);
     labels = match(unique(batch_vec_ordered), batch_vec_ordered);
     abline(v=labels-1)
 
