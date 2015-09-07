@@ -58,7 +58,7 @@ countsclust <- function(data,
   if(!dir.exists("Structure")) dir.create("Structure")
   if(!dir.exists("Structure/batch_uncorrected")) dir.create("Structure/batch_uncorrected")
 
-  bayesfac_batch_uncorrected <- array(0,length(nclus_vec));
+  bayesfac <- array(0,length(nclus_vec));
   tsne_out <- vector("list", length(nclus_vec));
   imp_features <- vector("list", length(nclus_vec));
 
@@ -70,7 +70,7 @@ countsclust <- function(data,
   for(num in 1:length(nclus_vec))
   {
     if(!dir.exists(paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]))) dir.create(paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]))
-    obj <- StructureObj(counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab);
+    obj <- StructureObj(counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab, path=paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]));
     bayesfac[num] <- obj$bf;
     if(use_tsne){
     if(!dir.exists(paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]))) dir.create(paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]))
@@ -103,7 +103,7 @@ countsclust <- function(data,
   for(num in 1:length(nclus_vec))
   {
     if(!dir.exists(paste0("Structure/batch_corrected/clus_",nclus_vec[num]))) dir.create(paste0("Structure/batch_corrected/clus_",nclus_vec[num]))
-    obj <- StructureObj(batch_corrected_counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab);
+    obj <- StructureObj(batch_corrected_counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab, path=paste0("Structure/batch_corrected/clus_",nclus_vec[num]));
     bayesfac_batchcorrect[num] <- obj$bf;
     if(use_tsne){
     if(!dir.exists(paste0("tSNE/batch_corrected/clus_",nclus_vec[num]))) dir.create(paste0("tSNE/batch_corrected/clus_",nclus_vec[num]))
