@@ -28,9 +28,9 @@ RemoveSparseFeatures <- function(data, filter_prop=0.9)
     ll <- list("data"=data,"sparse_features"=as.numeric())
     return(ll)
   } else{
-    features_to_remove <- which(zero_prop_cols > filter_prop);
-    data <- as.matrix(data[,-features_to_remove]);
-    ll <- list("data"=data, "sparse_features"=colnames(data)[features_to_remove])
+    features_to_remove <- as.numeric(which(zero_prop_cols > filter_prop));
+    data_filtered <- as.matrix(data[,-features_to_remove]);
+    ll <- list("data"=data_filtered, "sparse_features"=colnames(data)[features_to_remove])
     return(ll)
   }
 }
