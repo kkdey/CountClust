@@ -7,6 +7,8 @@
 #' @param tol the tolerance value for topic model fit (set to 0.001 as default)
 #' @param batch_lab the batch labels, the output will have one Structure plot arranged by batch labels too.
 #' @param path The directory path where we want to save the data and Structure plots.
+#' @param partition A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
+#'            plot for i th metadata, no vertical line parititon between classes is used.
 #'
 #' @description This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or
 #' cluster to fit, along with sample metadata information and fits the topic model (due to Matt Taddy, check package
@@ -26,7 +28,7 @@
 
 
 
-StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path)
+StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path, partition=rep('TRUE',ncol(samp_metadata)))
 {
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
   Topic_clus <- topics(data, K=nclus, tol=tol);

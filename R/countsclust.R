@@ -12,6 +12,10 @@
 #'        with NA are removed.
 #' @param filter_prop The threshold proportion that determines if the feature is too sparse or not. Default is 0.9.
 #' @param expand_factor An expansion factor used to obtain batch corrected counts
+#' @param partition A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
+#'            plot for i th metadata, no vertical line parititon between classes is used.
+#' @param top_features  The number of top features per cluster that drives away that cluster from others. Default value is 10
+#' @param method  The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"
 #'
 #' @description This function takes the counts data (no. of samples x no. of features), the vector of topics/clusters the user wants to fit, along
 #' with the sample metadata and batch label information and it produces the Structure plots with and without controlling fro batch effects for
@@ -47,7 +51,8 @@ countsclust <- function(data,
                         filter_prop=0.9,
                         expand_factor=100,
                         feature_extr_method=c("poisson","bernoulli"),
-                        top_genes=10)
+                        top_features=10,
+                        partition=rep('TRUE',ncol(samp_metadata)))
 {
   data_preprocessed <- handleNA(data,thresh_prop=thresh_prop)$data;
   data_filtered <- RemoveSparseFeatures(data_preprocessed,filter_prop = filter_prop)$data;
@@ -77,9 +82,9 @@ countsclust <- function(data,
     tsne_out[[num]] <- tsne_struct(obj$omega,samp_lab_tsne,paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]));
     }
     if(feature_extr_method=="poisson")
-      imp_features[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_genes=top_genes,method="poisson")))
+      imp_features[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_features=top_features,method="poisson")))
     else
-      imp_features[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_genes=top_genes,method="bernoulli")))
+      imp_features[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_features=top_features,method="bernoulli")))
 
   }
 
@@ -110,9 +115,9 @@ countsclust <- function(data,
     tsne_out_batchcorrect[[num]] <- tsne_struct(obj$omega,samp_lab_tsne,paste0("tSNE/batch_corrected/clus_",nclus_vec[num]));
     }
     if(feature_extr_method=="poisson")
-      imp_features_batchcorrect[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_genes=top_genes,method="poisson")))
+      imp_features_batchcorrect[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_features=top_features,method="poisson")))
     else
-      imp_features_batchcorrect[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_genes=top_genes,method="bernoulli")))
+      imp_features_batchcorrect[[num]] <- unique(as.vector(ExtractTopFeatures(obj$theta,top_features=top_features,method="bernoulli")))
 
   }
 
