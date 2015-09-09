@@ -41,7 +41,7 @@ structureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
   struct.width <- control$struct.width;
   struct.height <- control$struct.height;
   cex.axis <- control$cex.axis;
-  cex.min <- control$cex.main;
+  cex.main <- control$cex.main;
   las.struct <- control$las.struct;
   las.labels <- control$las.labels;
 
