@@ -17,7 +17,7 @@
 #' @param top_features  The number of top features per cluster that drives away that cluster from others. Default value is 10
 #' @param method  The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"
 #' @param control() A list of control parameters for the Structure plot. The control list has the arguments
-#'        struct.width, struct.height, cex.axis, cex.main, las.struct and las.labels.
+#'        struct.width, struct.height, cex.axis, cex.main and las.labels.
 #'
 #' @description This function takes the counts data (no. of samples x no. of features), the vector of topics/clusters the user wants to fit, along
 #' with the sample metadata and batch label information and it produces the Structure plots with and without controlling fro batch effects for
@@ -63,7 +63,7 @@ countsclust <- function(data,
   counts <- data_filtered;
   rm(data_filtered)
 
-  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las.struct=1, las.labels=2);
+  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las.labels=2);
 
   namc=names(control)
   if (!all(namc %in% names(control.default)))

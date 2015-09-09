@@ -34,7 +34,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
-  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las.struct=1, las.labels=2);
+  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las.labels=2);
 
    namc=names(control)
   if (!all(namc %in% names(control.default)))
@@ -45,7 +45,6 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
   struct.height <- control$struct.height;
   cex.axis <- control$cex.axis;
   cex.min <- control$cex.main;
-  las.struct <- control$las.struct;
   las.labels <- control$las.labels;
 
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
@@ -65,7 +64,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
     png(filename=paste0(path,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=struct.width, height=struct.height);
     barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by",colnames(samp_metadata)[num],": topics=",nclus),
-            las=las.struct,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
+            las=las.labels,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
             cex.axis=cex.axis,cex.main=cex.main);
     labels = match(unique(metadata_ordered), metadata_ordered);
     if(partition[num]=='TRUE') abline(v=labels-1)
@@ -85,7 +84,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
     png(filename=paste0(path,'/struct_clus_',nclus,'_batch.png'),width=struct.width, height=struct.height);
     barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by batch",": topics=",nclus),
-            las=las.struct,ylim=c(0,1),ylab="admix prop", xlab="batch",
+            las=las.labels,ylim=c(0,1),ylab="admix prop", xlab="batch",
             cex.axis=cex.axis,cex.main=cex.main);
     labels = match(unique(batch_vec_ordered), batch_vec_ordered);
     if(partition[num]=='TRUE')  abline(v=labels-1)
