@@ -7,7 +7,8 @@
 countsclust(data, nclus_vec, samp_metadata, samp_lab_tsne, tol = 0.001,
   batch_lab, use_parallel = FALSE, use_tsne = TRUE, use_pca = TRUE,
   thresh_prop = 0, filter_prop = 0.9, expand_factor = 100,
-  feature_extr_method = c("poisson", "bernoulli"), top_genes = 10)
+  feature_extr_method = c("poisson", "bernoulli"), top_features = 10,
+  partition = rep("TRUE", ncol(samp_metadata)), control = list())
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
@@ -32,6 +33,16 @@ with NA are removed.}
 \item{filter_prop}{The threshold proportion that determines if the feature is too sparse or not. Default is 0.9.}
 
 \item{expand_factor}{An expansion factor used to obtain batch corrected counts}
+
+\item{top_features}{The number of top features per cluster that drives away that cluster from others. Default value is 10}
+
+\item{partition}{A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
+plot for i th metadata, no vertical line parititon between classes is used.}
+
+\item{method}{The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"}
+
+\item{control()}{A list of control parameters for the Structure plot. The control list has the arguments
+       struct.width, struct.height, cex.axis, cex.main, las.struct and las.labels.}
 }
 \description{
 This function takes the counts data (no. of samples x no. of features), the vector of topics/clusters the user wants to fit, along

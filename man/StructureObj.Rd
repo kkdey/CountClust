@@ -4,7 +4,8 @@
 \alias{StructureObj}
 \title{Topic model fitting and Structure Plot!}
 \usage{
-StructureObj(data, nclus, samp_metadata, tol, batch_lab, path)
+StructureObj(data, nclus, samp_metadata, tol, batch_lab, path,
+  partition = rep("TRUE", ncol(samp_metadata)), control = list())
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
@@ -19,6 +20,12 @@ that will be used to arrange the Structure plot columns (one plot for one arrang
 \item{batch_lab}{the batch labels, the output will have one Structure plot arranged by batch labels too.}
 
 \item{path}{The directory path where we want to save the data and Structure plots.}
+
+\item{partition}{A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
+plot for i th metadata, no vertical line parititon between classes is used.}
+
+\item{control()}{A list of control parameters for the Structure plot. The control list has the arguments
+       struct.width, struct.height, cex.axis, cex.main, las.struct and las.labels.}
 }
 \description{
 This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or

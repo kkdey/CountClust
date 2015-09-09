@@ -4,13 +4,13 @@
 \alias{ExtractTopFeatures}
 \title{The CountsClust function- a function for clustering and visualization of counts!}
 \usage{
-ExtractTopFeatures(theta, top_genes = 10, method = c("poisson",
+ExtractTopFeatures(theta, top_features = 10, method = c("poisson",
   "bernoulli"))
 }
 \arguments{
 \item{theta}{The theta matrix obtained from the topic model fitting (it is a G x K matrix where G is number of features, K number of topics)}
 
-\item{top_genes}{The number of top features per cluster that drives away that cluster from others. Default value is 10}
+\item{top_features}{The number of top features per cluster that drives away that cluster from others. Default value is 10}
 
 \item{method}{The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"}
 }

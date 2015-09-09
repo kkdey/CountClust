@@ -16,6 +16,8 @@
 #'            plot for i th metadata, no vertical line parititon between classes is used.
 #' @param top_features  The number of top features per cluster that drives away that cluster from others. Default value is 10
 #' @param method  The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"
+#' @param control() A list of control parameters for the Structure plot. The control list has the arguments
+#'        struct.width, struct.height, cex.axis, cex.main, las.struct and las.labels.
 #'
 #' @description This function takes the counts data (no. of samples x no. of features), the vector of topics/clusters the user wants to fit, along
 #' with the sample metadata and batch label information and it produces the Structure plots with and without controlling fro batch effects for
@@ -52,13 +54,21 @@ countsclust <- function(data,
                         expand_factor=100,
                         feature_extr_method=c("poisson","bernoulli"),
                         top_features=10,
-                        partition=rep('TRUE',ncol(samp_metadata)))
+                        partition=rep('TRUE',ncol(samp_metadata)),
+                        control=list())
 {
   data_preprocessed <- handleNA(data,thresh_prop=thresh_prop)$data;
   data_filtered <- RemoveSparseFeatures(data_preprocessed,filter_prop = filter_prop)$data;
 
   counts <- data_filtered;
   rm(data_filtered)
+
+  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las.struct=1, las.labels=2);
+
+  namc=names(control)
+  if (!all(namc %in% names(control.default)))
+    stop("unknown names in control: ", namc[!(namc %in% names(control.default))])
+  controlinput=modifyList(control.default, control)
 
   if(!dir.exists("Structure")) dir.create("Structure")
   if(!dir.exists("Structure/batch_uncorrected")) dir.create("Structure/batch_uncorrected")
@@ -75,7 +85,7 @@ countsclust <- function(data,
   for(num in 1:length(nclus_vec))
   {
     if(!dir.exists(paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]))) dir.create(paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]))
-    obj <- StructureObj(counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab, path=paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]));
+    obj <- StructureObj(counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab, path=paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]), control=controlinput);
     bayesfac[num] <- obj$bf;
     if(use_tsne){
     if(!dir.exists(paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]))) dir.create(paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]))
@@ -108,7 +118,7 @@ countsclust <- function(data,
   for(num in 1:length(nclus_vec))
   {
     if(!dir.exists(paste0("Structure/batch_corrected/clus_",nclus_vec[num]))) dir.create(paste0("Structure/batch_corrected/clus_",nclus_vec[num]))
-    obj <- StructureObj(batch_corrected_counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab, path=paste0("Structure/batch_corrected/clus_",nclus_vec[num]));
+    obj <- StructureObj(batch_corrected_counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab, path=paste0("Structure/batch_corrected/clus_",nclus_vec[num]),control=controlinput);
     bayesfac_batchcorrect[num] <- obj$bf;
     if(use_tsne){
     if(!dir.exists(paste0("tSNE/batch_corrected/clus_",nclus_vec[num]))) dir.create(paste0("tSNE/batch_corrected/clus_",nclus_vec[num]))
