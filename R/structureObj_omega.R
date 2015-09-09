@@ -48,6 +48,7 @@ structureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
 
   docweights <- as.matrix(omega);
   nclus <- dim(docweights)[2];
+  num_metadata <- dim(samp_metadata)[2];
 
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
 
