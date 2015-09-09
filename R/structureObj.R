@@ -10,7 +10,7 @@
 #' @param partition A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
 #'            plot for i th metadata, no vertical line parititon between classes is used.
 #' @param control() A list of control parameters for the Structure plot. The control list has the arguments
-#'        struct.width, struct.height, cex.axis, cex.main, las.struct and las.
+#'        struct.width, struct.height, cex.axis, cex.main, las.struct, lwd and las.
 #'
 #' @description This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or
 #' cluster to fit, along with sample metadata information and fits the topic model (due to Matt Taddy, check package
@@ -34,7 +34,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
-  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las=2);
+  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las=2, lwd=2);
 
    namc=names(control)
   if (!all(namc %in% names(control.default)))
@@ -46,6 +46,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
   cex.axis <- control$cex.axis;
   cex.min <- control$cex.main;
   las <- control$las;
+  lwd <- control$lwd;
 
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
   Topic_clus <- topics(data, K=nclus, tol=tol);
@@ -72,7 +73,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
     labels_low=labels-1;
     labels_up=c(labels_low[2:length(labels_low)],dim(docweights_ordered)[1]);
     mid_point <- labels_low +0.5*(labels_up-labels_low);
-    axis(1,at=mid_point, unique(metadata_ordered),las=las,cex.axis=cex.axis);
+    axis(1,at=mid_point, unique(metadata_ordered),las=las,cex.axis=cex.axis,lwd=lwd);
     dev.off()
 
   }
@@ -92,7 +93,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
     labels_low=labels-1;
     labels_up=c(labels_low[2:length(labels_low)],dim(docweights_ordered)[1]);
     mid_point <- labels_low +0.5*(labels_up-labels_low);
-    axis(1,at=mid_point, unique(batch_vec_ordered),las=las,cex.axis=cex.axis);
+    axis(1,at=mid_point, unique(batch_vec_ordered),las=las,cex.axis=cex.axis,lwd=lwd);
     dev.off()
   }
 
