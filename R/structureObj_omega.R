@@ -9,7 +9,7 @@
 #' @param partition A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
 #'            plot for i th metadata, no vertical line parititon between classes is used.
 #' @param control() A list of control parameters for the Structure plot. The control list has the arguments
-#'        struct.width, struct.height, cex.axis, cex.main, las.struct and las.labels.
+#'        struct.width, struct.height, cex.axis, cex.main and las.labels.
 #'
 #' @description This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or
 #' cluster to fit, along with sample metadata information and fits the topic model (due to Matt Taddy, check package
@@ -31,7 +31,7 @@ structureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
-  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las.struct=1, las.labels=2);
+  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las.labels=2);
 
   namc=names(control)
   if (!all(namc %in% names(control.default)))
@@ -42,7 +42,6 @@ structureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
   struct.height <- control$struct.height;
   cex.axis <- control$cex.axis;
   cex.main <- control$cex.main;
-  las.struct <- control$las.struct;
   las.labels <- control$las.labels;
 
 
@@ -60,7 +59,7 @@ structureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
     png(filename=paste0(path,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=struct.width, height=struct.height);
     barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by",colnames(samp_metadata)[num],": topics=",nclus),
-            las=las.struct,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
+            las=las.labels,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
             cex.axis=cex.axis,cex.main=cex.main);
     labels = match(unique(metadata_ordered), metadata_ordered);
     if(partition[num]=='TRUE') abline(v=labels-1)
@@ -80,7 +79,7 @@ structureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
     png(filename=paste0(path,'/struct_clus_',nclus,'_batch.png'),width=struct.width, height=struct.height);
     barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by batch",": topics=",nclus),
-            las=las.struct,ylim=c(0,1),ylab="admix prop", xlab="batch",
+            las=las.labels,ylim=c(0,1),ylab="admix prop", xlab="batch",
             cex.axis=cex.axis,cex.main=cex.main);
     labels = match(unique(batch_vec_ordered), batch_vec_ordered);
     if(partition[num]=='TRUE')  abline(v=labels-1)
