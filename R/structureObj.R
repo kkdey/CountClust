@@ -71,47 +71,9 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
 
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
 
-  for(num in 1:num_metadata)
-  {
-    metadata_vec <- samp_metadata[,num];
-    metadata_ordered <- metadata_vec[order(metadata_vec)];
-    docweights_ordered <- docweights[order(metadata_vec),];
-    png(filename=paste0(path,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=struct.width, height=struct.height);
-    par(mar=c(mar.bottom,mar.left, mar.top,mar.right))
-    barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
-            main=paste("Structure arranged by",colnames(samp_metadata)[num],": topics=",nclus),
-            las=las,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
-            cex.axis=cex.axis,cex.main=cex.main);
-    labels = match(unique(metadata_ordered), metadata_ordered);
-    if(partition[num]=='TRUE') abline(v=labels-1)
-
-    labels_low=labels-1;
-    labels_up=c(labels_low[2:length(labels_low)],dim(docweights_ordered)[1]);
-    mid_point <- labels_low +0.5*(labels_up-labels_low);
-    axis(1,at=mid_point, unique(metadata_ordered),las=las,cex.axis=cex.axis,lwd=lwd);
-    dev.off()
-
-  }
-
-  if(!is.null(batch_lab)){
-    batch_vec <- batch_lab;
-    batch_vec_ordered <- batch_vec[order(batch_vec)];
-    docweights_ordered <- docweights[order(batch_vec),];
-    png(filename=paste0(path,'/struct_clus_',nclus,'_batch.png'),width=struct.width, height=struct.height);
-    par(mar=c(mar.bottom,mar.left, mar.top,mar.right))
-    barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
-            main=paste("Structure arranged by batch",": topics=",nclus),
-            las=las,ylim=c(0,1),ylab="admix prop", xlab="batch",
-            cex.axis=cex.axis,cex.main=cex.main);
-    labels = match(unique(batch_vec_ordered), batch_vec_ordered);
-    if(partition[num]=='TRUE')  abline(v=labels-1)
-
-    labels_low=labels-1;
-    labels_up=c(labels_low[2:length(labels_low)],dim(docweights_ordered)[1]);
-    mid_point <- labels_low +0.5*(labels_up-labels_low);
-    axis(1,at=mid_point, unique(batch_vec_ordered),las=las,cex.axis=cex.axis,lwd=lwd);
-    dev.off()
-  }
+  StructureObj_omega(docweights,samp_metadata, tol, batch_lab, path,
+                            partition=rep('TRUE',ncol(samp_metadata)),
+                            control=control)
 
   ll <- list("omega"=Topic_clus$omega, "theta"=Topic_clus$theta, "bf"=Topic_clus$BF, "blank_indices"=indices_blank)
   return(ll)
