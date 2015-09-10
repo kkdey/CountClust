@@ -53,6 +53,13 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
   mar.top <- control$mar.top;
   mar.right <- control$mar.right;
 
+  ## dealing with blank rows: we first remove them
+
+  indices_blank <- as.numeric(which(apply(data,1,max)==0));
+  data <- data[-indices_blank,];
+  samp_metadata <- samp_metadata[-indices_blank,];
+  batch_lab <- batch_lab[-indices_blank];
+
 
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
   Topic_clus <- topics(data, K=nclus, tol=tol);
@@ -105,6 +112,6 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
     dev.off()
   }
 
-  ll <- list("omega"=Topic_clus$omega, "theta"=Topic_clus$theta, "bf"=Topic_clus$BF)
+  ll <- list("omega"=Topic_clus$omega, "theta"=Topic_clus$theta, "bf"=Topic_clus$BF, "blank_indices"=indices_blank)
   return(ll)
 }
