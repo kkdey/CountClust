@@ -25,7 +25,7 @@ that will be used to arrange the Structure plot columns (one plot for one arrang
 plot for i th metadata, no vertical line parititon between classes is used.}
 
 \item{control()}{A list of control parameters for the Structure plot. The control list has the arguments
-       struct.width, struct.height, cex.axis, cex.main, las.struct and las.labels.}
+       struct.width, struct.height, cex.axis, cex.main, las.struct, lwd, las and margin parameters.}
 }
 \description{
 This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or

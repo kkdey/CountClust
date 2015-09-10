@@ -1,7 +1,7 @@
 Package: CountClust
 Type: Package
 Title: Aimed at clustering or visualization of counts data
-Version: 0.1
+Version: 0.1.0
 Date: 2015-09-04
 Authors@R: c(
     person("Kushal", "Dey", email = "kkdey@uchicago.edu", role = c("aut","cre")),
@@ -14,3 +14,4 @@ Description: Takes any count table data as input, does data preprocessing, and u
 License: GPL (>= 2)
 Imports: maptpx,tsne,qtlcharts,limma,data.table
 LazyData: TRUE
+Encoding: ASCII
