@@ -69,7 +69,7 @@ StructureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
             las=las,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
             cex.axis=cex.axis,cex.main=cex.main);
     labels = match(unique(metadata_ordered), metadata_ordered);
-    if(partition[num]=='TRUE') abline(v=labels-1)
+    if(partition[num]=='TRUE') abline(v=labels-1, lty=1, lwd=2)
 
     labels_low=labels-1;
     labels_up=c(labels_low[2:length(labels_low)],dim(docweights_ordered)[1]);
@@ -90,7 +90,7 @@ StructureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
             las=las,ylim=c(0,1),ylab="admix prop", xlab="batch",
             cex.axis=cex.axis,cex.main=cex.main);
     labels = match(unique(batch_vec_ordered), batch_vec_ordered);
-    if(partition[num]=='TRUE')  abline(v=labels-1)
+    if(partition[num]=='TRUE')  abline(v=labels-1, lty=1, lwd=2)
 
     labels_low=labels-1;
     labels_up=c(labels_low[2:length(labels_low)],dim(docweights_ordered)[1]);
