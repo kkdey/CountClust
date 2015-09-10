@@ -58,7 +58,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
   indices_blank <- as.numeric(which(apply(data,1,max)==0));
   data <- as.matrix(data[-indices_blank,]);
   samp_metadata <- as.matrix(samp_metadata[-indices_blank,]);
-  batch_lab <- as.matrix(batch_lab[-indices_blank]);
+  batch_lab <- as.vector(batch_lab[-indices_blank]);
 
 
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
