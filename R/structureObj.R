@@ -34,25 +34,6 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
-  control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las=2, lwd=2,
-                          mar.bottom =14, mar.left=2, mar.top=2, mar.right=2,color=2:(dim(omega)[2]+1));
-
-   namc=names(control)
-  if (!all(namc %in% names(control.default)))
-    stop("unknown names in control: ", namc[!(namc %in% names(control.default))])
-  control=modifyList(control.default, control)
-
-  struct.width <- control$struct.width;
-  struct.height <- control$struct.height;
-  cex.axis <- control$cex.axis;
-  cex.main <- control$cex.main;
-  las <- control$las;
-  lwd <- control$lwd;
-  mar.bottom <- control$mar.bottom;
-  mar.left <- control$mar.left;
-  mar.top <- control$mar.top;
-  mar.right <- control$mar.right;
-
   ## dealing with blank rows: we first remove them
 
   indices_blank <- as.numeric(which(apply(data,1,max)==0));
@@ -63,6 +44,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
   }
 
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
+
   Topic_clus <- topics(data, K=nclus, tol=tol);
   docweights <- Topic_clus$omega;
   write.table(Topic_clus$omega,paste0(path,'/omega_mat.txt'));
