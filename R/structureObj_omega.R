@@ -9,7 +9,7 @@
 #' @param partition A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
 #'            plot for i th metadata, no vertical line parititon between classes is used.
 #' @param control() A list of control parameters for the Structure plot. The control list has the arguments
-#'        struct.width, struct.height, cex.axis, cex.main, lwd, las and margin parameters.
+#'        struct.width, struct.height, cex.axis, cex.main, lwd, las and color and margin parameters.
 #'
 #' @description This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or
 #' cluster to fit, along with sample metadata information and fits the topic model (due to Matt Taddy, check package
@@ -32,7 +32,7 @@ StructureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
                          control=list())
 {
   control.default <- list(struct.width=800, struct.height=250, cex.axis=0.5, cex.main=1.5, las=2, lwd=2,
-                          mar.bottom =14, mar.left=2, mar.top=2, mar.right=2);
+                          mar.bottom =14, mar.left=2, mar.top=2, mar.right=2,color=2:(dim(omega)[2]+1));
 
   namc=names(control)
   if (!all(namc %in% names(control.default)))
@@ -64,7 +64,7 @@ StructureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
     docweights_ordered <- docweights[order(metadata_vec),];
     png(filename=paste0(path,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=struct.width, height=struct.height);
     par(mar=c(mar.bottom,mar.left, mar.top,mar.right))
-    barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
+    barplot(t(docweights_ordered),col=color,axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by",colnames(samp_metadata)[num],": topics=",nclus),
             las=las,ylim=c(0,1),ylab="admix prop", xlab=paste0(colnames(samp_metadata)[num]),
             cex.axis=cex.axis,cex.main=cex.main);
@@ -85,7 +85,7 @@ StructureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
     docweights_ordered <- docweights[order(batch_vec),];
     png(filename=paste0(path,'/struct_clus_',nclus,'_batch.png'),width=struct.width, height=struct.height);
     par(mar=c(mar.bottom,mar.left, mar.top,mar.right))
-    barplot(t(docweights_ordered),col=2:(nclus+1),axisnames=F,space=0,border=NA,
+    barplot(t(docweights_ordered),col=color,axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by batch",": topics=",nclus),
             las=las,ylim=c(0,1),ylab="admix prop", xlab="batch",
             cex.axis=cex.axis,cex.main=cex.main);
