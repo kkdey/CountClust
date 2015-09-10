@@ -56,10 +56,11 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
   ## dealing with blank rows: we first remove them
 
   indices_blank <- as.numeric(which(apply(data,1,max)==0));
+  if(length(indices_blank)!=0){
   data <- as.matrix(data[-indices_blank,]);
   samp_metadata <- as.matrix(samp_metadata[-indices_blank,]);
   batch_lab <- as.vector(batch_lab[-indices_blank]);
-
+  }
 
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
   Topic_clus <- topics(data, K=nclus, tol=tol);
