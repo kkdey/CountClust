@@ -53,7 +53,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
 
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
 
-  StructureObj_omega(docweights,samp_metadata, tol, batch_lab, path,
+  StructureObj_omega(docweights,samp_metadata, batch_lab, path,
                             partition=rep('TRUE',ncol(samp_metadata)),
                             control=control)
 
