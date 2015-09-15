@@ -49,7 +49,7 @@ StructureObj_omega <- function(omega, samp_metadata, tol, batch_lab, path,
   mar.left <- control$mar.left;
   mar.top <- control$mar.top;
   mar.right <- control$mar.right;
-
+  color <- control$color;
 
   docweights <- as.matrix(omega);
   nclus <- dim(docweights)[2];
