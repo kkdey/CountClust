@@ -3,7 +3,7 @@
 #'
 #' @param data counts data, with samples along the rows and features along the columns.
 #' @param batch_lab the batch label vector
-#'
+#' @param use_parallel if TRUE, we do a parallel analysis over featres, else serial application.
 #'
 #' @description This function first converts counts data to CPM data, then apply a linear model with the batch effect as a factor. We take the sum of
 #'              intercept, residuals and mean batch effect across all the batches and then exponentiate it to bring the data back almost to the original
@@ -16,7 +16,7 @@
 #'
 
 
-BatchCorrectedCounts <- function(data, batch_lab)
+BatchCorrectedCounts <- function(data, batch_lab,use_parallel=TRUE)
 {
   cpm_data <- log(data+0.5);
   if(use_parallel){
