@@ -34,6 +34,15 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
+
+  control.default <- list(struct.width=600, struct.height=400, cex.axis=0.5, cex.main=1.5, las=2, lwd=2,
+                          mar.bottom =14, mar.left=2, mar.top=2, mar.right=2,color=2:(nclus+1));
+
+  namc=names(control)
+  if (!all(namc %in% names(control.default)))
+    stop("unknown names in control: ", namc[!(namc %in% names(control.default))])
+  control=modifyList(control.default, control)
+
   ## dealing with blank rows: we first remove them
 
   indices_blank <- as.numeric(which(apply(data,1,max)==0));
