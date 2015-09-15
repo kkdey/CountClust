@@ -12,6 +12,6 @@ Description: Takes any count table data as input, does data preprocessing, and u
  (due to maptpx package of Matt Taddy) to produce Structure plot, t-SNE plot, PCA plot, and also gives a list
  of top features driving the clusters
 License: GPL (>= 2)
-Imports: maptpx,tsne,qtlcharts,limma,data.table
+Imports: maptpx,tsne,qtlcharts,limma,data.table, parallel
 LazyData: TRUE
 Encoding: ASCII
