@@ -4,19 +4,18 @@
 \alias{BatchCorrectedCounts}
 \title{Obtaining Batch effect Corrected counts!}
 \usage{
-BatchCorrectedCounts(data, expand_factor, batch_lab)
+BatchCorrectedCounts(data, batch_lab)
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
 
-\item{expand_factor}{a expanding factor required to convert batch corrected CPM values to batch corrected counts (default=100)}
-
 \item{batch_lab}{the batch label vector}
 }
 \description{
-This function first converts counts data to CPM data, then apply a linear model with the batch effect as a factor. The batch corrected
-             CPM residuals are then exponentiated and multiplied by expand_factor. These values for each sample and each feature is taken as the
-             mean for a Poisson random number generation. The obtained counts are then devoid of batch effects.
+This function first converts counts data to CPM data, then apply a linear model with the batch effect as a factor. We take the sum of
+             intercept, residuals and mean batch effect across all the batches and then exponentiate it to bring the data back almost to the original
+             space of the counts data, except for the batch adjustment.Generate a Poisson random number for each of the means. The obtained counts
+             are then devoid of batch effects.
 }
 \author{
 Kushal K Dey, Joyce HSiao

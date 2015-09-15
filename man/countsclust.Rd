@@ -42,7 +42,7 @@ plot for i th metadata, no vertical line parititon between classes is used.}
 \item{method}{The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"}
 
 \item{control()}{A list of control parameters for the Structure plot. The control list has the arguments
-       struct.width, struct.height, cex.axis, cex.main, lwd,las and margin parameters.}
+       struct.width, struct.height, cex.axis, cex.main, lwd,las and color and margin parameters.}
 }
 \description{
 This function takes the counts data (no. of samples x no. of features), the vector of topics/clusters the user wants to fit, along
