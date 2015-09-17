@@ -16,6 +16,9 @@ tsne_struct(omega, samp_metadata, path)
 \description{
 This function transforms the simplex matrix omega to unconstrained matrix and then applies t-SNE (Van der Maaten) and plots the results on 2D
 }
+\author{
+Kushal K Dey
+}
 \references{
 L.J.P. van der Maaten. Accelerating t-SNE using Tree-Based Algorithms. Journal of Machine Learning Research, 2014:3221-3245
 
@@ -23,4 +26,7 @@ L.J.P. van der Maaten. Accelerating t-SNE using Tree-Based Algorithms. Journal o
 
            Broman KW. R/qtlcharts: interactive graphics for quantitative trait locus mapping. 2015. Genetics 199:359-361
 }
+\keyword{model}
+\keyword{topic}
+\keyword{tsne,}
 
