@@ -31,14 +31,14 @@ tsne_struct <- function(omega,samp_metadata,path)
     return(out)
   }
 
-  rev_omega <- apply(omega,1,function(x) reverse_transform(x));
+  rev_omega <- t(apply(omega,1,function(x) reverse_transform(x)));
   tsne_out <- tsne(rev_omega,2);
   if(is.null(samp_metadata)){
     img <- iplot(tsne_out[,1],tsne_out[,2]);
     htmlwidgets::saveWidget(img, file=paste0(path,"/tSNE_omega.html"),selfcontained=FALSE);
   }
   if(!is.null(samp_metadata)){
-    iplot(tsne_out[,1],tsne_out[,2],as.factor(samp_metadata),samp_metadata)
+    iplot(tsne_out[,1],tsne_out[,2],rep(1,length(tsne_out[,1])),as.factor(samp_metadata))
     htmlwidgets::saveWidget(img, file=paste0(path,"/tSNE_omega.html"),selfcontained=FALSE);
   }
   return(tsne_out)
