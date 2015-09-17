@@ -4,12 +4,14 @@
 \alias{BatchCorrectedCounts}
 \title{Obtaining Batch effect Corrected counts!}
 \usage{
-BatchCorrectedCounts(data, batch_lab)
+BatchCorrectedCounts(data, batch_lab, use_parallel = TRUE)
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
 
 \item{batch_lab}{the batch label vector}
+
+\item{use_parallel}{if TRUE, we do a parallel analysis over featres, else serial application.}
 }
 \description{
 This function first converts counts data to CPM data, then apply a linear model with the batch effect as a factor. We take the sum of
