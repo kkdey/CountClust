@@ -54,7 +54,7 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
 
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
 
-  Topic_clus <- topics(data, K=nclus, tol=tol);
+  Topic_clus <- maptpx::topics(data, K=nclus, tol=tol);
   docweights <- Topic_clus$omega;
   write.table(Topic_clus$omega,paste0(path,'/omega_mat.txt'));
   write.table(Topic_clus$theta,paste0(path,'/theta_mat.txt'));

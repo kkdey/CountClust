@@ -20,7 +20,7 @@ BatchCorrectedCounts <- function(data, batch_lab,use_parallel=TRUE)
 {
   cpm_data <- log(data+0.5);
   if(use_parallel){
-    batch_removed_counts_mean <- do.call(cbind, mclapply(1:dim(cpm_data)[2],function(g)
+    batch_removed_counts_mean <- do.call(cbind, parallel::mclapply(1:dim(cpm_data)[2],function(g)
                                                     {
                                                         options(contrast="contr.sum");
                                                         out <- lm(cpm_data[,g] ~  as.factor(batch_lab));
