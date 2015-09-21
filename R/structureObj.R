@@ -56,8 +56,8 @@ StructureObj <- function(data, nclus, samp_metadata, tol, batch_lab, path,
 
   Topic_clus <- maptpx::topics(data, K=nclus, tol=tol);
   docweights <- Topic_clus$omega;
-  write.table(Topic_clus$omega,paste0(path,'/omega_mat.txt'));
-  write.table(Topic_clus$theta,paste0(path,'/theta_mat.txt'));
+  save(Topic_clus$omega, file=paste0(path,'/omega_mat_',nclus,'.rda'));
+  save(Topic_clus$theta, file=paste0(path,'/theta_mat_',nclus,'.rda'));
   num_metadata <- dim(samp_metadata)[2];
 
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
