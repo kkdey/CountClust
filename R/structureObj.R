@@ -36,7 +36,7 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rd
 {
 
   control.default <- list(struct.width=600, struct.height=400, cex.axis=0.5, cex.main=1.5, las=2, lwd=2,
-                          mar.bottom =14, mar.left=2, mar.top=2, mar.right=2,color=2:(nclus+1));
+                          mar.bottom =14, mar.left=2, mar.top=2, mar.right=2,color=2:(length(nclus_vec)+1));
 
   namc=names(control)
   if (!all(namc %in% names(control.default)))
