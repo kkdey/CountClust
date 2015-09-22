@@ -4,7 +4,7 @@
 \alias{StructureObj_omega}
 \title{Structure Plot given topic model proportions!}
 \usage{
-StructureObj_omega(omega, samp_metadata, batch_lab, path_struct,
+StructureObj_omega(omega, samp_metadata, batch_lab, path_struct = NULL,
   partition = rep("TRUE", ncol(samp_metadata)), control = list())
 }
 \arguments{
