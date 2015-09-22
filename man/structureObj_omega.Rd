@@ -4,7 +4,7 @@
 \alias{StructureObj_omega}
 \title{Structure Plot given topic model proportions!}
 \usage{
-StructureObj_omega(omega, samp_metadata, batch_lab, path,
+StructureObj_omega(omega, samp_metadata, batch_lab, path_struct,
   partition = rep("TRUE", ncol(samp_metadata)), control = list())
 }
 \arguments{
@@ -16,10 +16,10 @@ that will be used to arrange the Structure plot columns (one plot for one arrang
 
 \item{batch_lab}{the batch labels, the output will have one Structure plot arranged by batch labels too.}
 
-\item{path}{The directory path where we want to save the data and Structure plots.}
-
 \item{partition}{A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
 plot for i th metadata, no vertical line parititon between classes is used.}
+
+\item{path}{The directory path where we want to save the data and Structure plots.}
 
 \item{control()}{A list of control parameters for the Structure plot. The control list has the arguments
        struct.width, struct.height, cex.axis, cex.main, lwd, las and color and margin parameters.}

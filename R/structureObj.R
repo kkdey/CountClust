@@ -30,7 +30,7 @@
 
 
 
-StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rda,
+StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rda, path_struct,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
@@ -65,8 +65,11 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rd
   num_metadata <- dim(samp_metadata)[2];
 
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
+  for(num in 1:length(nclus_vec))
+  {
 
-  StructureObj_omega(Topic_clus_list,samp_metadata, batch_lab, path,
+       StructureObj_omega(Topic_clus_list[[num]]$omega,samp_metadata, batch_lab, path_struct,
                             partition=rep('TRUE',ncol(samp_metadata)),
                             control=control)
+  }
 }

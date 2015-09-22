@@ -86,7 +86,7 @@ countsclust <- function(data,
   for(num in 1:length(nclus_vec))
   {
     if(!dir.exists(paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]))) dir.create(paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]))
-    obj <- StructureObj(counts,nclus_vec[num],samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab, path=paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]), control=controlinput);
+    obj <- StructureObj(counts,nclus_vec, samp_metadata = samp_metadata, tol=tol, batch_lab = batch_lab, path=paste0("Structure/batch_uncorrected/clus_",nclus_vec[num]), control=controlinput);
     bayesfac[num] <- obj$bf;
     if(use_tsne){
     if(!dir.exists(paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]))) dir.create(paste0("tSNE/batch_uncorrected/clus_",nclus_vec[num]))
