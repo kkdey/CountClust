@@ -25,7 +25,7 @@ BatchCorrectedCounts <- function(data, batch_lab,use_parallel=TRUE)
                                                         options(contrast="contr.sum");
                                                         out <- lm(cpm_data[,g] ~  as.factor(batch_lab));
                                                         return(round(exp(out$coefficients[1] + out$residuals)-0.4));
-                                                     }, mc.cores=detectCores()));
+                                                     }, mc.cores=parallel::detectCores()));
   }
 
   if(!use_parallel){
