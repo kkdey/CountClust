@@ -30,7 +30,7 @@
 
 
 
-StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path,
+StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rda,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
@@ -55,18 +55,18 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path,
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
 
   Topic_clus_list <- lapply(nclus_vec, function(per_clust) {
-    maptpx::topics(exp_batch_removed_cpm_data, K = per_clust, tol=0.005)
+    maptpx::topics(data, K = per_clust, tol=0.005)
   })
 
   names(Topic_clus_list) <- paste0("clust_",nclus_vec)
-  save(Topic_clus_list, file = paste0(path,"/topics_fit.rda"));
+  save(Topic_clus_list, file = path_rda);
 
 
   num_metadata <- dim(samp_metadata)[2];
 
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
 
-  StructureObj_omega(docweights,samp_metadata, batch_lab, path,
+  StructureObj_omega(Topic_clus_list,samp_metadata, batch_lab, path,
                             partition=rep('TRUE',ncol(samp_metadata)),
                             control=control)
 }
