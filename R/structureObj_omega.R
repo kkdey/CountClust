@@ -59,12 +59,15 @@ StructureObj_omega <- function(omega, samp_metadata, batch_lab, path_struct=NULL
 
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
 
+  if(!dir.exists(paste0(path_struct,"/clus_",dim(omega)[2])))
+    dir.create(paste0(path_struct,"/clus_",dim(omega)[2]))
+
   for(num in 1:num_metadata)
   {
     metadata_vec <- samp_metadata[,num];
     metadata_ordered <- metadata_vec[order(metadata_vec)];
     docweights_ordered <- docweights[order(metadata_vec),];
-    png(filename=paste0(path_struct,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=struct.width, height=struct.height);
+    png(filename=paste0(path_struct,'/clus_',dim(omega)[2],'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=struct.width, height=struct.height);
     par(mar=c(mar.bottom,mar.left, mar.top,mar.right))
     barplot(t(docweights_ordered),col=color,axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by",colnames(samp_metadata)[num],": topics=",nclus),
@@ -85,7 +88,7 @@ StructureObj_omega <- function(omega, samp_metadata, batch_lab, path_struct=NULL
     batch_vec <- batch_lab;
     batch_vec_ordered <- batch_vec[order(batch_vec)];
     docweights_ordered <- docweights[order(batch_vec),];
-    png(filename=paste0(path_struct,'/struct_clus_',nclus,'_batch.png'),width=struct.width, height=struct.height);
+    png(filename=paste0(path_struct,'/clus_',dim(omega)[2],'/struct_clus_',nclus,'_batch.png'),width=struct.width, height=struct.height);
     par(mar=c(mar.bottom,mar.left, mar.top,mar.right))
     barplot(t(docweights_ordered),col=color,axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by batch",": topics=",nclus),
