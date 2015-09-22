@@ -27,12 +27,14 @@
 #' @export
 
 
-StructureObj_omega <- function(omega, samp_metadata, batch_lab, path,
+StructureObj_omega <- function(omega, samp_metadata, batch_lab, path_struct,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
   control.default <- list(struct.width=600, struct.height=400, cex.axis=0.5, cex.main=1.5, las=2, lwd=2,
                           mar.bottom =14, mar.left=2, mar.top=2, mar.right=2,color=2:(dim(omega)[2]+1));
+
+  if(is.null(path_struct)) path_struct="."
 
   namc=names(control)
   if (!all(namc %in% names(control.default)))
@@ -62,7 +64,7 @@ StructureObj_omega <- function(omega, samp_metadata, batch_lab, path,
     metadata_vec <- samp_metadata[,num];
     metadata_ordered <- metadata_vec[order(metadata_vec)];
     docweights_ordered <- docweights[order(metadata_vec),];
-    png(filename=paste0(path,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=struct.width, height=struct.height);
+    png(filename=paste0(path_struct,'/struct_clus_',nclus,'_',colnames(samp_metadata)[num],'.png'),width=struct.width, height=struct.height);
     par(mar=c(mar.bottom,mar.left, mar.top,mar.right))
     barplot(t(docweights_ordered),col=color,axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by",colnames(samp_metadata)[num],": topics=",nclus),
@@ -83,7 +85,7 @@ StructureObj_omega <- function(omega, samp_metadata, batch_lab, path,
     batch_vec <- batch_lab;
     batch_vec_ordered <- batch_vec[order(batch_vec)];
     docweights_ordered <- docweights[order(batch_vec),];
-    png(filename=paste0(path,'/struct_clus_',nclus,'_batch.png'),width=struct.width, height=struct.height);
+    png(filename=paste0(path_struct,'/struct_clus_',nclus,'_batch.png'),width=struct.width, height=struct.height);
     par(mar=c(mar.bottom,mar.left, mar.top,mar.right))
     barplot(t(docweights_ordered),col=color,axisnames=F,space=0,border=NA,
             main=paste("Structure arranged by batch",": topics=",nclus),
