@@ -69,7 +69,7 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rd
   {
 
        StructureObj_omega(Topic_clus_list[[num]]$omega,samp_metadata, batch_lab, path_struct,
-                            partition=rep('TRUE',ncol(samp_metadata)),
+                            partition=partition,
                             control=control)
   }
 }
