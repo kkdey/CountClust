@@ -21,19 +21,20 @@ BatchCorrectedCounts <- function(data, batch_lab,use_parallel=TRUE)
   cpm_data <- log(data+0.5);
   if(use_parallel){
     batch_removed_counts_mean <- do.call(cbind, parallel::mclapply(1:dim(cpm_data)[2],function(g)
-                                                    {
-                                                        options(contrast="contr.sum");
-                                                        out <- lm(cpm_data[,g] ~  as.factor(batch_lab));
-                                                        return(round(exp(out$coefficients[1] + out$residuals)-0.4));
-                                                     }, mc.cores=parallel::detectCores()));
+                                        {
+                                            out <- lm(cpm_data[,g] ~  as.factor(batch_lab),
+                                                      contrasts = list(batch_lab = "contr.sum") )
+                                            return(round(exp(out$coefficients[1] + out$residuals)-0.4))
+                                         }, mc.cores=parallel::detectCores()));
   }
 
   if(!use_parallel){
     batch_removed_counts_mean <- lapply(1:dim(cpm_data)[2],function(g)
-                                                  {
-                                                      out <- lm(cpm_data[,g] ~ batch_lab);
-                                                      return(round(exp(out$coefficients[1] + mean(out$coefficients[-1])+out$residuals)-0.4));
-                                                      return(ll)
+                                        {
+                                          out <- lm(cpm_data[,g] ~ batch_lab,
+                                                    contrasts = list(batch_lab = "contr.sum"))
+                                          return(round(exp(out$coefficients[1] + mean(out$coefficients[-1])+out$residuals)-0.4));
+                                          return(ll)
     })
   };
 
