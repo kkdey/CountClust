@@ -9,6 +9,7 @@
 #' @param path The directory path where we want to save the data and Structure plots.
 #' @param partition A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
 #'            plot for i th metadata, no vertical line parititon between classes is used.
+#' @param plot TRUE or FALSE. To make the Structure plots or not.
 #' @param control() A list of control parameters for the Structure plot. The control list has the arguments
 #'        struct.width, struct.height, cex.axis, cex.main, las.struct, lwd, las and color and margin parameters.
 #'
@@ -31,7 +32,7 @@
 
 
 StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rda, path_struct,
-                         partition=rep('TRUE',ncol(samp_metadata)),
+                         partition=rep('TRUE',ncol(samp_metadata)), plot = TRUE,
                          control=list())
 {
 
@@ -61,15 +62,14 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rd
   names(Topic_clus_list) <- paste0("clust_",nclus_vec)
   save(Topic_clus_list, file = path_rda);
 
-
   num_metadata <- dim(samp_metadata)[2];
 
+  if(plot) {
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
   for(num in 1:length(nclus_vec))
   {
-
        StructureObj_omega(Topic_clus_list[[num]]$omega,samp_metadata, batch_lab, path_struct,
                             partition=partition,
                             control=control)
-  }
+  }}
 }
