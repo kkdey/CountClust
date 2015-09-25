@@ -56,7 +56,7 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rd
   message('Fitting the topic model (due to Matt Taddy)', domain = NULL, appendLF = TRUE)
 
   Topic_clus_list <- lapply(nclus_vec, function(per_clust) {
-    maptpx::topics(data, K = per_clust, tol=0.005)
+    maptpx::topics(data, K = per_clust, tol=tol)
   })
 
   names(Topic_clus_list) <- paste0("clust_",nclus_vec)
