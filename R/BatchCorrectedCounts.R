@@ -41,6 +41,8 @@ BatchCorrectedCounts <- function(data, batch_lab,use_parallel=TRUE)
   if (dim(batch_removed_counts_mean)[2]!=dim(data)[2])
     stop("The batch corrected data is not of same dimension as the counts data : try changing use_parallel")
   batch_corrected_counts <- apply(batch_removed_counts_mean,c(1,2),function(x) rpois(1,x));
+  rownames(batch_corrected_counts) = rownames(data);
+  colnames(batch_corrected_counts) = colnames(data);
   return(batch_corrected_counts)
 }
 
