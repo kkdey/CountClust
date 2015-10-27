@@ -53,7 +53,7 @@ StructureObj_omega <- function(omega, samp_metadata, batch_lab, path_struct=NULL
   mar.right <- control$mar.right;
   color <- control$color;
 
-  samp_metadata <- as.matrix(samp_metadata);
+  #samp_metadata <- as.matrix(samp_metadata);
   docweights <- as.matrix(omega);
   nclus <- dim(docweights)[2];
   num_metadata <- dim(samp_metadata)[2];
