@@ -70,7 +70,7 @@ To extract the variables that drive the clusters (cluster annotation)
 theta <- brain_structure[[1]]$theta;
 features <- ExtractTopFeatures(theta,top_features=50,method="poisson")
 ```
-It will provide you with a list of top $50$ variables/features per cluster that drive that cluster to be
+It will provide you with a list of top 50 variables/features per cluster that drive that cluster to be
 different from the rest.
 
 For any queries, contact kkdey@uchicago.edu
