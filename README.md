@@ -1,5 +1,7 @@
 # CountClust
-A R package for counts clustering
+A R package for counts clustering- 
+
+Authors : Kushal K Dey, Matthew Stephens 
 
 To download and install this package, 
 
@@ -15,19 +17,18 @@ Load the package in R
 library(CountClust)
 ```
 
-Load the counts data (samples along the rows, variables or features along the columns) in R. Here we use a test data
-comprising of the brain samples in GTEX V6 data
+Load the counts data (samples along the rows, variables or features along the columns) in R. Here we use a test data comprising of the brain samples in GTEX V6 data
 
 ```
-data <- t(data.frame(data.table::fread("test/cis_gene_expression_brain.txt"))[,-(1:2)]);
-data <- data[,1:1000];
-dim(data)
+brain_data <- t(data.frame(data.table::fread("test/cis_gene_expression_brain.txt"))[,-(1:2)]);
+brain_data <- brain_data[,1:1000];
+dim(brain_data)
 ```
 Next we load the brain metadata 
 
 ```
 metadata <- cbind.data.frame(read.table("test/metadata_brain.txt")[,3]);
-colnames(metadata) <- "labs"
+colnames(metadata) <- "brain_labs"
 dim(metadata)
 ```
 We  apply the StructureObj function to fit the topic model (due to the **maptpx** package of Matt Taddy) 
@@ -35,7 +36,7 @@ and plot the Structure plot.
 
 ```
 if(!dir.exists("test/Structure")) dir.create("test/Structure")
-StructureObj(data, nclus_vec=3, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
+StructureObj(brain_data, nclus_vec=3, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
              plot=TRUE, path_rda="test/topics_data.rda", path_struct="test/Structure")
 ```
 
@@ -56,6 +57,27 @@ StructureObj_omega(brain_structure[[1]]$omega, samp_metadata = brain_metadata,
                           control=list(cex.axis=1, struct.width=500, struct.height=500))
 ```
 
-Then go to `test/Structure` and you will be able to see the Structure plot for K=3 with *cex.axis* modified
+Then go to `test/Structure` and you will be able to see the Structure plot for K=3 with width and the height
+of the Structure plot modified.
+
+The Structure plot generated looks like the following
+
+<img src='test/Structure/clus_3/struct_clus_3_labs.png' style="width:550px;height:300px;">
+
+To extract the variables that drive the clusters (cluster annotation)
+
+```
+theta <- brain_structure[[1]]$theta;
+features <- ExtractTopFeatures(theta,top_features=50,method="poisson")
+```
+It will provide you with a list of top $50$ variables/features per cluster that drive that cluster to be
+different from the rest.
+
+For any queries, contact kkdey@uchicago.edu
+
+## Acknowledgements
+
+- Joyce Hsiao
+- Raman Shah
 
 
