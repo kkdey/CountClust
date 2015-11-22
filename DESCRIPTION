@@ -15,3 +15,5 @@ License: GPL (>= 2)
 Imports: tsne,qtlcharts,limma,parallel
 LazyData: TRUE
 Encoding: ASCII
+Suggests: knitr
+VignetteBuilder: knitr
