@@ -1,11 +1,19 @@
 # CountClust
-A R package for counts clustering- 
+A R package for counts clustering-
 
-Authors : [Kushal K Dey](http://kkdey.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/) 
+Authors : [Kushal K Dey](http://kkdey.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
 
 ## Installation
 
-To download and install this package, 
+`CountClust` requires the `limma` package from [Bioconductor]
+(https://bioconductor.org/packages/release/bioc/html/limma.html):
+
+```
+source("http://bioconductor.org/biocLite.R")
+biocLite("limma")
+```
+
+To download and install this package,
 
 ```
 install.packages("devtools")
@@ -28,7 +36,7 @@ brain_data <- t(data.frame(data.table::fread("test/cis_gene_expression_brain.txt
 brain_data <- brain_data[,1:1000];
 dim(brain_data)
 ```
-Next we load the brain metadata 
+Next we load the brain metadata
 
 ```
 metadata <- cbind.data.frame(read.table("test/metadata_brain.txt")[,3]);
@@ -38,8 +46,8 @@ dim(metadata)
 
 ### Model fit and Visualization
 
-We  apply the StructureObj function to fit the topic model (due to the **maptpx** package of Matt Taddy) 
-and plot the Structure plot. 
+We  apply the StructureObj function to fit the topic model (due to the **maptpx** package of Matt Taddy)
+and plot the Structure plot.
 
 ```
 if(!dir.exists("test/Structure")) dir.create("test/Structure")
@@ -49,17 +57,17 @@ StructureObj(brain_data, nclus_vec=3, samp_metadata = metadata, tol=0.1, batch_l
 
 This function will output two things:
 
--  a rda file containing all topic model information named "test/topics_data.rda" 
--  The Structure plot for K=3 arranged by the metadata provided in test/Structure. If samp_metadata is a matrix 
+-  a rda file containing all topic model information named "test/topics_data.rda"
+-  The Structure plot for K=3 arranged by the metadata provided in test/Structure. If samp_metadata is a matrix
    with several columns, then Structure plots arranged by each column in samp_metadata will be created.
 
 The rda file contains the W (the topic proportion matrix) and T (topic distribution) files, so if you need to change
-the Structure plot, you do not need to rerun the StructureObj fit again and you can just load the W matrix in rda 
+the Structure plot, you do not need to rerun the StructureObj fit again and you can just load the W matrix in rda
 file into out StrutureObj_omega() function.
 
 ```
 brain_structure <- get(load("test/topics_data.rda"));
-StructureObj_omega(brain_structure[[1]]$omega, samp_metadata = brain_metadata, 
+StructureObj_omega(brain_structure[[1]]$omega, samp_metadata = brain_metadata,
                           batch_lab = NULL, path_struct="test/Structure",
                           control=list(cex.axis=1, struct.width=500, struct.height=500))
 ```
@@ -95,5 +103,3 @@ For any queries, contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
 
 - Joyce Hsiao
 - Raman Shah
-
-
