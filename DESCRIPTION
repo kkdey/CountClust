@@ -8,12 +8,16 @@ Authors@R: c(
     person("Matthew", "Stephens", email = "stephens999@gmail.com", role ="aut"),
     person("Joyce", "Hsiao", email = "joyce.hsiao1@gmail.com", role = "ctb"))
 Maintainer: Kushal K Dey <kkdey@uchicago.edu>
-Description: Takes any count table data as input, does data preprocessing, and uses topic model clustering
- (due to maptpx package of Matt Taddy) to produce Structure plot, t-SNE plot, PCA plot, and also gives a list
- of top features driving the clusters
+Description: Takes any count table data as input, does data preprocessing, and
+    uses topic model clustering (due to maptpx package of Matt Taddy) to produce
+    Structure plot, t-SNE plot, PCA plot, and also gives a list of top features
+    driving the clusters
 License: GPL (>= 2)
-Imports: tsne,qtlcharts,limma,parallel
+Imports:
+    tsne,qtlcharts,limma,parallel
 LazyData: TRUE
 Encoding: ASCII
-Suggests: knitr
+Suggests:
+    knitr
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1
