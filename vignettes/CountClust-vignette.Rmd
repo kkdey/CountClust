@@ -1,6 +1,6 @@
 ---
 title: "CountClust- R package for clustering of counts data"
-author: "Kushal K Dey    Matthew Stephens"
+author:  Kushal K Dey \,\ Matthew Stephens
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -29,19 +29,24 @@ library(CountClust)
 
 **CountClust** takes as input a counts table with samples along the rows (which we want to cluster) and features along the columns (which represents the dimensionality of the clusters). The package fits a topic mixed membersjip model on the samples based on these features and then visulaize and annotate these clusters to extract the top features driving each cluster.
 
-## Data Preprocessing
+## Data Loading and Preprocessing
 
-Assume `data` represents the counts table with n rows (samples) and p columns(features). As data preprocessing step, once can delete or substitute the columns that contain NAs. If for a feature, the proportion of 
-NAs is greater than threshold proportion (`thresh_prop`), then we remove the feature, otherwise we use MAR substitution scheme using the distribution of the non NA values for the feature. 
+Load the counts data (samples along the rows, variables or features along the columns) in R. Here we use a test data comprising of the brain samples in GTEX V6 data
 
-```{r, echo=TRUE, eval=FALSE}
+```
+brain_data <- t(data.frame(data.table::fread("test/cis_gene_expression_brain.txt"))[,-(1:2)]);
+dim(brain_data)
+```
+As data preprocessing step, once can delete or substitute the columns that contain NAs. If for a feature, the proportion of NAs is greater than threshold proportion (`thresh_prop`), then we remove the feature, otherwise we use MAR substitution scheme using the distribution of the non NA values for the feature. 
+
+```
 handleNA(data, thresh_prop=0)
 handleNA(data, thresh_prop=0.2)
 ```
 
 Next we remove features which are too sparse (sparsity threshold provided by the user).This function deals with zero counts in the counts dataset. If for a feature, the proportion of zeros across the samples is greater than filter_prop, then we remove the feature.
 
-```{r, echo=TRUE, eval=TRUE}
+```
 RemoveSparseFeatures(data,filter_prop=0.5)
 ```
 
@@ -51,7 +56,7 @@ Once the data preprocessing step is completed, we perform the mixed membership c
 
 Assume that `metadata` is a n (samples) by t (metadata labels) matrix that contains values for each metadata recorded in each column of this matrix. 
 
-We load the brain metadata for our example.  
+We load the brain metadata (here `t=1`) for our example.  
 
 ```
 metadata <- cbind.data.frame(read.table("test/metadata_brain.txt")[,3]);
@@ -68,50 +73,20 @@ if(!dir.exists("test/Structure")) dir.create("test/Structure")
 
 If the user wants to fit clustering for 2,3,4
 
-```{r, echo=TRUE, eval=TRUE}
+```
 clus_vec <- 3;
-StructureObj(data, nclus_vec=clus_vec, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
+StructureObj(brain_data, nclus_vec=clus_vec, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
              plot=TRUE, path_rda="test/topics_data.rda", path_struct="test/Structure")
 ```
 
-```{r, echo=TRUE, eval=FALSE} 
+```
 clus_vec <- c(2,3,4);
-StructureObj(data, nclus_vec=clus_vec, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
+StructureObj(brain_data, nclus_vec=clus_vec, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
              plot=FALSE, path_rda="test/topics_data.rda", path_struct="test/Structure")
                          
 ```
 
 If `plot=TRUE`, the above function will create the Structure plot visualization of the clusters, one for each of the cluster values selected and arrangement of bars due to each of the `metadata` columns. 
-
-
-## Example Use
-
-Load the counts data (samples along the rows, variables or features along the columns) in R. Here we use a test data comprising of the brain samples in GTEX V6 data
-
-```
-brain_data <- t(data.frame(data.table::fread("test/cis_gene_expression_brain.txt"))[,-(1:2)]);
-brain_data <- brain_data[,1:1000];
-write.table(brain_data,"test/cis_gene_expression_brain.txt");
-dim(brain_data)
-```
-Next we load the brain metadata 
-
-```
-metadata <- cbind.data.frame(read.table("test/metadata_brain.txt")[,3]);
-colnames(metadata) <- "brain_labs"
-dim(metadata)
-```
-
-### Model fit and Visualization
-
-We  apply the StructureObj function to fit the topic model (due to the **maptpx** package of Matt Taddy) 
-and plot the Structure plot. 
-
-```
-if(!dir.exists("test/Structure")) dir.create("test/Structure")
-StructureObj(brain_data, nclus_vec=3, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
-             plot=TRUE, path_rda="test/topics_data.rda", path_struct="test/Structure")
-```
 
 This function will output two things:
 
@@ -119,9 +94,7 @@ This function will output two things:
 -  The Structure plot for K=3 arranged by the metadata provided in test/Structure. If samp_metadata is a matrix 
    with several columns, then Structure plots arranged by each column in samp_metadata will be created.
 
-The rda file contains the W (the topic proportion matrix) and T (topic distribution) files, so if you need to change
-the Structure plot, you do not need to rerun the StructureObj fit again and you can just load the W matrix in rda 
-file into out StrutureObj_omega() function.
+The rda file contains the W (the topic proportion matrix) and T (topic distribution) files, so if you need to change the Structure plot, the user need not rerun the *StructureObj()* fit again and you can just load the W matrix in rda file into out *StrutureObj_omega()* function.
 
 ```
 brain_structure <- get(load("test/topics_data.rda"));
@@ -135,10 +108,9 @@ of the Structure plot modified.
 
 The Structure plot generated looks like the following
 
-<img src='test/Structure/clus_3/struct_clus_3_labs.png' style="width:550px;height:300px;">
+<img src='../test/Structure/clus_3/struct_clus_3_labs.png' style="width:550px;height:300px;">
 
-
-### Cluster annotations
+## Cluster annotations
 
 To extract the variables that drive the clusters (cluster annotation)
 
@@ -148,6 +120,9 @@ features <- ExtractTopFeatures(theta,top_features=50,method="poisson")
 ```
 It will provide you with a list of top 50 variables/features per cluster that drive that cluster to be
 different from the rest.
+
+## Version
+0.0.1
 
 ## Licenses
 
@@ -159,7 +134,9 @@ For any queries, contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
 
 ## Acknowledgements
 
-- Joyce Hsiao
-- Raman Shah
+- Matt Taddy, University of Chicago, Booth School of Business
+- Gao Wang, Stephens Lab, University of Chicago
+- Joyce Hsiao, Stephens Lab and Gilad Lab, University of Chicago
+- Raman Shah, Stephens Lab, University of Chicago
 
 
