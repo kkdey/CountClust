@@ -4,7 +4,7 @@
 \alias{BatchCorrectedCounts}
 \title{Obtaining Batch effect Corrected counts!}
 \usage{
-BatchCorrectedCounts(data, batch_lab, use_parallel = TRUE)
+BatchCorrectedCounts(data, batch_lab, use_parallel = TRUE, use_cpm = TRUE)
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
@@ -14,7 +14,7 @@ BatchCorrectedCounts(data, batch_lab, use_parallel = TRUE)
 \item{use_parallel}{if TRUE, we do a parallel analysis over featres, else serial application.}
 }
 \description{
-This function first converts counts data to CPM data, then apply a linear model with the batch effect as a factor. We take the sum of
+This function first converts counts data to CPM data/ sqrt data, then apply a linear model with the batch effect as a factor. We take the sum of
              intercept, residuals and mean batch effect across all the batches and then exponentiate it to bring the data back almost to the original
              space of the counts data, except for the batch adjustment.Generate a Poisson random number for each of the means. The obtained counts
              are then devoid of batch effects.
