@@ -1,10 +1,7 @@
-
-## test code for batch correction
-
 K=4;
 G=100;
 N=200;
-alpha_true=matrix(rnorm((K)*G,0.5,1),nrow=(K)); ### the matrix of fixed effects
+
 Label.Batch=c(rep(1,N/2),rep(2,N/2));
 B=max(Label.Batch);
 sigmab_true=2;
@@ -23,23 +20,20 @@ K <- 4
 barplot(t(omega_true),col=2:(K+1),axisnames=F,space=0,border=NA,main="",las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
 title(main=paste("Structure Plot of initial chosen topic proportions,k=",K))
 
-over_dis=0.5;
-noise_true=matrix(0,N,G);
-for(n in 1:N)
-{
-  noise_true[n,]=over_dis*rnorm(G,0,1);
-}
 
-###  generating the table
-read_counts=matrix(0,N,G);
-for(n in 1:N)
-{
-  for(g in 1:G)
-  {
-    mean=exp(omega_true[n,]%*%alpha_true[,g] +beta_true[Label.Batch[n],g]+noise_true[n,g]);
-    read_counts[n,g]=rpois(1,mean);
-  }
-}
+theta_b_true <- rbind(rdirichlet(2, c(0.2, 0.2, rep(0.6/G,G-2))),
+                           rdirichlet(2, c(rep(0.5/G,G-3),0.3,0.1,0.1)),
+                           rdirichlet(2, c(rep(0.4/G, G/2 -2),0.2,0.1,rep(0.3/G, G/2))),
+                           rdirichlet(2, c(rep(0.6/G,G-2), 0.2, 0.2)));
+
+read_counts <- t(do.call(cbind,lapply(1:dim(omega_true)[1], function(x)
+                                                        {
+                                                            if(Label.Batch[x]==1)
+                                                              out <- rmultinom(1,1000,prob=omega_true[x,]%*%theta_b_true[c(2,4,6,8),]);
+                                                            if(Label.Batch[x]==2)
+                                                              out <- rmultinom(1,1000,prob=omega_true[x,]%*%theta_b_true[c(1,3,5,7),]);
+                                                            return(out)
+                                                             }  )));
 
 library(CountClust)
 
@@ -75,4 +69,5 @@ docweights_2=docweights_2[,perm_set[p_star,]];
 
 barplot(t(docweights_2),col=2:(K+1),axisnames=F,space=0,border=NA,main="",las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
 title(main=paste("Structure Plot of initial chosen topic proportions,k=",K))
+
 
