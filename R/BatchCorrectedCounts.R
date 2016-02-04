@@ -16,33 +16,28 @@
 #'
 
 
-BatchCorrectedCounts <- function(data, batch_lab,use_parallel=TRUE, use_cpm=TRUE)
+BatchCorrectedCounts <- function(data, batch_lab,use_parallel=TRUE)
 {
-  if(use_cpm){
   out_voom <- limma::voom(data);
   trans_data <- out_voom$E;
-  }
-  if(!use_cpm){
-    trans_data <- sqrt(data);
-  }
+  lib_size <- rowSums(data);
   if(use_parallel){
     batch_removed_counts_mean <- do.call(cbind, parallel::mclapply(1:dim(trans_data)[2],function(g)
                                         {
                                             out <- lm(trans_data[,g] ~  as.factor(batch_lab),
                                                       contrasts = list(batch_lab = "contr.sum") )
-                                            return(round(exp(out$coefficients[1] + out$residuals)-0.4))
+                                            return(round(exp((out$coefficients[1] + out$residuals)/6)*(lib_size+1)-0.4))
                                          }, mc.cores=parallel::detectCores()));
   }
 
   if(!use_parallel){
-    batch_removed_counts_mean <- lapply(1:dim(trans_data)[2],function(g)
+    batch_removed_counts_mean <- do.call(cbind, lapply(1:dim(trans_data)[2],function(g)
                                         {
-                                          out <- lm(trans_data[,g] ~ batch_lab,
+                                          out <- lm(trans_data[,g] ~ as.factor(batch_lab),
                                                     contrasts = list(batch_lab = "contr.sum"))
-                                          return(round(exp(out$coefficients[1] + mean(out$coefficients[-1])+out$residuals)-0.4));
-                                          return(ll)
-    })
-  };
+                                          return(round(exp((out$coefficients[1] + out$residuals)/6)*(lib_size+1)-0.4));
+                                        }));
+  }
 
   if (dim(batch_removed_counts_mean)[2]!=dim(data)[2])
     stop("The batch corrected data is not of same dimension as the counts data : try changing use_parallel")

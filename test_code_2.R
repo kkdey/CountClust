@@ -36,3 +36,23 @@ for(n in 1:N)
   }
 }
 
+library(CountClust)
+
+library(maptpx)
+
+K <- 4
+Topic_clus <- topics(read_counts, K, tol=0.01);
+docweights <- Topic_clus$omega;
+
+barplot(t(docweights),col=2:(K+1),axisnames=F,space=0,border=NA,main="",las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
+title(main=paste("Structure Plot of initial chosen topic proportions,k=",K))
+
+### We do batch correction ####
+
+batch_counts <- BatchCorrectedCounts(read_counts, batch_lab = Label.Batch);
+
+Topic_clus_2 <- topics(batch_counts, K, tol=0.01);
+docweights_2 <- Topic_clus_2$omega;
+
+barplot(t(docweights_2),col=2:(K+1),axisnames=F,space=0,border=NA,main="",las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
+title(main=paste("Structure Plot of initial chosen topic proportions,k=",K))

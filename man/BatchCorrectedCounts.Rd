@@ -2,9 +2,9 @@
 % Please edit documentation in R/BatchCorrectedCounts.R
 \name{BatchCorrectedCounts}
 \alias{BatchCorrectedCounts}
-\title{Obtaining Batch effect Corrected counts!}
+\title{Obtaining Batch effect Corrected counts !}
 \usage{
-BatchCorrectedCounts(data, batch_lab, use_parallel = TRUE, use_cpm = TRUE)
+BatchCorrectedCounts(data, batch_lab, use_parallel = TRUE)
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
