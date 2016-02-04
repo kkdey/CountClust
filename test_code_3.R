@@ -1,6 +1,3 @@
-
-## test code for batch correction
-
 K=4;
 G=100;
 N=200;
@@ -36,7 +33,7 @@ for(n in 1:N)
 {
   for(g in 1:G)
   {
-    mean=exp(omega_true[n,]%*%alpha_true[,g] +beta_true[Label.Batch[n],g]+noise_true[n,g]);
+    mean=omega_true[n,]%*%exp(alpha_true[,g] +beta_true[Label.Batch[n],g]+noise_true[n,g]);
     read_counts[n,g]=rpois(1,mean);
   }
 }
@@ -75,4 +72,3 @@ docweights_2=docweights_2[,perm_set[p_star,]];
 
 barplot(t(docweights_2),col=2:(K+1),axisnames=F,space=0,border=NA,main="",las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
 title(main=paste("Structure Plot of initial chosen topic proportions,k=",K))
-
