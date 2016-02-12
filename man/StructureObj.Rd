@@ -4,9 +4,9 @@
 \alias{StructureObj}
 \title{Topic model fitting and Structure Plot!}
 \usage{
-StructureObj(data, nclus_vec, samp_metadata, tol, batch_lab, path_rda,
-  path_struct, partition = rep("TRUE", ncol(samp_metadata)), plot = TRUE,
-  control = list())
+StructureObj(data, nclus_vec, samp_metadata, tol, batch_lab, path_rda = NULL,
+  path_struct = NULL, partition = rep("TRUE", ncol(samp_metadata)),
+  plot = TRUE, control = list())
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}

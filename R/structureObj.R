@@ -31,7 +31,9 @@
 
 
 
-StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rda, path_struct,
+StructureObj <- function(data, nclus_vec, samp_metadata, tol, 
+                         batch_lab, 
+                         path_rda = NULL, path_struct = NULL,
                          partition=rep('TRUE',ncol(samp_metadata)), plot = TRUE,
                          control=list())
 {
@@ -58,11 +60,11 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol, batch_lab, path_rd
   Topic_clus_list <- lapply(nclus_vec, function(per_clust) {
     maptpx::topics(data, K = per_clust, tol=tol)
   })
-
   names(Topic_clus_list) <- paste0("clust_",nclus_vec)
-  save(Topic_clus_list, file = path_rda);
+  
+  if (!is.null(path_rda))  save(Topic_clus_list, file = path_rda)
 
-  num_metadata <- dim(samp_metadata)[2];
+  num_metadata <- dim(samp_metadata)[2]
 
   if(plot) {
   message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
