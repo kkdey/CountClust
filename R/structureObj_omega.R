@@ -27,7 +27,7 @@
 #' @export
 
 
-StructureObj_omega <- function(omega, samp_metadata, batch_lab, path_struct=NULL,
+StructureObj_omega <- function(omega, samp_metadata, batch_lab = NULL, path_struct=NULL,
                          partition=rep('TRUE',ncol(samp_metadata)),
                          control=list())
 {
