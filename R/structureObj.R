@@ -64,7 +64,7 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol,
   })
   names(Topic_clus_list) <- paste0("clust_",nclus_vec)
   
-  if (!is.null(path_rda))  save(Topic_clus_list, file = path_rds)
+  if (!is.null(path_rds))  saveRDS(Topic_clus_list, file = path_rds)
 
   num_metadata <- dim(samp_metadata)[2]
 
