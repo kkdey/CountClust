@@ -6,7 +6,8 @@
 #'        that will be used to arrange the Structure plot columns (one plot for one arrangement).
 #' @param tol the tolerance value for topic model fit (set to 0.001 as default)
 #' @param batch_lab the batch labels, the output will have one Structure plot arranged by batch labels too.
-#' @param path The directory path where we want to save the data and Structure plots.
+#' @param path_rds directory to store Rds object
+#' @param path_struct path to store structure plot
 #' @param partition A logical vector of same length as metadata. partition[i]=TRUE will imply that for the Structure
 #'            plot for i th metadata, no vertical line parititon between classes is used.
 #' @param plot TRUE or FALSE. To make the Structure plots or not.
@@ -33,8 +34,9 @@
 
 StructureObj <- function(data, nclus_vec, samp_metadata, tol, 
                          batch_lab, 
-                         path_rda = NULL, path_struct = NULL,
-                         partition=rep('TRUE',ncol(samp_metadata)), plot = TRUE,
+                         path_rds = NULL, path_struct = NULL,
+                         partition=rep('TRUE',ncol(samp_metadata)), 
+                         plot = FALSE,
                          control=list())
 {
 
@@ -62,7 +64,7 @@ StructureObj <- function(data, nclus_vec, samp_metadata, tol,
   })
   names(Topic_clus_list) <- paste0("clust_",nclus_vec)
   
-  if (!is.null(path_rda))  save(Topic_clus_list, file = path_rda)
+  if (!is.null(path_rda))  save(Topic_clus_list, file = path_rds)
 
   num_metadata <- dim(samp_metadata)[2]
 
