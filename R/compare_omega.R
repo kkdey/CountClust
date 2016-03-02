@@ -22,8 +22,8 @@ compare_omega <- function(omega1, omega2)
     {
       for(n in 1:dim(omega2)[2])
       {
-        kl.out[m,n] <- 0.5* philentropy::distance(t(cbind(docweights1[,m], docweights2[,n])), method="kullback-leibler")
-        + 0.5* philentropy::distance(t(cbind(docweights2[,n], docweights1[,m])), method="kullback-leibler") ;
+        kl.out[m,n] <- 0.5* philentropy::distance(t(cbind(omega1[,m], omega2[,n])), method="kullback-leibler")
+        + 0.5* philentropy::distance(t(cbind(omega2[,n], omega1[,m])), method="kullback-leibler") ;
       }
     }
 
