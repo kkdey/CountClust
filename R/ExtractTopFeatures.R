@@ -36,24 +36,46 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
     })
   }
 
-  if(dim(theta)[2]==2){
-    indices_mat=matrix(0,dim(theta)[2],top_features);
+  indices_mat=matrix(0,dim(theta)[2],top_features);
 
+  if(dim(theta)[2]==2){
     for(k in 1:dim(theta)[2])
     {
       temp_mat <- KL_score[[k]][,-k];
       vec <- as.vector(temp_mat);
-      indices_mat[k,] = order(vec, decreasing = TRUE)[1:top_features]
+      ordered_kl <- order(vec, decreasing = TRUE);
+      counter <- 1
+      flag <- counter
+      while(flag <= top_features)
+      {
+        if(max(theta[flag,])==k){
+          indices_mat[k, flag] <- ordered_kl[flag];
+          flag <- flag + 1;
+          counter <- counter + 1;}
+        else{
+          counter <- counter + 1;
+        }
+      }
     }
 
   } else{
-    indices_mat=matrix(0,dim(theta)[2],top_features);
-
     for(k in 1:dim(theta)[2])
     {
       temp_mat <- KL_score[[k]][,-k];
-      vec <- apply(temp_mat, 1, function(x) min(x))
-      indices_mat[k,] = order(vec, decreasing = TRUE)[1:top_features]
+      vec <- as.vector(temp_mat);
+      ordered_kl <- order(vec, decreasing = TRUE);
+      counter <- 1
+      flag <- counter
+      while(flag <= top_features)
+      {
+        if(max(theta[flag,])==k){
+          indices_mat[k, flag] <- ordered_kl[flag];
+          flag <- flag + 1;
+          counter <- counter + 1;}
+        else{
+          counter <- counter + 1;
+        }
+      }
     }
   }
 
