@@ -14,7 +14,7 @@
 #'
 #'
 
-ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","bernoulli"))
+ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","bernoulli"), options=c("min", "max"))
 {
   if(method=="poisson") {
   KL_score <- lapply(1:dim(theta)[2], function(n) {
@@ -42,14 +42,16 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
     for(k in 1:dim(theta)[2])
     {
       temp_mat <- KL_score[[k]][,-k];
-      vec <- as.vector(temp_mat);
+      if(options=="min"){vec <- apply(temp_mat, 1, function(x) min(x))}
+      if(options=="max"){vec <- apply(temp_mat, 1, function(x) max(x))}
+
       ordered_kl <- order(vec, decreasing = TRUE);
       counter <- 1
       flag <- counter
       while(flag <= top_features)
       {
-        if(max(theta[flag,])==k){
-          indices_mat[k, flag] <- ordered_kl[flag];
+        if(max(theta[ordered_kl[counter],])==k){
+          indices_mat[k, flag] <- ordered_kl[counter];
           flag <- flag + 1;
           counter <- counter + 1;}
         else{
@@ -62,17 +64,18 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
     for(k in 1:dim(theta)[2])
     {
       temp_mat <- KL_score[[k]][,-k];
-      vec <- as.vector(temp_mat);
+      if(options=="min"){vec <- apply(temp_mat, 1, function(x) min(x))}
+      if(options=="max"){vec <- apply(temp_mat, 1, function(x) max(x))}
+
       ordered_kl <- order(vec, decreasing = TRUE);
       counter <- 1
       flag <- counter
       while(flag <= top_features)
       {
-        if(max(theta[flag,])==k){
-          indices_mat[k, flag] <- ordered_kl[flag];
+        if(which.max(theta[ordered_kl[counter],])==k){
+          indices_mat[k, flag] <- ordered_kl[counter];
           flag <- flag + 1;
-          counter <- counter + 1;}
-        else{
+          counter <- counter + 1;}else{
           counter <- counter + 1;
         }
       }
