@@ -42,9 +42,9 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
     for(k in 1:dim(theta)[2])
     {
       temp_mat <- KL_score[[k]][,-k];
-      if(options=="min"){vec <- apply(temp_mat, 1, function(x) min(x))}
-      if(options=="max"){vec <- apply(temp_mat, 1, function(x) max(x))}
-
+      if(options=="min"){vec <- apply(as.matrix(temp_mat), 1, function(x) min(x))}
+      if(options=="max"){vec <- apply(as.matrix(temp_mat), 1, function(x) max(x))}
+      #vec <- temp_mat;
       ordered_kl <- order(vec, decreasing = TRUE);
       counter <- 1
       flag <- counter
