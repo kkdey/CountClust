@@ -16,6 +16,8 @@
 
 compare_omega <- function(omega1, omega2)
 {
+    omega1[omega1==0] <- 1e-20;
+    omega2[omega2==0] <- 1e-20;
     cor.out <- 1 - cor(omega1, omega2)
     kl.out <- matrix(0,dim(omega1)[2],dim(omega2)[2]);
     for(m in 1:dim(omega1)[2])
