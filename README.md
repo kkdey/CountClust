@@ -65,19 +65,7 @@ rownames(omega) <- paste0("X", 1:length(brain_labels))
 annotation <- data.frame(
   sample_id = paste0("X", 1:length(brain_labels)),
   tissue_label = factor(brain_labels,
-                        levels = rev(c("Brain - Cerebellar Hemisphere",
-                                       "Brain - Cerebellum",
-                                       "Brain - Spinal cord (cervical c-1)",
-                                       "Brain - Anterior cingulate cortex (BA24)",
-                                       "Brain - Frontal Cortex (BA9)",
-                                       "Brain - Cortex",
-                                       "Brain - Hippocampus",
-                                       "Brain - Substantia nigra",
-                                       "Brain - Amygdala",
-                                       "Brain - Putamen (basal ganglia)",
-                                       "Brain - Caudate (basal ganglia)",
-                                       "Brain - Hypothalamus",
-                                       "Brain - N. accumbens (basal ganglia)") ) ) )
+                        levels = rev(unique(brain_labels)) ) )
 
 
 cols <- c("blue", "darkgoldenrod1", "cyan")
