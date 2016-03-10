@@ -13,11 +13,9 @@ StructureObj(data, nclus_vec, samp_metadata, tol, batch_lab, path_rds = NULL,
 
 \item{nclus_vec}{the vector of clusters or topics to be fitted.}
 
-\item{samp_metadata}{the sample metadata, samples along the rows and each column representing some metadata information
-that will be used to arrange the Structure plot columns (one plot for one arrangement).}
-
 \item{tol}{the tolerance value for topic model fit (set to 0.001 as default)}
 
+<<<<<<< HEAD
 \item{batch_lab}{the batch labels, the output will have one Structure plot arranged by batch labels too.}
 
 \item{path_rds}{directory to store Rds object}
@@ -31,6 +29,9 @@ plot for i th metadata, no vertical line parititon between classes is used.}
 
 \item{control()}{A list of control parameters for the Structure plot. The control list has the arguments
 struct.width, struct.height, cex.axis, cex.main, las.struct, lwd, las and color and margin parameters.}
+=======
+\item{path}{The directory path where we want to save the data and Structure plots.}
+>>>>>>> upstream/master
 }
 \description{
 This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or

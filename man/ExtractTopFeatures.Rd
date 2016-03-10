@@ -5,7 +5,7 @@
 \title{The CountsClust function- a function for clustering and visualization of counts!}
 \usage{
 ExtractTopFeatures(theta, top_features = 10, method = c("poisson",
-  "bernoulli"))
+  "bernoulli"), options = c("min", "max"))
 }
 \arguments{
 \item{theta}{The theta matrix obtained from the topic model fitting (it is a G x K matrix where G is number of features, K number of topics)}

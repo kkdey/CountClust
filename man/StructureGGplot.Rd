@@ -6,7 +6,10 @@
 \usage{
 StructureGGplot(omega, annotation, palette = RColorBrewer::brewer.pal(8,
   "Accent"), figure_title = "", yaxis_label = "Tissue type",
-  order_sample = TRUE)
+  order_sample = TRUE, sample_order_decreasing = TRUE,
+  split_line = list(split_lwd = 1, split_col = "white"),
+  axis_tick = list(axis_ticks_length = 0.1, axis_ticks_lwd_y = 0.1,
+  axis_ticks_lwd_x = 0.1, axis_label_size = 3, axis_label_face = "bold"))
 }
 \arguments{
 \item{omega}{Cluster membership probabilities of each sample. Usually a sample by 
@@ -35,6 +38,7 @@ RColorBrewwer::brewer.pal(9, "Set1").}
 Make the traditional Structure histogram plot using the ggplot2 pacakges
 }
 \examples{
+<<<<<<< HEAD
 ## load the previously analyzed results
 # load("../../../count-clustering/project/rdas/deng_topic_fit.rda")
 
@@ -59,4 +63,27 @@ Make the traditional Structure histogram plot using the ggplot2 pacakges
 \author{
 Chiaowen Joyce Hsiao and Kushal K Dey
 }
+=======
+# load the previously analyzed results
+load("../../../count-clustering/project/rdas/deng_topic_fit.rda")
+
+# extract the omega matrix: membership weights of each cell
+names(Topic_clus_list)
+str(Topic_clus_list$clust_6)
+omega <- Topic_clus_list$clust_6$omega
+
+# make annotation matrix
+annotation <- data.frame(
+  sample_id = c(1:NROW(omega)),
+  tissue_label = factor(rownames(omega),
+                        levels = c("zy", "early2cell", "mid2cell", "late2cell",
+                                    "4cell", "8cell", "16cell", "earlyblast",
+                                    "midblast", "lateblast")) )
+StructureGGplot(omega = omega, 
+                tissue_labels = cell_labels)                                    
+                
+# save_plot("../../../count-clustering/project/plots/deng-figures/deng-ggplot.png", 
+#         b, base_height = 4, base_width = 2)
+}
+>>>>>>> upstream/master
 

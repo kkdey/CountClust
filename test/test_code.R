@@ -6,24 +6,58 @@ library(CountClust)
 
 ###  Reading the GTEX V6 data
 
-brain_data <- t(data.frame(data.table::fread("test/cis_gene_expression_brain.txt"))[,-(1:2)]);
-brain_data <- brain_data[,1:1000];
+brain_data <- data.frame(data.table::fread("cis_gene_expression_brain.txt"))[,-(1:2)];
 dim(brain_data)
 
 ### Reading the sample metadata that you wish toorganize the Structure plot
 
-brain_metadata <- cbind.data.frame(read.table("test/metadata_brain.txt")[,3]);
-colnames(brain_metadata) <- "brain_labs"
-dim(brain_metadata)
+brain_labels <- as.vector((read.table("metadata_brain.txt")[,3]));
 
-## Using the StructureObj to fit the Structure model (using the maptpx package due to Matt Taddy) 
 
-if(!dir.exists("test/Structure")) dir.create("test/Structure")
-StructureObj(brain_data, nclus_vec=3, samp_metadata = brain_metadata, tol=0.1, batch_lab = NULL,
-             plot=TRUE, path_rda="test/brain_structure.rda", path_struct="test/Structure")
+## Using the StructureObj to fit the Structure model (using the maptpx package due
+## to Matt Taddy) for clusters 2 and 3
 
-#The rda file contains the W and T files, 
-brain_structure <- get(load("test/brain_structure.rda"));
-StructureObj_omega(brain_structure[[1]]$omega, samp_metadata = brain_metadata, 
-                          batch_lab = NULL, path_struct="test/Structure",
-                          control=list(cex.axis=1, struct.width=500, struct.height=500))
+StructureObj(brain_data, nclus_vec=2:3, tol=0.1, path_rda="brain_structure.rda")
+
+#The rda file contains the W and T files,
+
+## Load the rda file
+Topic_clus <- get(load("topics_data.rda"));
+omega <- Topic_clus$clust_3$omega;
+
+rownames(omega) <- paste0("X", 1:length(brain_labels))
+annotation <- data.frame(
+  sample_id = paste0("X", 1:length(brain_labels)),
+  tissue_label = factor(brain_labels,
+                        levels = rev(c("Brain - Cerebellar Hemisphere",
+                                       "Brain - Cerebellum",
+                                       "Brain - Spinal cord (cervical c-1)",
+                                       "Brain - Anterior cingulate cortex (BA24)",
+                                       "Brain - Frontal Cortex (BA9)",
+                                       "Brain - Cortex",
+                                       "Brain - Hippocampus",
+                                       "Brain - Substantia nigra",
+                                       "Brain - Amygdala",
+                                       "Brain - Putamen (basal ganglia)",
+                                       "Brain - Caudate (basal ganglia)",
+                                       "Brain - Hypothalamus",
+                                       "Brain - Nucleus accumbens (basal ganglia)") ) ) )
+
+
+cols <- c("blue", "darkgoldenrod1", "cyan")
+
+
+StructureGGplot(omega = omega,
+                annotation= annotation,
+                palette = cols,
+                yaxis_label = "",
+                order_sample = TRUE,
+                split_line = list(split_lwd = .4,
+                                  split_col = "white"),
+                axis_tick = list(axis_ticks_length = .1,
+                                 axis_ticks_lwd_y = .1,
+                                 axis_ticks_lwd_x = .1,
+                                 axis_label_size = 7,
+                                 axis_label_face = "bold"))
+
+
