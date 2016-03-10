@@ -1,7 +1,8 @@
 # CountClust
 A R package for counts clustering-
 
-Authors : [Kushal K Dey](http://kkdey.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
+[Kushal K Dey](http://kkdey.github.io/), [Chaiowen Joyce Hsiao](http://cbcb.umd.edu/~chsiao/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
+
 
 ## Installation
 
@@ -55,7 +56,7 @@ This function will output a rda file containing a list of size 2 (corresponding 
 
 ### Cluster Visualization
 
-One can plot the W matrix using a Structure plot. Here we provide an example of the Structure plot for $K=3$ for the above topic model fit. 
+One can plot the W matrix using a Structure plot. Here we provide an example of the Structure plot for K=3 for the above topic model fit. 
 
 ```
 Topic_clus <- get(load("topics_data.rda"));
@@ -91,7 +92,7 @@ StructureGGplot(omega = omega,
 
 ### Cluster annotations
 
-We can extract the features that drive the clusters for $K=3$ as follows 
+We can extract the features that drive the clusters for K=3 as follows 
 
 ```
 theta <- Topic_clus$clust_3$theta;
