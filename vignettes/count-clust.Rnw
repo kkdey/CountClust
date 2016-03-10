@@ -1,0 +1,235 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Inference and visualisation of Single-Cell RNA-seq Data data as a hierarchical tree structure}
+%\VignettePackage{cellTree}
+
+% To compile this document
+% library('knitr'); rm(list=ls()); knit('cellTree/vignettes/cellTree-vignette.Rnw')
+% library('knitr'); rm(list=ls()); knit2pdf('cellTree/vignettes/cellTree-vignette.Rnw'); openPDF('cellTree-vignette.pdf')
+%
+
+\documentclass[12pt]{article}
+
+\newcommand{\CountClust}{\textit{CountClust}}
+\usepackage{dsfont}
+
+<<knitr, echo=FALSE, results="hide">>=
+library("knitr")
+opts_chunk$set(tidy=FALSE,tidy.opts=list(width.cutoff=30),dev="png",fig.show="hide",
+               fig.width=4,fig.height=7,
+               message=FALSE)
+@
+
+<<style, eval=TRUE, echo=FALSE, results="asis">>=
+BiocStyle::latex()
+@
+
+\author{Kushal K Dey, Chiaowen Joyce Hsiao \& Matthew Stephens \\[1em] \small{\textit{Stephens Lab}, The University of Chicago} \mbox{ }\\ \small{\texttt{$^*$Correspondending Email: mstephens@uchicago.edu}}}
+
+\bioctitle[Grade of Membership Clustering and Visualization using \CountClust{}]{Grade of Membership Model and Visualization for RNA-seq data using \CountClust{}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  \vspace{1em}
+ Grade of membership or GoM models (also known as admixture models or Latent Dirichlet Allocation") are a generalization of cluster models that allow each sample to have membership in multiple clusters. It is widely used to model ancestry of individuals in population genetics based on SNP/ microsatellite data and also in natural language processing for modeling documents \cite{Pritchard2000, Blei2003}.
+
+This \R{} package implements tools to visualize the clusters obtained from fitting topic models using a Structure plot \cite{Rosenberg2002} and extract the top features/genes that distinguish the clusters. In presence of known technical or batch effects, the package also allows for correction of these confounding effects.
+
+\vspace{1em}
+\textbf{\CountClust{} version:} \Sexpr{packageDescription("CountClust")$Version} \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
+\end{abstract}
+
+<<options, results="hide", echo=FALSE>>=
+options(digits=3, width=80, prompt=" ", continue=" ")
+@
+
+
+\newpage
+
+\tableofcontents
+
+\section{Introduction}
+
+In the context of RNA-seq expression (bulk or singlecell seq) data, the grade of membership model allows each sample to have some proportion of its RNA-seq reads coming from each cluster. For typical bulk RNA-seq experiments this assumption
+can be argued as follows: each sample is a mixture of different cell types, and so clusters could represent cell types (which are determined by the expression patterns of the genes), and the membership of a sample in each cluster could represent the proportions of each cell type present in that sample.
+
+Many software packages available for document clustering are applicable to modeling RNA-seq data. Here, we use the R package {\tt maptpx} \cite{Taddy2012} to fit these models, and we add functionality for visualizing the results and annotating clusters by their most distinctive genes to help biological interpretation. We also provide additional functionality to correct for batch effects and also compare the outputs from two different grade of membership model fits to the same set of samples but different in terms of feature description or model assumptions.
+
+\section{\CountClust{} Installation}
+
+\CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{slam},  \CRANpkg{ggplot2}, \CRANpkg{cowplot},\CRANpkg{parallel} along with the \Bioconductor{} package: \Biocpkg{limma}.
+
+Installing \CountClust{} from \Bioconductor{} will install all these dependencies:
+
+<<install_countclust_bio, eval=FALSE>>=
+source("http://bioconductor.org/biocLite.R")
+biocLite("CountClust")
+@ %def
+
+For installing the working version of this package and loading the data required for this vignette, we use CRAN-R package \CRANpkg{devtools}.
+
+<<install_countclust_github, eval=FALSE>>=
+library(devtools)
+install_github('kkdey/CountClust')
+@ %def
+
+Then load the package with:
+
+<<load_countclust, cache=FALSE, eval=TRUE,warning=FALSE>>=
+library(CountClust)
+@ %def
+
+\section{Data Preparation}
+
+We load the data as summarized experiments for the GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEx2013}, the Jaitin \textit{et al} 2014 single cell data \cite{Jaitin2014} and the Deng \textit{et al} 2014 single cell data across development stages of the mouse embryo \cite{Deng2014}.
+
+We install the Jaitin \textit{et al} single cell data as a summarized experiment using \CRANpkg{devtools}.
+
+<<data_install, eval=FALSE>>=
+library(devtools)
+install_github('https://github.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen.git')
+@ %def
+
+We load the data.
+
+<<data_load, eval=TRUE>>=
+library(singleCellRNASeqMouseJaitinSpleen)
+counts <- exprs(MouseJaitinSpleen)
+meta_data <- pData(MouseJaitinSpleen)
+gene_names <- rownames(counts)
+@ %def
+
+Extracting the non-ERCC genes satisfying some quality measures.
+
+<<non_ercc, eval=TRUE>>=
+ENSG_genes_index <- grep("ERCC", gene_names, invert = TRUE)
+counts_ensg <- counts[ENSG_genes_index, ]
+filter_genes <- c("M34473","abParts","M13680","Tmsb4x",
+                  "S100a4","B2m","Atpase6","Rpl23","Rps18",
+                  "Rpl13","Rps19","H2-Ab1","Rplp1","Rpl4",
+                  "Rps26","EF437368")
+fcounts <- counts_ensg[ -match(filter_genes, rownames(counts_ensg)), ]
+sample_counts <- colSums(fcounts)
+
+filter_sample_index <- which(meta_data$number_of_cells == 1 &
+                                 meta_data$group_name == "CD11c+" &
+                                 sample_counts > 600)
+
+@ %def
+
+We filter the metadata likewise
+
+<<metadata, eval=TRUE>>=
+meta_data_filtered <- meta_data[filter_sample_index, ]
+@ %def
+
+\section{Fitting GoM Model}
+
+We use a wrapper function of the \textit{topics()} function in the \CRANpkg{maptpx} due to Matt Taddy \cite{Taddy2012}.
+
+As an example, we fit the topic model for \Robject{k}=7 and we save the topic model output as a rda file under data folder.
+
+<<topic_fit, eval=FALSE>>=
+StructureObj(fcounts,
+            nclus_vec=7, tol=0.1,
+             path_rda="data/MouseJaitinSpleen-topicFit.rda")
+@ %def
+
+
+\section{Structure plot visualization}
+
+Load the rda file
+
+<<plot_topic, eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+#data(MouseJaitinSpleen-topicFit)
+MouseJaitinSpleen.topicFit <- readRDS("../data/MouseJaitinSpleen-topicFit.rds")
+names(MouseJaitinSpleen.topicFit$clust_7)
+omega <- MouseJaitinSpleen.topicFit$clust_7$omega
+
+amp_batch <- as.numeric(meta_data_filtered[ , "amplification_batch"])
+annotation <- data.frame(
+    sample_id = paste0("X", c(1:NROW(omega)) ),
+    tissue_label = factor(amp_batch,
+                          levels = rev(sort(unique(amp_batch))) ) )
+
+StructureGGplot(omega = omega,
+                annotation = annotation,
+                palette = RColorBrewer::brewer.pal(9, "Set1"),
+                yaxis_label = "Amplification batch",
+                order_sample = TRUE,
+                axis_tick = list(axis_ticks_length = .1,
+                                 axis_ticks_lwd_y = .1,
+                                 axis_ticks_lwd_x = .1,
+                                 axis_label_size = 7,
+                                 axis_label_face = "bold"))
+
+@ %def
+
+In the above plot, the samples within each batch is sorted by the proportion of representedness of the principal cluster driving it. One can use \begin{verb} order_sample=FALSE \end{verb} to retain the order of the samples as in the data.
+
+<<plot_topic_2,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+StructureGGplot(omega = omega,
+                annotation = annotation,
+                palette = RColorBrewer::brewer.pal(9, "Set1"),
+                yaxis_label = "Amplification batch",
+                order_sample = FALSE,
+                axis_tick = list(axis_ticks_length = .1,
+                                 axis_ticks_lwd_y = .1,
+                                 axis_ticks_lwd_x = .1,
+                                 axis_label_size = 7,
+                                 axis_label_face = "bold"))
+@ %def
+
+
+
+
+\begin{thebibliography}{1}
+
+\bibitem{Pritchard2000}
+Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly. 2000.
+\newblock Inference of population structure using multilocus genotype data.
+\newblock {\textit{Genetics}}. 155.2,  945-959.
+
+\bibitem{Rosenberg2002}
+Rosenberg NA, Pritchard JK,  Weber JL, Cann HM,  Kidd KK,  Zhivotovsky LA,  Feldman MW. 2002.
+\newblock The genetic structure of human populations.
+\newblock {\textit{Science}}. 298,  2381-2385.
+
+\bibitem{Blei2003}
+Blei DM,  Ng AY, Jordan MI. 2003.
+\newblock Latent Dirichlet Allocation.
+\newblock {\textit{J. Mach. Learn. Res.}}. 3, 993-1022
+
+\bibitem{Taddy2012}
+Matt Taddy. 2012.
+\newblock On Estimation and Selection for Topic Models.
+\newblock \textit{AISTATS 2012, JMLR W\&CP 22}.(maptpx R package).
+
+\bibitem{Jaitin2014}
+Jaitin DA,  Kenigsberg E et al. 2014.
+\newblock Massively Parallel Single-Cell RNA-Seq for Marker-Free Decomposition of Tissues into Cell Types.
+\newblock {\textit{Science}}. 343 (6172) 776-779.
+
+\bibitem{Deng2014}
+Deng Q,  Ramskold D,  Reinius B,  Sandberg R. 2014.
+\newblock Single-Cell RNA-Seq Reveals Dynamic, Random Monoallelic Gene Expression in Mammalian Cells.
+\newblock {\textit{Science}}.  343 (6167) 193-196.
+
+\bibitem{GTEX2013}
+The GTEx Consortium. 2013.
+\newblock The Genotype-Tissue Expression (GTEx) project.
+\newblock {\textit{Nature genetics}}. 45(6): 580-585. doi:10.1038/ng.2653.
+
+\end{thebibliography}
+
+% \bibliography{cellTree/REFERENCES}
+
+\section{Session Info}
+
+<<session_info, eval=TRUE>>=
+sessionInfo()
+@ %def
+
+\end{document}

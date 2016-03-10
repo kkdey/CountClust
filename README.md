@@ -48,8 +48,7 @@ We  apply the StructureObj function to fit the topic model (due to the **maptpx*
 
 ```
 if(!dir.exists("test/Structure")) dir.create("test/Structure")
-StructureObj(brain_data, nclus_vec=2:3, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
-             plot=TRUE, path_rda="test/topics_data.rda", path_struct="test/Structure")
+StructureObj(brain_data, nclus_vec=2:3, tol=0.1, path_rda="test/topics_data.rda")
 ```
 
 This function will output a rda file containing a list of size 2 (corresponding to clusters 2 and 3). Each element of the list is a topic model class (as defined by `topics()` function in  `maptpx` package) and contains the W (the topic proportion matrix) and T (topic distribution) files.
