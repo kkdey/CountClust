@@ -1,7 +1,7 @@
 # CountClust
 A R package for counts clustering-
 
-[Kushal K Dey](http://kkdey.github.io/), [Chaiowen Joyce Hsiao](http://cbcb.umd.edu/~chsiao/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
+[Kushal K Dey](http://kkdey.github.io/), [Chiaowen Joyce Hsiao](http://cbcb.umd.edu/~chsiao/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
 
 
 ## Installation
