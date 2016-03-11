@@ -53,7 +53,7 @@ This function will output a list, each element representing a GoM model fit outp
 
 ### Cluster Visualization
 
-One can plot the W matrix using a Structure plot. Here we provide an example of the Structure plot for K=3 for the above topic model fit. 
+One can plot the W matrix using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above topic model fit. 
 
 ```
 MouseDeng2014.topicFit <- get(load("../data/MouseDeng2014-topicFit.rda"))
