@@ -140,6 +140,8 @@ Then load the package with:
 
 We load the data as summarized experiments for the GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEx2013}, the Jaitin \textit{et al} 2014 single cell data \cite{Jaitin2014} and the Deng \textit{et al} 2014 single cell data across development stages of the mouse embryo \cite{Deng2014}.
 
+\subsection{Jaitin et al 2014}
+
 We install the Jaitin \textit{et al} single cell data as a summarized experiment using \CRANpkg{devtools}.
 
 \begin{knitrout}
@@ -147,6 +149,8 @@ We install the Jaitin \textit{et al} single cell data as a summarized experiment
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
 \hlkwd{install_github}\hlstd{(}\hlstr{'https://github.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen.git'}\hlstd{)}
+
+\hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/singleCellRNASeqMouseDeng2014'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -157,9 +161,9 @@ We load the data.
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(singleCellRNASeqMouseJaitinSpleen)}
-\hlstd{counts} \hlkwb{<-} \hlkwd{exprs}\hlstd{(MouseJaitinSpleen)}
-\hlstd{meta_data} \hlkwb{<-} \hlkwd{pData}\hlstd{(MouseJaitinSpleen)}
-\hlstd{gene_names} \hlkwb{<-} \hlkwd{rownames}\hlstd{(counts)}
+\hlstd{jaitin.counts} \hlkwb{<-} \hlkwd{exprs}\hlstd{(MouseJaitinSpleen)}
+\hlstd{jaitin.meta_data} \hlkwb{<-} \hlkwd{pData}\hlstd{(MouseJaitinSpleen)}
+\hlstd{jaitin.gene_names} \hlkwb{<-} \hlkwd{rownames}\hlstd{(jaitin.counts)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -169,17 +173,17 @@ Extracting the non-ERCC genes satisfying some quality measures.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ENSG_genes_index} \hlkwb{<-} \hlkwd{grep}\hlstd{(}\hlstr{"ERCC"}\hlstd{, gene_names,} \hlkwc{invert} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{counts_ensg} \hlkwb{<-} \hlstd{counts[ENSG_genes_index, ]}
+\hlstd{ENSG_genes_index} \hlkwb{<-} \hlkwd{grep}\hlstd{(}\hlstr{"ERCC"}\hlstd{, jaitin.gene_names,} \hlkwc{invert} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{jaitin.counts_ensg} \hlkwb{<-} \hlstd{jaitin.counts[ENSG_genes_index, ]}
 \hlstd{filter_genes} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"M34473"}\hlstd{,}\hlstr{"abParts"}\hlstd{,}\hlstr{"M13680"}\hlstd{,}\hlstr{"Tmsb4x"}\hlstd{,}
                   \hlstr{"S100a4"}\hlstd{,}\hlstr{"B2m"}\hlstd{,}\hlstr{"Atpase6"}\hlstd{,}\hlstr{"Rpl23"}\hlstd{,}\hlstr{"Rps18"}\hlstd{,}
                   \hlstr{"Rpl13"}\hlstd{,}\hlstr{"Rps19"}\hlstd{,}\hlstr{"H2-Ab1"}\hlstd{,}\hlstr{"Rplp1"}\hlstd{,}\hlstr{"Rpl4"}\hlstd{,}
                   \hlstr{"Rps26"}\hlstd{,}\hlstr{"EF437368"}\hlstd{)}
-\hlstd{fcounts} \hlkwb{<-} \hlstd{counts_ensg[} \hlopt{-}\hlkwd{match}\hlstd{(filter_genes,} \hlkwd{rownames}\hlstd{(counts_ensg)), ]}
+\hlstd{fcounts} \hlkwb{<-} \hlstd{jaitin.counts_ensg[} \hlopt{-}\hlkwd{match}\hlstd{(filter_genes,} \hlkwd{rownames}\hlstd{(jaitin.counts_ensg)), ]}
 \hlstd{sample_counts} \hlkwb{<-} \hlkwd{colSums}\hlstd{(fcounts)}
 
-\hlstd{filter_sample_index} \hlkwb{<-} \hlkwd{which}\hlstd{(meta_data}\hlopt{$}\hlstd{number_of_cells} \hlopt{==} \hlnum{1} \hlopt{&}
-                                 \hlstd{meta_data}\hlopt{$}\hlstd{group_name} \hlopt{==} \hlstr{"CD11c+"} \hlopt{&}
+\hlstd{filter_sample_index} \hlkwb{<-} \hlkwd{which}\hlstd{(jaitin.meta_data}\hlopt{$}\hlstd{number_of_cells} \hlopt{==} \hlnum{1} \hlopt{&}
+                              \hlstd{jaitin.meta_data}\hlopt{$}\hlstd{group_name} \hlopt{==} \hlstr{"CD11c+"} \hlopt{&}
                                  \hlstd{sample_counts} \hlopt{>} \hlnum{600}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -190,23 +194,49 @@ We filter the metadata likewise
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{meta_data_filtered} \hlkwb{<-} \hlstd{meta_data[filter_sample_index, ]}
+\hlstd{jaitin.meta_data_filtered} \hlkwb{<-} \hlstd{jaitin.meta_data[filter_sample_index, ]}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-\section{Fitting Topic Model}
-
-We use a wrapper function of the \textit{topics()} function in the \CRANpkg{maptpx} due to Matt Taddy \cite{Taddy2012}.
-
-As an example, we fit the topic model for \Robject{k}=7 and we save the topic model output as a rda file under data folder.
+\subsection{Deng et al 2014}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{StructureObj}\hlstd{(fcounts,}
+\hlkwd{library}\hlstd{(singleCellRNASeqMouseDeng2014)}
+\hlstd{deng.counts} \hlkwb{<-} \hlkwd{exprs}\hlstd{(Deng2014MouseESC)}
+\hlstd{deng.meta_data} \hlkwb{<-} \hlkwd{pData}\hlstd{(Deng2014MouseESC)}
+\hlstd{deng.gene_names} \hlkwb{<-} \hlkwd{rownames}\hlstd{(counts)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+\section{Fitting GoM Model}
+
+We use a wrapper function of the \textit{topics()} function in the \CRANpkg{maptpx} due to Matt Taddy \cite{Taddy2012}.
+
+As an example, we fit the topic model for \Robject{k}=7 on the Jaitin \textit{et al} and we save the topic model output as a rda file under data folder.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(fcounts),}
             \hlkwc{nclus_vec}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
-             \hlkwc{path_rda}\hlstd{=}\hlstr{"data/MouseJaitinSpleen-topicFit.rda"}\hlstd{)}
+             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseJaitinSpleen-topicFit.rda"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+We can also input a vector of clusters under \begin{verb} nclus_vec \end{verb}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(deng.counts),}
+            \hlkwc{nclus_vec}\hlstd{=}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
+             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseDeng2014-topicFit.rda"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -229,7 +259,7 @@ Load the rda file
 \begin{alltt}
 \hlstd{omega} \hlkwb{<-} \hlstd{MouseJaitinSpleen.topicFit}\hlopt{$}\hlstd{clust_7}\hlopt{$}\hlstd{omega}
 
-\hlstd{amp_batch} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(meta_data_filtered[ ,} \hlstr{"amplification_batch"}\hlstd{])}
+\hlstd{amp_batch} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(jaitin.meta_data_filtered[ ,} \hlstr{"amplification_batch"}\hlstd{])}
 \hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
     \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NROW}\hlstd{(omega)) ),}
     \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(amp_batch,}
@@ -273,6 +303,43 @@ In the above plot, the samples within each batch is sorted by the proportion of 
 \end{knitrout}
 
 
+Now we perform the visualization for \Robject{k}=6.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{MouseDeng2014.topicFit} \hlkwb{<-} \hlkwd{get}\hlstd{(}\hlkwd{load}\hlstd{(}\hlstr{"../data/MouseDeng2014-topicFit.rda"}\hlstd{))}
+\hlkwd{names}\hlstd{(MouseDeng2014.topicFit}\hlopt{$}\hlstd{clust_6)}
+\end{alltt}
+\begin{verbatim}
+## [1] "K"     "theta" "omega" "BF"    "D"     "X"
+\end{verbatim}
+\begin{alltt}
+\hlstd{omega} \hlkwb{<-} \hlstd{MouseDeng2014.topicFit}\hlopt{$}\hlstd{clust_6}\hlopt{$}\hlstd{omega}
+
+
+\hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+  \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NROW}\hlstd{(omega))),}
+  \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(}\hlkwd{rownames}\hlstd{(omega),}
+                        \hlkwc{levels} \hlstd{=} \hlkwd{rev}\hlstd{(} \hlkwd{c}\hlstd{(}\hlstr{"zy"}\hlstd{,} \hlstr{"early2cell"}\hlstd{,} \hlstr{"mid2cell"}\hlstd{,} \hlstr{"late2cell"}\hlstd{,}\hlstr{"4cell"}\hlstd{,} \hlstr{"8cell"}\hlstd{,} \hlstr{"16cell"}\hlstd{,} \hlstr{"earlyblast"}\hlstd{,}\hlstr{"midblast"}\hlstd{,} \hlstr{"lateblast"}\hlstd{) ) ) )}
+
+\hlkwd{rownames}\hlstd{(omega)} \hlkwb{<-} \hlstd{annotation}\hlopt{$}\hlstd{sample_id;}
+
+\hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
+                \hlkwc{annotation} \hlstd{= annotation,}
+                \hlkwc{palette} \hlstd{= RColorBrewer}\hlopt{::}\hlkwd{brewer.pal}\hlstd{(}\hlnum{8}\hlstd{,} \hlstr{"Accent"}\hlstd{),}
+                \hlkwc{yaxis_label} \hlstd{=} \hlstr{"Amplification batch"}\hlstd{,}
+                \hlkwc{order_sample} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                \hlkwc{axis_tick} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{axis_ticks_length} \hlstd{=} \hlnum{.1}\hlstd{,}
+                                 \hlkwc{axis_ticks_lwd_y} \hlstd{=} \hlnum{.1}\hlstd{,}
+                                 \hlkwc{axis_ticks_lwd_x} \hlstd{=} \hlnum{.1}\hlstd{,}
+                                 \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
+                                 \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1} 
+
+\end{knitrout}
 
 
 \begin{thebibliography}{1}
@@ -339,16 +406,17 @@ The GTEx Consortium. 2013.
 ## [1] cowplot_0.6.0                           
 ## [2] reshape2_1.4.1                          
 ## [3] ggplot2_2.0.0                           
-## [4] singleCellRNASeqMouseJaitinSpleen_0.99.0
-## [5] Biobase_2.30.0                          
-## [6] BiocGenerics_0.16.1                     
-## [7] CountClust_0.1.0                        
-## [8] knitr_1.12.3                            
+## [4] singleCellRNASeqMouseDeng2014_0.99.0    
+## [5] singleCellRNASeqMouseJaitinSpleen_0.99.0
+## [6] Biobase_2.30.0                          
+## [7] BiocGenerics_0.16.1                     
+## [8] CountClust_0.1.0                        
+## [9] knitr_1.12.3                            
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.3        digest_0.6.9       plyr_1.8.3         grid_3.2.2        
-##  [5] gtable_0.1.2       formatR_1.2.1      magrittr_1.5       evaluate_0.8      
-##  [9] scales_0.3.0       highr_0.5.1        stringi_1.0-1      labeling_0.3      
+##  [5] gtable_0.1.2       formatR_1.2.1      magrittr_1.5       scales_0.3.0      
+##  [9] evaluate_0.8       highr_0.5.1        stringi_1.0-1      labeling_0.3      
 ## [13] BiocStyle_1.8.0    RColorBrewer_1.1-2 tools_3.2.2        stringr_1.0.0     
 ## [17] munsell_0.4.2      colorspace_1.2-6
 \end{verbatim}

@@ -85,36 +85,42 @@ library(CountClust)
 
 We load the data as summarized experiments for the GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEx2013}, the Jaitin \textit{et al} 2014 single cell data \cite{Jaitin2014} and the Deng \textit{et al} 2014 single cell data across development stages of the mouse embryo \cite{Deng2014}.
 
+\subsection{Jaitin et al 2014}
+
 We install the Jaitin \textit{et al} single cell data as a summarized experiment using \CRANpkg{devtools}.
 
 <<data_install, eval=FALSE>>=
 library(devtools)
 install_github('https://github.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen.git')
+
+install_github('kkdey/singleCellRNASeqMouseDeng2014')
+
+
 @ %def
 
 We load the data.
 
-<<data_load, eval=TRUE>>=
+<<data_load_jaitin, eval=TRUE>>=
 library(singleCellRNASeqMouseJaitinSpleen)
-counts <- exprs(MouseJaitinSpleen)
-meta_data <- pData(MouseJaitinSpleen)
-gene_names <- rownames(counts)
+jaitin.counts <- exprs(MouseJaitinSpleen)
+jaitin.meta_data <- pData(MouseJaitinSpleen)
+jaitin.gene_names <- rownames(jaitin.counts)
 @ %def
 
 Extracting the non-ERCC genes satisfying some quality measures.
 
 <<non_ercc, eval=TRUE>>=
-ENSG_genes_index <- grep("ERCC", gene_names, invert = TRUE)
-counts_ensg <- counts[ENSG_genes_index, ]
+ENSG_genes_index <- grep("ERCC", jaitin.gene_names, invert = TRUE)
+jaitin.counts_ensg <- jaitin.counts[ENSG_genes_index, ]
 filter_genes <- c("M34473","abParts","M13680","Tmsb4x",
                   "S100a4","B2m","Atpase6","Rpl23","Rps18",
                   "Rpl13","Rps19","H2-Ab1","Rplp1","Rpl4",
                   "Rps26","EF437368")
-fcounts <- counts_ensg[ -match(filter_genes, rownames(counts_ensg)), ]
+fcounts <- jaitin.counts_ensg[ -match(filter_genes, rownames(jaitin.counts_ensg)), ]
 sample_counts <- colSums(fcounts)
 
-filter_sample_index <- which(meta_data$number_of_cells == 1 &
-                                 meta_data$group_name == "CD11c+" &
+filter_sample_index <- which(jaitin.meta_data$number_of_cells == 1 &
+                              jaitin.meta_data$group_name == "CD11c+" &
                                  sample_counts > 600)
 
 @ %def
@@ -122,19 +128,37 @@ filter_sample_index <- which(meta_data$number_of_cells == 1 &
 We filter the metadata likewise
 
 <<metadata, eval=TRUE>>=
-meta_data_filtered <- meta_data[filter_sample_index, ]
+jaitin.meta_data_filtered <- jaitin.meta_data[filter_sample_index, ]
 @ %def
+
+\subsection{Deng et al 2014}
+
+<<data_load, eval=TRUE>>=
+library(singleCellRNASeqMouseDeng2014)
+deng.counts <- exprs(Deng2014MouseESC)
+deng.meta_data <- pData(Deng2014MouseESC)
+deng.gene_names <- rownames(counts)
+@ %def
+
+
 
 \section{Fitting GoM Model}
 
 We use a wrapper function of the \textit{topics()} function in the \CRANpkg{maptpx} due to Matt Taddy \cite{Taddy2012}.
 
-As an example, we fit the topic model for \Robject{k}=7 and we save the topic model output as a rda file under data folder.
+As an example, we fit the topic model for \Robject{k}=7 on the Jaitin \textit{et al} and we save the topic model output as a rda file under data folder.
 
-<<topic_fit, eval=FALSE>>=
-StructureObj(fcounts,
+<<topic_fit_jaitin, eval=FALSE>>=
+StructureObj(t(fcounts),
             nclus_vec=7, tol=0.1,
-             path_rda="data/MouseJaitinSpleen-topicFit.rda")
+             path_rda="../data/MouseJaitinSpleen-topicFit.rda")
+@ %def
+
+We can also input a vector of clusters under \begin{verb} nclus_vec \end{verb}
+<<topic_fit_deng, eval=FALSE>>=
+StructureObj(t(deng.counts),
+            nclus_vec=2:7, tol=0.1,
+             path_rda="../data/MouseDeng2014-topicFit.rda")
 @ %def
 
 
@@ -148,7 +172,7 @@ MouseJaitinSpleen.topicFit <- readRDS("../data/MouseJaitinSpleen-topicFit.rds")
 names(MouseJaitinSpleen.topicFit$clust_7)
 omega <- MouseJaitinSpleen.topicFit$clust_7$omega
 
-amp_batch <- as.numeric(meta_data_filtered[ , "amplification_batch"])
+amp_batch <- as.numeric(jaitin.meta_data_filtered[ , "amplification_batch"])
 annotation <- data.frame(
     sample_id = paste0("X", c(1:NROW(omega)) ),
     tissue_label = factor(amp_batch,
@@ -183,6 +207,35 @@ StructureGGplot(omega = omega,
 @ %def
 
 
+Now we perform the visualization for \Robject{k}=6.
+
+<<plot_topic_deng,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+
+MouseDeng2014.topicFit <- get(load("../data/MouseDeng2014-topicFit.rda"))
+names(MouseDeng2014.topicFit$clust_6)
+omega <- MouseDeng2014.topicFit$clust_6$omega
+
+
+annotation <- data.frame(
+  sample_id = paste0("X", c(1:NROW(omega))),
+  tissue_label = factor(rownames(omega),
+                        levels = rev( c("zy", "early2cell", "mid2cell", "late2cell","4cell", "8cell", "16cell", "earlyblast","midblast", "lateblast") ) ) )
+
+rownames(omega) <- annotation$sample_id;
+
+StructureGGplot(omega = omega,
+                annotation = annotation,
+                palette = RColorBrewer::brewer.pal(8, "Accent"),
+                yaxis_label = "Amplification batch",
+                order_sample = TRUE,
+                axis_tick = list(axis_ticks_length = .1,
+                                 axis_ticks_lwd_y = .1,
+                                 axis_ticks_lwd_x = .1,
+                                 axis_label_size = 7,
+                                 axis_label_face = "bold"))
+
+
+@ %def
 
 
 \begin{thebibliography}{1}
