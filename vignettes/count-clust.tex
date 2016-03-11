@@ -151,6 +151,7 @@ We install the Jaitin \textit{et al} single cell data as a summarized experiment
 \hlkwd{install_github}\hlstd{(}\hlstr{'https://github.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen.git'}\hlstd{)}
 
 \hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/singleCellRNASeqMouseDeng2014'}\hlstd{)}
+\hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/GTExV6Brain'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -212,6 +213,16 @@ We filter the metadata likewise
 \end{kframe}
 \end{knitrout}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(GTExV6Brain)}
+\hlstd{gtex.counts} \hlkwb{<-} \hlkwd{exprs}\hlstd{(GTExV6Brain)}
+\hlstd{gtex.meta_data} \hlkwb{<-} \hlkwd{pData}\hlstd{(GTExV6Brain)}
+\hlstd{gtex.gene_names} \hlkwb{<-} \hlkwd{rownames}\hlstd{(gtex.counts)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 
 \section{Fitting GoM Model}
@@ -236,6 +247,16 @@ We can also input a vector of clusters under \begin{verb} nclus_vec \end{verb}
 \begin{alltt}
 \hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(deng.counts),}
             \hlkwc{nclus_vec}\hlstd{=}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
+             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseDeng2014-topicFit.rda"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(gtex.counts),}
+            \hlkwc{nclus_vec}\hlstd{=}\hlnum{4}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
              \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseDeng2014-topicFit.rda"}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -368,6 +389,60 @@ Now we perform the visualization for \Robject{k}=6.
 \end{center}
 \end{figure}
 
+Now we perform for GTEx V6 data for brain samples for \Robject{k}=4.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{omega} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlstr{"../data/omega_cis_genes_brain_2.txt"}\hlstd{,}
+                    \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{" "}\hlstd{,}
+                    \hlkwc{stringsAsFactors} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlkwd{dim}\hlstd{(omega)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1259    4
+\end{verbatim}
+\begin{alltt}
+\hlkwd{colnames}\hlstd{(omega)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NCOL}\hlstd{(omega))}
+
+\hlstd{tissue_labels} \hlkwb{<-} \hlstd{gtex.meta_data[,}\hlnum{3}\hlstd{];}
+
+
+\hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+    \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(tissue_labels)),}
+    \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(tissue_labels,}
+                          \hlkwc{levels} \hlstd{=} \hlkwd{rev}\hlstd{(}\hlkwd{unique}\hlstd{(tissue_labels) ) ) );}
+
+\hlstd{cols} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,} \hlstr{"darkgoldenrod1"}\hlstd{,} \hlstr{"cyan"}\hlstd{,} \hlstr{"red"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{figure}[htp]
+\begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
+                \hlkwc{annotation}\hlstd{= annotation,}
+                \hlkwc{palette} \hlstd{= cols,}
+                \hlkwc{yaxis_label} \hlstd{=} \hlstr{""}\hlstd{,}
+                \hlkwc{order_sample} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                \hlkwc{split_line} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{split_lwd} \hlstd{=} \hlnum{.4}\hlstd{,}
+                                  \hlkwc{split_col} \hlstd{=} \hlstr{"white"}\hlstd{),}
+                \hlkwc{axis_tick} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{axis_ticks_length} \hlstd{=} \hlnum{.1}\hlstd{,}
+                                 \hlkwc{axis_ticks_lwd_y} \hlstd{=} \hlnum{.1}\hlstd{,}
+                                 \hlkwc{axis_ticks_lwd_x} \hlstd{=} \hlnum{.1}\hlstd{,}
+                                 \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
+                                 \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=5in,height=7in]{figure/plot_topic_gtex-1} 
+
+\end{knitrout}
+\end{center}
+\end{figure}
+
 \clearpage
 
 \section{Cluster Annotations}
@@ -413,6 +488,44 @@ We tabulate the top 5 genes for the 6 clusters.
 \end{tabular}
 \end{table}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{theta_mat} \hlkwb{<-} \hlkwd{as.matrix}\hlstd{(}\hlkwd{read.table}\hlstd{(}\hlstr{"../data/theta_cis_genes_brain_2.txt"}\hlstd{));}
+\hlstd{top_features} \hlkwb{<-} \hlkwd{ExtractTopFeatures}\hlstd{(theta_mat,} \hlkwc{top_features}\hlstd{=}\hlnum{100}\hlstd{,}
+                                   \hlkwc{method}\hlstd{=}\hlstr{"poisson"}\hlstd{,} \hlkwc{options}\hlstd{=}\hlstr{"min"}\hlstd{);}
+\hlstd{gene_list} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(top_features)[}\hlnum{1}\hlstd{],}
+                        \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) gtex.gene_names[top_features[x,]]))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The top 3 genes (ensemble IDs) driving the 4 clusters in the GTEx V6 brain data
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(xtable)}
+\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlll}
+  \hline
+ & 1 & 2 & 3 \\
+  \hline
+  1 & ENSG00000120885.15 & ENSG00000130203.5 & ENSG00000131771.9 \\
+  2 & ENSG00000171617.9 & ENSG00000160014.12 & ENSG00000154146.8 \\
+  3 & ENSG00000112139.10 & ENSG00000139899.6 & ENSG00000008710.13 \\
+  4 & ENSG00000197971.10 & ENSG00000266844.1 & ENSG00000237973.1 \\
+   \hline
+\end{tabular}
+\end{table}
+
+\section{Supplementary analysis}
 
 
 \begin{thebibliography}{1}
@@ -476,15 +589,16 @@ The GTEx Consortium. 2013.
 ## [8] base     
 ## 
 ## other attached packages:
-## [1] cowplot_0.6.0                           
-## [2] reshape2_1.4.1                          
-## [3] ggplot2_2.0.0                           
-## [4] singleCellRNASeqMouseDeng2014_0.99.0    
-## [5] singleCellRNASeqMouseJaitinSpleen_0.99.0
-## [6] Biobase_2.30.0                          
-## [7] BiocGenerics_0.16.1                     
-## [8] CountClust_0.1.0                        
-## [9] knitr_1.12.3                            
+##  [1] cowplot_0.6.0                           
+##  [2] reshape2_1.4.1                          
+##  [3] ggplot2_2.0.0                           
+##  [4] GTExV6Brain_0.0.1                       
+##  [5] singleCellRNASeqMouseDeng2014_0.99.0    
+##  [6] singleCellRNASeqMouseJaitinSpleen_0.99.0
+##  [7] Biobase_2.30.0                          
+##  [8] BiocGenerics_0.16.1                     
+##  [9] CountClust_0.1.0                        
+## [10] knitr_1.12.3                            
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.3        digest_0.6.9       plyr_1.8.3         grid_3.2.2        
