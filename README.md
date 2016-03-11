@@ -85,7 +85,7 @@ StructureGGplot(omega = omega,
 
 ```
 
-<img src="test/structure_plot.png" alt="Structure Plot" height="900" width="400">
+<img src="test/structure_plot.pdf" alt="Structure Plot" height="900" width="400">
 
 
 ### Cluster annotations
