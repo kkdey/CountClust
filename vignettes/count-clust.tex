@@ -207,7 +207,7 @@ We filter the metadata likewise
 \hlkwd{library}\hlstd{(singleCellRNASeqMouseDeng2014)}
 \hlstd{deng.counts} \hlkwb{<-} \hlkwd{exprs}\hlstd{(Deng2014MouseESC)}
 \hlstd{deng.meta_data} \hlkwb{<-} \hlkwd{pData}\hlstd{(Deng2014MouseESC)}
-\hlstd{deng.gene_names} \hlkwb{<-} \hlkwd{rownames}\hlstd{(counts)}
+\hlstd{deng.gene_names} \hlkwb{<-} \hlkwd{rownames}\hlstd{(deng.counts)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -264,7 +264,15 @@ Load the rda file
     \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NROW}\hlstd{(omega)) ),}
     \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(amp_batch,}
                           \hlkwc{levels} \hlstd{=} \hlkwd{rev}\hlstd{(}\hlkwd{sort}\hlstd{(}\hlkwd{unique}\hlstd{(amp_batch))) ) )}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
+\begin{figure}[htp]
+\begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
                 \hlkwc{annotation} \hlstd{= annotation,}
                 \hlkwc{palette} \hlstd{= RColorBrewer}\hlopt{::}\hlkwd{brewer.pal}\hlstd{(}\hlnum{9}\hlstd{,} \hlstr{"Set1"}\hlstd{),}
@@ -280,9 +288,13 @@ Load the rda file
 \includegraphics[width=3in,height=7in]{figure/plot_topic-1} 
 
 \end{knitrout}
+\end{center}
+\end{figure}
 
 In the above plot, the samples within each batch is sorted by the proportion of representedness of the principal cluster driving it. One can use \begin{verb} order_sample=FALSE \end{verb} to retain the order of the samples as in the data.
 
+\begin{figure}[htp]
+\begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -301,7 +313,8 @@ In the above plot, the samples within each batch is sorted by the proportion of 
 \includegraphics[width=3in,height=7in]{figure/plot_topic_2-1} 
 
 \end{knitrout}
-
+\end{center}
+\end{figure}
 
 Now we perform the visualization for \Robject{k}=6.
 
@@ -321,10 +334,22 @@ Now we perform the visualization for \Robject{k}=6.
 \hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
   \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NROW}\hlstd{(omega))),}
   \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(}\hlkwd{rownames}\hlstd{(omega),}
-                        \hlkwc{levels} \hlstd{=} \hlkwd{rev}\hlstd{(} \hlkwd{c}\hlstd{(}\hlstr{"zy"}\hlstd{,} \hlstr{"early2cell"}\hlstd{,} \hlstr{"mid2cell"}\hlstd{,} \hlstr{"late2cell"}\hlstd{,}\hlstr{"4cell"}\hlstd{,} \hlstr{"8cell"}\hlstd{,} \hlstr{"16cell"}\hlstd{,} \hlstr{"earlyblast"}\hlstd{,}\hlstr{"midblast"}\hlstd{,} \hlstr{"lateblast"}\hlstd{) ) ) )}
+                        \hlkwc{levels} \hlstd{=} \hlkwd{rev}\hlstd{(} \hlkwd{c}\hlstd{(}\hlstr{"zy"}\hlstd{,} \hlstr{"early2cell"}\hlstd{,}
+                                        \hlstr{"mid2cell"}\hlstd{,} \hlstr{"late2cell"}\hlstd{,}
+                                        \hlstr{"4cell"}\hlstd{,} \hlstr{"8cell"}\hlstd{,} \hlstr{"16cell"}\hlstd{,}
+                                        \hlstr{"earlyblast"}\hlstd{,}\hlstr{"midblast"}\hlstd{,}
+                                         \hlstr{"lateblast"}\hlstd{) ) ) )}
 
 \hlkwd{rownames}\hlstd{(omega)} \hlkwb{<-} \hlstd{annotation}\hlopt{$}\hlstd{sample_id;}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
+\begin{figure}[h]
+\begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
                 \hlkwc{annotation} \hlstd{= annotation,}
                 \hlkwc{palette} \hlstd{= RColorBrewer}\hlopt{::}\hlkwd{brewer.pal}\hlstd{(}\hlnum{8}\hlstd{,} \hlstr{"Accent"}\hlstd{),}
@@ -340,6 +365,54 @@ Now we perform the visualization for \Robject{k}=6.
 \includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1} 
 
 \end{knitrout}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\section{Cluster Annotations}
+
+We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{theta_mat} \hlkwb{<-} \hlstd{MouseDeng2014.topicFit}\hlopt{$}\hlstd{clust_6}\hlopt{$}\hlstd{theta;}
+\hlstd{top_features} \hlkwb{<-} \hlkwd{ExtractTopFeatures}\hlstd{(theta_mat,} \hlkwc{top_features}\hlstd{=}\hlnum{100}\hlstd{,}
+                                   \hlkwc{method}\hlstd{=}\hlstr{"poisson"}\hlstd{,} \hlkwc{options}\hlstd{=}\hlstr{"min"}\hlstd{);}
+\hlstd{gene_list} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(top_features)[}\hlnum{1}\hlstd{],}
+                        \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) deng.gene_names[top_features[x,]]))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+We tabulate the top 5 genes for the 6 clusters.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(xtable)}
+\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllll}
+  \hline
+ & 1 & 2 & 3 & 4 & 5 \\
+  \hline
+1 & Timd2 & Isyna1 & Alppl2 & Pramel5 & Hsp90ab1 \\
+  2 & Upp1 & Tdgf1 & Aqp8 & Fabp5 & Tat \\
+  3 & Actb & Krt18 & Fabp3 & Id2 & Tspan8 \\
+  4 & Rtn2 & Ebna1bp2 & Zfp259 & Nasp & Cenpe \\
+  5 & LOC100502936 & Bcl2l10 & Tcl1 & E330034G19Rik & Oas1d \\
+  6 & Obox3 & Zfp352 & Gm8300 & Usp17l5 & BB287469 \\
+   \hline
+\end{tabular}
+\end{table}
+
 
 
 \begin{thebibliography}{1}

@@ -137,7 +137,7 @@ jaitin.meta_data_filtered <- jaitin.meta_data[filter_sample_index, ]
 library(singleCellRNASeqMouseDeng2014)
 deng.counts <- exprs(Deng2014MouseESC)
 deng.meta_data <- pData(Deng2014MouseESC)
-deng.gene_names <- rownames(counts)
+deng.gene_names <- rownames(deng.counts)
 @ %def
 
 
@@ -166,7 +166,7 @@ StructureObj(t(deng.counts),
 
 Load the rda file
 
-<<plot_topic, eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+<<plot_topic_annot, eval=TRUE>>=
 #data(MouseJaitinSpleen-topicFit)
 MouseJaitinSpleen.topicFit <- readRDS("../data/MouseJaitinSpleen-topicFit.rds")
 names(MouseJaitinSpleen.topicFit$clust_7)
@@ -177,7 +177,11 @@ annotation <- data.frame(
     sample_id = paste0("X", c(1:NROW(omega)) ),
     tissue_label = factor(amp_batch,
                           levels = rev(sort(unique(amp_batch))) ) )
+@ %def
 
+\begin{figure}[htp]
+\begin{center}
+<<plot_topic, eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -190,9 +194,13 @@ StructureGGplot(omega = omega,
                                  axis_label_face = "bold"))
 
 @ %def
+\end{center}
+\end{figure}
 
 In the above plot, the samples within each batch is sorted by the proportion of representedness of the principal cluster driving it. One can use \begin{verb} order_sample=FALSE \end{verb} to retain the order of the samples as in the data.
 
+\begin{figure}[htp]
+\begin{center}
 <<plot_topic_2,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation = annotation,
@@ -205,11 +213,12 @@ StructureGGplot(omega = omega,
                                  axis_label_size = 7,
                                  axis_label_face = "bold"))
 @ %def
-
+\end{center}
+\end{figure}
 
 Now we perform the visualization for \Robject{k}=6.
 
-<<plot_topic_deng,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+<<plot_topic_deng_annot,eval=TRUE, warning=FALSE>>=
 
 MouseDeng2014.topicFit <- get(load("../data/MouseDeng2014-topicFit.rda"))
 names(MouseDeng2014.topicFit$clust_6)
@@ -219,10 +228,18 @@ omega <- MouseDeng2014.topicFit$clust_6$omega
 annotation <- data.frame(
   sample_id = paste0("X", c(1:NROW(omega))),
   tissue_label = factor(rownames(omega),
-                        levels = rev( c("zy", "early2cell", "mid2cell", "late2cell","4cell", "8cell", "16cell", "earlyblast","midblast", "lateblast") ) ) )
+                        levels = rev( c("zy", "early2cell",
+                                        "mid2cell", "late2cell",
+                                        "4cell", "8cell", "16cell",
+                                        "earlyblast","midblast",
+                                         "lateblast") ) ) )
 
 rownames(omega) <- annotation$sample_id;
+@ %def
 
+\begin{figure}[h]
+\begin{center}
+<<plot_topic_deng,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(8, "Accent"),
@@ -236,6 +253,46 @@ StructureGGplot(omega = omega,
 
 
 @ %def
+\end{center}
+\end{figure}
+
+\clearpage
+
+\section{Cluster Annotations}
+
+We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package.
+
+<<extract_features, eval=TRUE, warning=FALSE>>=
+theta_mat <- MouseDeng2014.topicFit$clust_6$theta;
+top_features <- ExtractTopFeatures(theta_mat, top_features=100,
+                                   method="poisson", options="min");
+gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
+                        function(x) deng.gene_names[top_features[x,]]))
+@ %def
+
+We tabulate the top 5 genes for the 6 clusters.
+
+<<top_genes_clusters, eval=FALSE>>=
+library(xtable)
+xtable(gene_list[,1:5])
+@ %def
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllll}
+  \hline
+ & 1 & 2 & 3 & 4 & 5 \\
+  \hline
+1 & Timd2 & Isyna1 & Alppl2 & Pramel5 & Hsp90ab1 \\
+  2 & Upp1 & Tdgf1 & Aqp8 & Fabp5 & Tat \\
+  3 & Actb & Krt18 & Fabp3 & Id2 & Tspan8 \\
+  4 & Rtn2 & Ebna1bp2 & Zfp259 & Nasp & Cenpe \\
+  5 & LOC100502936 & Bcl2l10 & Tcl1 & E330034G19Rik & Oas1d \\
+  6 & Obox3 & Zfp352 & Gm8300 & Usp17l5 & BB287469 \\
+   \hline
+\end{tabular}
+\end{table}
+
 
 
 \begin{thebibliography}{1}
