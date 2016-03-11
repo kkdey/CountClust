@@ -8,8 +8,6 @@ A R package for Grade of Membership (GoM) model fit and Visualization of counts 
 
 `CountClust` requires the following CRAN-R packages: `maptpx`, `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`.
 
-Installing `CountClust` from \Bioconductor{} will install all these dependencies:
-
 ```
 source("http://bioconductor.org/biocLite.R")
 biocLite("CountClust")
@@ -30,7 +28,7 @@ library(CountClust)
 
 ## Application of CountClust
 
-We load the single cell RNA-seq data due to Deng et al 2014, check the paper [here](http://www.ncbi.nlm.nih.gov/pubmed/24408435). The data contains RNA-seq read counts for single cells at different stages of mouse embryo development (from zygote to blastocyst). 
+We load the single cell RNA-seq data due to [Deng et al 2014](http://www.ncbi.nlm.nih.gov/pubmed/24408435). The data contains RNA-seq read counts for single cells at different stages of mouse embryo development (from zygote to blastocyst). 
 
 ```
 library(singleCellRNASeqMouseDeng2014)
@@ -53,7 +51,7 @@ This function will output a list, each element representing a GoM model fit outp
 
 ### Cluster Visualization
 
-One can plot the W matrix using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above topic model fit. 
+One can plot the `omega` from the `StructureObj` fit using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. 
 
 ```
 MouseDeng2014.topicFit <- get(load("../data/MouseDeng2014-topicFit.rda"))
