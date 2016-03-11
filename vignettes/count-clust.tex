@@ -1,10 +1,10 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Inference and visualisation of Single-Cell RNA-seq Data data as a hierarchical tree structure}
-%\VignettePackage{cellTree}
+%\VignetteIndexEntry{Grade of Membership Clustering and Visualization using CountClust}
+%\VignettePackage{CountClust}
 
 % To compile this document
-% library('knitr'); rm(list=ls()); knit('cellTree/vignettes/cellTree-vignette.Rnw')
-% library('knitr'); rm(list=ls()); knit2pdf('cellTree/vignettes/cellTree-vignette.Rnw'); openPDF('cellTree-vignette.pdf')
+% library('knitr'); rm(list=ls()); knit('CountClust/vignettes/count-clust.Rnw')
+% library('knitr'); rm(list=ls()); knit2pdf('CountClust/vignettes/count-clust.Rnw'); openPDF('count-clust.pdf')
 %
 
 \documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[usenames,dvipsnames]{color}
@@ -60,6 +60,8 @@
 
 \newcommand{\CountClust}{\textit{CountClust}}
 \usepackage{dsfont}
+\usepackage{cite}
+
 
 
 
@@ -138,69 +140,22 @@ Then load the package with:
 
 \section{Data Preparation}
 
-We load the data as summarized experiments for the GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEx2013}, the Jaitin \textit{et al} 2014 single cell data \cite{Jaitin2014} and the Deng \textit{et al} 2014 single cell data across development stages of the mouse embryo \cite{Deng2014}.
+We install the data packages as \begin{verb} expressionSet \end{verb} objects for bulk-RNA reads data from GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEx2013} and a singlecell-RNA reads data due to Deng \textit{et al} 2014 \cite{Deng2014}.
 
-\subsection{Jaitin et al 2014}
-
-We install the Jaitin \textit{et al} single cell data as a summarized experiment using \CRANpkg{devtools}.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
-\hlkwd{install_github}\hlstd{(}\hlstr{'https://github.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen.git'}\hlstd{)}
-
 \hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/singleCellRNASeqMouseDeng2014'}\hlstd{)}
 \hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/GTExV6Brain'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-We load the data.
+\subsubsection{Deng et al 2014}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{library}\hlstd{(singleCellRNASeqMouseJaitinSpleen)}
-\hlstd{jaitin.counts} \hlkwb{<-} \hlkwd{exprs}\hlstd{(MouseJaitinSpleen)}
-\hlstd{jaitin.meta_data} \hlkwb{<-} \hlkwd{pData}\hlstd{(MouseJaitinSpleen)}
-\hlstd{jaitin.gene_names} \hlkwb{<-} \hlkwd{rownames}\hlstd{(jaitin.counts)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-Extracting the non-ERCC genes satisfying some quality measures.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{ENSG_genes_index} \hlkwb{<-} \hlkwd{grep}\hlstd{(}\hlstr{"ERCC"}\hlstd{, jaitin.gene_names,} \hlkwc{invert} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{jaitin.counts_ensg} \hlkwb{<-} \hlstd{jaitin.counts[ENSG_genes_index, ]}
-\hlstd{filter_genes} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"M34473"}\hlstd{,}\hlstr{"abParts"}\hlstd{,}\hlstr{"M13680"}\hlstd{,}\hlstr{"Tmsb4x"}\hlstd{,}
-                  \hlstr{"S100a4"}\hlstd{,}\hlstr{"B2m"}\hlstd{,}\hlstr{"Atpase6"}\hlstd{,}\hlstr{"Rpl23"}\hlstd{,}\hlstr{"Rps18"}\hlstd{,}
-                  \hlstr{"Rpl13"}\hlstd{,}\hlstr{"Rps19"}\hlstd{,}\hlstr{"H2-Ab1"}\hlstd{,}\hlstr{"Rplp1"}\hlstd{,}\hlstr{"Rpl4"}\hlstd{,}
-                  \hlstr{"Rps26"}\hlstd{,}\hlstr{"EF437368"}\hlstd{)}
-\hlstd{fcounts} \hlkwb{<-} \hlstd{jaitin.counts_ensg[} \hlopt{-}\hlkwd{match}\hlstd{(filter_genes,} \hlkwd{rownames}\hlstd{(jaitin.counts_ensg)), ]}
-\hlstd{sample_counts} \hlkwb{<-} \hlkwd{colSums}\hlstd{(fcounts)}
-
-\hlstd{filter_sample_index} \hlkwb{<-} \hlkwd{which}\hlstd{(jaitin.meta_data}\hlopt{$}\hlstd{number_of_cells} \hlopt{==} \hlnum{1} \hlopt{&}
-                              \hlstd{jaitin.meta_data}\hlopt{$}\hlstd{group_name} \hlopt{==} \hlstr{"CD11c+"} \hlopt{&}
-                                 \hlstd{sample_counts} \hlopt{>} \hlnum{600}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-We filter the metadata likewise
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{jaitin.meta_data_filtered} \hlkwb{<-} \hlstd{jaitin.meta_data[filter_sample_index, ]}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\subsection{Deng et al 2014}
+Load the scRNA-seq data due to Deng \textit{et al} 2014.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -212,6 +167,10 @@ We filter the metadata likewise
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+\subsubsection{GTEx V6 Brain}
+
+Load the bulk-RNA seq data from GTEx V6 brain data.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -225,32 +184,11 @@ We filter the metadata likewise
 \end{knitrout}
 
 
-\section{Fitting GoM Model}
+\section{Fitting the GoM Model}
 
 We use a wrapper function of the \textit{topics()} function in the \CRANpkg{maptpx} due to Matt Taddy \cite{Taddy2012}.
 
-As an example, we fit the topic model for \Robject{k}=7 on the Jaitin \textit{et al} and we save the topic model output as a rda file under data folder.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(fcounts),}
-            \hlkwc{nclus_vec}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
-             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseJaitinSpleen-topicFit.rda"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-We can also input a vector of clusters under \begin{verb} nclus_vec \end{verb}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(deng.counts),}
-            \hlkwc{nclus_vec}\hlstd{=}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
-             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseDeng2014-topicFit.rda"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
+As an example, we fit the topic model for \Robject{k}=4 on the GTEx V6 Brain data and save the GoM model output file to user-defined directory.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -262,82 +200,23 @@ We can also input a vector of clusters under \begin{verb} nclus_vec \end{verb}
 \end{kframe}
 \end{knitrout}
 
+One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} as we do for a list of cluster numbers from $2$ to $7$ for Deng \textit{et al} 2014 data.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(deng.counts),}
+            \hlkwc{nclus_vec}\hlstd{=}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
+             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseDeng2014-topicFit.rda"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
 
 \section{Structure plot visualization}
 
-Load the rda file
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#data(MouseJaitinSpleen-topicFit)}
-\hlstd{MouseJaitinSpleen.topicFit} \hlkwb{<-} \hlkwd{readRDS}\hlstd{(}\hlstr{"../data/MouseJaitinSpleen-topicFit.rds"}\hlstd{)}
-\hlkwd{names}\hlstd{(MouseJaitinSpleen.topicFit}\hlopt{$}\hlstd{clust_7)}
-\end{alltt}
-\begin{verbatim}
-## [1] "K"     "theta" "omega" "BF"    "D"     "X"
-\end{verbatim}
-\begin{alltt}
-\hlstd{omega} \hlkwb{<-} \hlstd{MouseJaitinSpleen.topicFit}\hlopt{$}\hlstd{clust_7}\hlopt{$}\hlstd{omega}
-
-\hlstd{amp_batch} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(jaitin.meta_data_filtered[ ,} \hlstr{"amplification_batch"}\hlstd{])}
-\hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
-    \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NROW}\hlstd{(omega)) ),}
-    \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(amp_batch,}
-                          \hlkwc{levels} \hlstd{=} \hlkwd{rev}\hlstd{(}\hlkwd{sort}\hlstd{(}\hlkwd{unique}\hlstd{(amp_batch))) ) )}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{figure}[htp]
-\begin{center}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
-                \hlkwc{annotation} \hlstd{= annotation,}
-                \hlkwc{palette} \hlstd{= RColorBrewer}\hlopt{::}\hlkwd{brewer.pal}\hlstd{(}\hlnum{9}\hlstd{,} \hlstr{"Set1"}\hlstd{),}
-                \hlkwc{yaxis_label} \hlstd{=} \hlstr{"Amplification batch"}\hlstd{,}
-                \hlkwc{order_sample} \hlstd{=} \hlnum{TRUE}\hlstd{,}
-                \hlkwc{axis_tick} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{axis_ticks_length} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_y} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_x} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
-                                 \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=3in,height=7in]{figure/plot_topic-1} 
-
-\end{knitrout}
-\end{center}
-\end{figure}
-
-In the above plot, the samples within each batch is sorted by the proportion of representedness of the principal cluster driving it. One can use \begin{verb} order_sample=FALSE \end{verb} to retain the order of the samples as in the data.
-
-\begin{figure}[htp]
-\begin{center}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
-                \hlkwc{annotation} \hlstd{= annotation,}
-                \hlkwc{palette} \hlstd{= RColorBrewer}\hlopt{::}\hlkwd{brewer.pal}\hlstd{(}\hlnum{9}\hlstd{,} \hlstr{"Set1"}\hlstd{),}
-                \hlkwc{yaxis_label} \hlstd{=} \hlstr{"Amplification batch"}\hlstd{,}
-                \hlkwc{order_sample} \hlstd{=} \hlnum{FALSE}\hlstd{,}
-                \hlkwc{axis_tick} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{axis_ticks_length} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_y} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_x} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
-                                 \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=3in,height=7in]{figure/plot_topic_2-1} 
-
-\end{knitrout}
-\end{center}
-\end{figure}
-
-Now we perform the visualization for \Robject{k}=6.
+Now we perform the visualization for \Robject{k}=6 for the Deng \textit{et al} 2014 data.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -388,6 +267,8 @@ Now we perform the visualization for \Robject{k}=6.
 \end{knitrout}
 \end{center}
 \end{figure}
+
+In the above plot, the samples in each batch have been sorted by the proportion of the most representative cluster. One can also use \begin{verb} order_sample=FALSE \end{verb} for the un-ordered version, which retains the order as in the data.
 
 Now we perform for GTEx V6 data for brain samples for \Robject{k}=4.
 
@@ -528,46 +409,73 @@ The top 3 genes (ensemble IDs) driving the 4 clusters in the GTEx V6 brain data
 \section{Supplementary analysis}
 
 
+
+Extracting the non-ERCC genes satisfying some quality measures.
+
+
+
+We filter the metadata likewise
+
+
+
+
+
+
+
+\begin{figure}[htp]
+\begin{center}
+
+\end{center}
+\end{figure}
+
+In the above plot, the samples within each batch is sorted by the proportion of representedness of the principal cluster driving it. One can use \begin{verb} order_sample=FALSE \end{verb} to retain the order of the samples as in the data.
+
+\begin{figure}[htp]
+\begin{center}
+
+\end{center}
+\end{figure}
+
 \begin{thebibliography}{1}
 
 \bibitem{Pritchard2000}
-Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly. 2000.
+Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.
 \newblock Inference of population structure using multilocus genotype data.
-\newblock {\textit{Genetics}}. 155.2,  945-959.
+\newblock {\textit{Genetics}}. 155.2,  945-959, 200.
 
 \bibitem{Rosenberg2002}
-Rosenberg NA, Pritchard JK,  Weber JL, Cann HM,  Kidd KK,  Zhivotovsky LA,  Feldman MW. 2002.
+Rosenberg NA, Pritchard JK,  Weber JL, Cann HM,  Kidd KK,  Zhivotovsky LA,  Feldman MW.
 \newblock The genetic structure of human populations.
-\newblock {\textit{Science}}. 298,  2381-2385.
+\newblock {\textit{Science}}. 298,  2381-2385, 2002.
 
 \bibitem{Blei2003}
-Blei DM,  Ng AY, Jordan MI. 2003.
+Blei DM,  Ng AY, Jordan MI.
 \newblock Latent Dirichlet Allocation.
-\newblock {\textit{J. Mach. Learn. Res.}}. 3, 993-1022
+\newblock {\textit{J. Mach. Learn. Res.}}. 3, 993-1022, 2003.
 
 \bibitem{Taddy2012}
-Matt Taddy. 2012.
+Matt Taddy.
 \newblock On Estimation and Selection for Topic Models.
-\newblock \textit{AISTATS 2012, JMLR W\&CP 22}.(maptpx R package).
+\newblock \textit{AISTATS 2012, JMLR W\&CP 22}.(maptpx R package), 2012.
 
 \bibitem{Jaitin2014}
-Jaitin DA,  Kenigsberg E et al. 2014.
+Jaitin DA,  Kenigsberg E et al.
 \newblock Massively Parallel Single-Cell RNA-Seq for Marker-Free Decomposition of Tissues into Cell Types.
-\newblock {\textit{Science}}. 343 (6172) 776-779.
+\newblock {\textit{Science}}. 343 (6172) 776-779, 2014.
 
 \bibitem{Deng2014}
-Deng Q,  Ramskold D,  Reinius B,  Sandberg R. 2014.
+Deng Q,  Ramskold D,  Reinius B,  Sandberg R.
 \newblock Single-Cell RNA-Seq Reveals Dynamic, Random Monoallelic Gene Expression in Mammalian Cells.
-\newblock {\textit{Science}}.  343 (6167) 193-196.
+\newblock {\textit{Science}}.  343 (6167) 193-196, 2014.
 
 \bibitem{GTEX2013}
-The GTEx Consortium. 2013.
+The GTEx Consortium.
 \newblock The Genotype-Tissue Expression (GTEx) project.
-\newblock {\textit{Nature genetics}}. 45(6): 580-585. doi:10.1038/ng.2653.
+\newblock {\textit{Nature genetics}}. 45(6): 580-585. doi:10.1038/ng.2653, 2013.
 
 \end{thebibliography}
 
-% \bibliography{cellTree/REFERENCES}
+% \bibliography{CountClust/REFERENCES}
 
 \section{Session Info}
 
@@ -589,16 +497,11 @@ The GTEx Consortium. 2013.
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] cowplot_0.6.0                           
-##  [2] reshape2_1.4.1                          
-##  [3] ggplot2_2.0.0                           
-##  [4] GTExV6Brain_0.0.1                       
-##  [5] singleCellRNASeqMouseDeng2014_0.99.0    
-##  [6] singleCellRNASeqMouseJaitinSpleen_0.99.0
-##  [7] Biobase_2.30.0                          
-##  [8] BiocGenerics_0.16.1                     
-##  [9] CountClust_0.1.0                        
-## [10] knitr_1.12.3                            
+## [1] cowplot_0.6.0                        reshape2_1.4.1                      
+## [3] ggplot2_2.0.0                        GTExV6Brain_0.0.1                   
+## [5] singleCellRNASeqMouseDeng2014_0.99.0 Biobase_2.30.0                      
+## [7] BiocGenerics_0.16.1                  CountClust_0.1.0                    
+## [9] knitr_1.12.3                        
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.3        digest_0.6.9       plyr_1.8.3         grid_3.2.2        

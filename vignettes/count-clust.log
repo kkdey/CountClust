@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  10 MAR 2016 22:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  11 MAR 2016 11:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -79,6 +79,11 @@ Package: alltt 1997/06/16 v2.0g defines alltt environment
 )
 (/usr/local/texlive/2014/texmf-dist/tex/latex/doublestroke/dsfont.sty
 Package: dsfont 1995/08/01 v0.1 Double stroke roman fonts
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 373.
+Package: cite 2010/09/10  v 5.3
 )
 (/Library/Frameworks/R.framework/Versions/3.2/Resources/library/BiocStyle/resou
 rces/tex/Bioconductor.sty
@@ -269,20 +274,20 @@ tim
 No file count-clust.aux.
 \openout1 = `count-clust.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 75.
-LaTeX Font Info:    ... okay on input line 75.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 77.
+LaTeX Font Info:    ... okay on input line 77.
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count102
@@ -312,7 +317,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \AtBeginShipoutBox=\box28
-Package hyperref Info: Link coloring ON on input line 75.
+Package hyperref Info: Link coloring ON on input line 77.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -322,9 +327,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count108
 )
-LaTeX Info: Redefining \ref on input line 75.
-LaTeX Info: Redefining \pageref on input line 75.
-LaTeX Info: Redefining \nameref on input line 75.
+LaTeX Info: Redefining \ref on input line 77.
+LaTeX Info: Redefining \pageref on input line 77.
+LaTeX Info: Redefining \nameref on input line 77.
 \@outlinefile=\write3
 \openout3 = `count-clust.out'.
 
@@ -365,48 +370,48 @@ LaTeX Info: Redefining \nameref on input line 75.
 
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <20.74> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 78.
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 80.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 78.
+(Font)              <14.4> on input line 80.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 78.
+(Font)              <7> on input line 80.
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10.95> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 78.
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 80.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 78.
+(Font)              <10.95> on input line 80.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 78.
+(Font)              <8> on input line 80.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 78.
+(Font)              <6> on input line 80.
 
-LaTeX Warning: Citation `Pritchard2000' on page 1 undefined on input line 81.
-
-
-LaTeX Warning: Citation `Blei2003' on page 1 undefined on input line 81.
+LaTeX Warning: Citation `Pritchard2000' on page 1 undefined on input line 83.
 
 
-LaTeX Warning: Citation `Rosenberg2002' on page 1 undefined on input line 83.
+LaTeX Warning: Citation `Blei2003' on page 1 undefined on input line 83.
+
+
+LaTeX Warning: Citation `Rosenberg2002' on page 1 undefined on input line 85.
 
 
 LaTeX Font Warning: Font shape `OT1/cmss/bx/it' undefined
-(Font)              using `OT1/cmss/bx/n' instead on input line 86.
+(Font)              using `OT1/cmss/bx/n' instead on input line 88.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 86.
+(Font)              <5> on input line 88.
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 92.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `superscript' on input line 92.
+(hyperref)                removing `math shift' on input line 94.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 92.
+(hyperref)                removing `superscript' on input line 94.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `math shift' on input line 94.
 
 [1
 
@@ -418,124 +423,84 @@ Package hyperref Warning: old toc file detected, not used; run LaTeX again.
 \openout4 = `count-clust.toc'.
 
 
-LaTeX Warning: Citation `Taddy2012' on page 2 undefined on input line 101.
+LaTeX Warning: Citation `Taddy2012' on page 2 undefined on input line 103.
 
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <12> not available
-(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 105.
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 107.
 
 
-Package color Info: Redefining color shadecolor on input line 110.
+Package color Info: Redefining color shadecolor on input line 112.
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 112.
-Package color Info: Redefining color shadecolor on input line 121.
-Package color Info: Redefining color shadecolor on input line 132.
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 114.
+Package color Info: Redefining color shadecolor on input line 123.
+Package color Info: Redefining color shadecolor on input line 134.
 
-LaTeX Warning: Citation `GTEx2013' on page 2 undefined on input line 141.
-
-
-LaTeX Warning: Citation `Jaitin2014' on page 2 undefined on input line 141.
+LaTeX Warning: Citation `GTEx2013' on page 2 undefined on input line 143.
 
 
-LaTeX Warning: Citation `Deng2014' on page 2 undefined on input line 141.
+LaTeX Warning: Citation `Deng2014' on page 2 undefined on input line 143.
 
+Package color Info: Redefining color shadecolor on input line 147.
 [2]
-Package color Info: Redefining color shadecolor on input line 148.
 
-Overfull \hbox (18.21626pt too wide) in paragraph at lines 151--151
-[][]\OT1/cmtt/m/n/12 install_github[][]([][]^^Mhttps://github.com/jhsiao999/sin
-gleCellRNASeqMouseJaitinSpleen.git^^M[][])[][] 
- []
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 156.
 
-Package color Info: Redefining color shadecolor on input line 162.
-Package color Info: Redefining color shadecolor on input line 175.
+Package color Info: Redefining color shadecolor on input line 161.
+Package color Info: Redefining color shadecolor on input line 176.
 
-Overfull \hbox (18.21626pt too wide) in paragraph at lines 183--183
-[][]\OT1/cmtt/m/n/12 fcounts[] []<-[] []jaitin.counts_ensg[[] []-[][]match[][](
-filter_genes,[] []rownames[][](jaitin.counts_ensg)), ][][] 
- []
+LaTeX Warning: Citation `Taddy2012' on page 3 undefined on input line 189.
 
-Package color Info: Redefining color shadecolor on input line 196.
+Package color Info: Redefining color shadecolor on input line 194.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 203.
 Package color Info: Redefining color shadecolor on input line 206.
-Package color Info: Redefining color shadecolor on input line 217.
+Package color Info: Redefining color shadecolor on input line 222.
 [3]
-
-LaTeX Warning: Citation `Taddy2012' on page 4 undefined on input line 230.
-
-Package color Info: Redefining color shadecolor on input line 235.
-Package color Info: Redefining color shadecolor on input line 246.
-Package color Info: Redefining color shadecolor on input line 256.
-Package color Info: Redefining color shadecolor on input line 271.
-Package color Info: Redefining color shadecolor on input line 295.
-<figure/plot_topic-1.png, id=47, 433.62pt x 1011.78pt>
-File: figure/plot_topic-1.png Graphic file (type png)
-
-<use figure/plot_topic-1.png>
-Package pdftex.def Info: figure/plot_topic-1.png used on input line 309.
-(pdftex.def)             Requested size: 216.80946pt x 505.88876pt.
-
-
-LaTeX Warning: Float too large for page by 0.12968pt on input line 313.
-
-[4] [5 <./figure/plot_topic-1.png>]
-Package color Info: Redefining color shadecolor on input line 320.
-
-<figure/plot_topic_2-1.png, id=61, 433.62pt x 1011.78pt>
-File: figure/plot_topic_2-1.png Graphic file (type png)
-
-<use figure/plot_topic_2-1.png>
-Package pdftex.def Info: figure/plot_topic_2-1.png used on input line 334.
-(pdftex.def)             Requested size: 216.80946pt x 505.88876pt.
-
-
-LaTeX Warning: Float too large for page by 0.12968pt on input line 338.
-
-Package color Info: Redefining color shadecolor on input line 343.
-Package color Info: Redefining color shadecolor on input line 372.
-<figure/plot_topic_deng-1.png, id=62, 433.62pt x 1011.78pt>
+Package color Info: Redefining color shadecolor on input line 251.
+ <figure/plot_topic_deng-1.png, id=48, 433.62pt x 1011.78pt>
 File: figure/plot_topic_deng-1.png Graphic file (type png)
 
 <use figure/plot_topic_deng-1.png>
-Package pdftex.def Info: figure/plot_topic_deng-1.png used on input line 386.
+Package pdftex.def Info: figure/plot_topic_deng-1.png used on input line 265.
 (pdftex.def)             Requested size: 216.80946pt x 505.88876pt.
 
 
-LaTeX Warning: Float too large for page by 0.12968pt on input line 390.
+LaTeX Warning: Float too large for page by 0.12968pt on input line 269.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-Package color Info: Redefining color shadecolor on input line 395.
-Package color Info: Redefining color shadecolor on input line 424.
-<figure/plot_topic_gtex-1.png, id=63, 722.7pt x 1011.78pt>
+Package color Info: Redefining color shadecolor on input line 276.
+Package color Info: Redefining color shadecolor on input line 305.
+<figure/plot_topic_gtex-1.png, id=50, 722.7pt x 1011.78pt>
 File: figure/plot_topic_gtex-1.png Graphic file (type png)
 
 <use figure/plot_topic_gtex-1.png>
-Package pdftex.def Info: figure/plot_topic_gtex-1.png used on input line 440.
+Package pdftex.def Info: figure/plot_topic_gtex-1.png used on input line 321.
 (pdftex.def)             Requested size: 361.3491pt x 505.88876pt.
 
 
-LaTeX Warning: Float too large for page by 29.12968pt on input line 444.
+LaTeX Warning: Float too large for page by 29.12968pt on input line 325.
 
-[6] [7 <./figure/plot_topic_2-1.png>] [8 <./figure/plot_topic_deng-1.png>]
-[9 <./figure/plot_topic_gtex-1.png>]
-Package color Info: Redefining color shadecolor on input line 453.
-Package color Info: Redefining color shadecolor on input line 467.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 477.
-Package color Info: Redefining color shadecolor on input line 492.
-Package color Info: Redefining color shadecolor on input line 506.
- [10
+[4] [5 <./figure/plot_topic_deng-1.png>] [6 <./figure/plot_topic_gtex-1.png>]
+Package color Info: Redefining color shadecolor on input line 334.
+Package color Info: Redefining color shadecolor on input line 348.
+Package color Info: Redefining color shadecolor on input line 373.
+Package color Info: Redefining color shadecolor on input line 387.
+
+[7
 
 ]
-Package color Info: Redefining color shadecolor on input line 575.
- [11]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 613.
- [12]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 613.
+Package color Info: Redefining color shadecolor on input line 483.
+ [8]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 516.
+ [9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 516.
  (./count-clust.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 613.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 613.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 516.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 516.
 
 
 Package rerunfilecheck Warning: File `count-clust.out' has changed.
@@ -544,7 +509,7 @@ Package rerunfilecheck Warning: File `count-clust.out' has changed.
 
 Package rerunfilecheck Info: Checksums for `count-clust.out':
 (rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  839200698F223664C3B5437B1309231E;574.
+(rerunfilecheck)             After:  2D928DD6B4B741A290ABF8D4A02C899A;598.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -554,32 +519,32 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 613.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 516.
  ) 
 Here is how much of TeX's memory you used:
- 6493 strings out of 493117
- 97789 string characters out of 6135433
- 207177 words of memory out of 5000000
- 9855 multiletter control sequences out of 15000+600000
- 13751 words of font info for 48 fonts, out of 8000000 for 9000
+ 6566 strings out of 493117
+ 98604 string characters out of 6135433
+ 203472 words of memory out of 5000000
+ 9931 multiletter control sequences out of 15000+600000
+ 13289 words of font info for 46 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,11n,45p,598b,420s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pf
-b></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb
-></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb>
-</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb><
-/usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></u
-sr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></
-usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></
-usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi12.pfb></
-usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi17.pfb></
-usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></us
-r/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr
-/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on count-clust.pdf (12 pages, 259924 bytes).
+ 36i,11n,45p,598b,373s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
+</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb><
+/usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></
+usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></u
+sr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr
+/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></us
+r/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></us
+r/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi12.pfb></us
+r/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi17.pfb></us
+r/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/
+local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/l
+ocal/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on count-clust.pdf (9 pages, 211978 bytes).
 PDF statistics:
- 155 PDF objects out of 1000 (max. 8388607)
- 119 compressed objects within 2 object streams
- 33 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 137 PDF objects out of 1000 (max. 8388607)
+ 108 compressed objects within 2 object streams
+ 30 named destinations out of 1000 (max. 500000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
