@@ -30,7 +30,7 @@ library(CountClust)
 
 ## Application of CountClust
 
-We load the single cell RNA-seq data due to Deng et al 2014, check the paper [here](http://www.ncbi.nlm.nih.gov/pubmed/24408435).
+We load the single cell RNA-seq data due to Deng et al 2014, check the paper [here](http://www.ncbi.nlm.nih.gov/pubmed/24408435). The data contains RNA-seq read counts for single cells at different stages of mouse embryo development (from zygote to blastocyst). 
 
 ```
 library(singleCellRNASeqMouseDeng2014)
