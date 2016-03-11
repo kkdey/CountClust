@@ -97,8 +97,8 @@ This \R{} package implements tools to visualize the clusters obtained from fitti
 
 \section{Introduction}
 
-In the context of RNA-seq expression (bulk or singlecell seq) data, the grade of membership model allows each sample to have some proportion of its RNA-seq reads coming from each cluster. For typical bulk RNA-seq experiments this assumption
-can be argued as follows: each sample is a mixture of different cell types, and so clusters could represent cell types (which are determined by the expression patterns of the genes), and the membership of a sample in each cluster could represent the proportions of each cell type present in that sample.
+In the context of RNA-seq expression (bulk or singlecell seq) data, the grade of membership model allows each sample (usually a tissue sample or a single cell) to have some proportion of its RNA-seq reads coming from each cluster. For typical bulk RNA-seq experiments this assumption
+can be argued as follows: each tissue sample is a mixture of different cell types, and so clusters could represent cell types (which are determined by the expression patterns of the genes), and the membership of a sample in each cluster could represent the proportions of each cell type present in that sample.
 
 Many software packages available for document clustering are applicable to modeling RNA-seq data. Here, we use the R package {\tt maptpx} \cite{Taddy2012} to fit these models, and we add functionality for visualizing the results and annotating clusters by their most distinctive genes to help biological interpretation. We also provide additional functionality to correct for batch effects and also compare the outputs from two different grade of membership model fits to the same set of samples but different in terms of feature description or model assumptions.
 
@@ -140,7 +140,7 @@ Then load the package with:
 
 \section{Data Preparation}
 
-We install the data packages as \begin{verb} expressionSet \end{verb} objects for bulk-RNA reads data from GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEx2013} and a singlecell-RNA reads data due to Deng \textit{et al} 2014 \cite{Deng2014}.
+We install the data packages as \begin{verb} expressionSet \end{verb} objects for bulk-RNA reads data from GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEX2013} and a singlecell-RNA reads data due to Deng \textit{et al} 2014 \cite{Deng2014}.
 
 
 \begin{knitrout}
@@ -216,7 +216,7 @@ One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} 
 
 \section{Structure plot visualization}
 
-Now we perform the visualization for \Robject{k}=6 for the Deng \textit{et al} 2014 data.
+Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al} 2014 data.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -268,9 +268,9 @@ Now we perform the visualization for \Robject{k}=6 for the Deng \textit{et al} 2
 \end{center}
 \end{figure}
 
-In the above plot, the samples in each batch have been sorted by the proportion of the most representative cluster. One can also use \begin{verb} order_sample=FALSE \end{verb} for the un-ordered version, which retains the order as in the data.
+In the above plot, the samples in each batch have been sorted by the proportional memebership of the most representative cluster in that batch. One can also use \begin{verb} order_sample=FALSE \end{verb} for the un-ordered version, which retains the order as in the data (see Supplementary analysis for example).
 
-Now we perform for GTEx V6 data for brain samples for \Robject{k}=4.
+Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 data for Brain samples .
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -328,7 +328,7 @@ Now we perform for GTEx V6 data for brain samples for \Robject{k}=4.
 
 \section{Cluster Annotations}
 
-We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package.
+We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package. We first perform the cluster annotations from the GoM model fit with \Robject{k}=$6$ on the single cell RNA-seq data due to Deng \textit{et al}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -342,7 +342,7 @@ We extract the top genes driving each cluster using the \begin{verb} ExtractTopF
 \end{kframe}
 \end{knitrout}
 
-We tabulate the top 5 genes for the 6 clusters.
+We tabulate the top $5$ genes for these $6$ clusters.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -369,6 +369,8 @@ We tabulate the top 5 genes for the 6 clusters.
 \end{tabular}
 \end{table}
 
+We next perform the same for the topic model fit on the GTEx V6 Brain samples data with \Robject{k}=$4$ clusters.
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -381,7 +383,7 @@ We tabulate the top 5 genes for the 6 clusters.
 \end{kframe}
 \end{knitrout}
 
-The top 3 genes (ensemble IDs) driving the 4 clusters in the GTEx V6 brain data
+The top $3$ genes (ensemble IDs) driving these $4$ clusters.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
