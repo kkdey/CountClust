@@ -168,7 +168,7 @@ rownames(omega) <- annotation$sample_id;
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(8, "Accent"),
-                yaxis_label = "Amplification batch",
+                yaxis_label = "Development Phase",
                 order_sample = TRUE,
                 axis_tick = list(axis_ticks_length = .1,
                                  axis_ticks_lwd_y = .1,

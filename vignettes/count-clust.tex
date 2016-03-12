@@ -7,56 +7,7 @@
 % library('knitr'); rm(list=ls()); knit2pdf('CountClust/vignettes/count-clust.Rnw'); openPDF('count-clust.pdf')
 %
 
-\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[usenames,dvipsnames]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
-\usepackage{alltt}
+\documentclass[12pt]{article}
 
 \newcommand{\CountClust}{\textit{CountClust}}
 \usepackage{dsfont}
@@ -73,7 +24,7 @@
 \author{Kushal K Dey, Chiaowen Joyce Hsiao \& Matthew Stephens \\[1em] \small{\textit{Stephens Lab}, The University of Chicago} \mbox{ }\\ \small{\texttt{$^*$Correspondending Email: mstephens@uchicago.edu}}}
 
 \bioctitle[Grade of Membership Clustering and Visualization using \CountClust{}]{Grade of Membership Model and Visualization for RNA-seq data using \CountClust{}}
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
 \begin{document}
 
 \maketitle
@@ -247,379 +198,35 @@ Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al}
 
 \begin{figure}[h]
 \begin{center}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
-                \hlkwc{annotation} \hlstd{= annotation,}
-                \hlkwc{palette} \hlstd{= RColorBrewer}\hlopt{::}\hlkwd{brewer.pal}\hlstd{(}\hlnum{8}\hlstd{,} \hlstr{"Accent"}\hlstd{),}
-                \hlkwc{yaxis_label} \hlstd{=} \hlstr{"Amplification batch"}\hlstd{,}
-                \hlkwc{order_sample} \hlstd{=} \hlnum{TRUE}\hlstd{,}
-                \hlkwc{axis_tick} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{axis_ticks_length} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_y} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_x} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
-                                 \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1} 
-
-\end{knitrout}
-\end{center}
-\end{figure}
-
-In the above plot, the samples in each batch have been sorted by the proportional memebership of the most representative cluster in that batch. One can also use \begin{verb} order_sample=FALSE \end{verb} for the un-ordered version, which retains the order as in the data (see Supplementary analysis for example).
-
-Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 data for Brain samples .
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{omega} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlstr{"../data/omega_cis_genes_brain_2.txt"}\hlstd{,}
-                    \hlkwc{header} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{sep} \hlstd{=} \hlstr{" "}\hlstd{,}
-                    \hlkwc{stringsAsFactors} \hlstd{=} \hlnum{FALSE}\hlstd{)}
-\hlkwd{dim}\hlstd{(omega)}
-\end{alltt}
-\begin{verbatim}
-## [1] 1259    4
-\end{verbatim}
-\begin{alltt}
-\hlkwd{colnames}\hlstd{(omega)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NCOL}\hlstd{(omega))}
-
-\hlstd{tissue_labels} \hlkwb{<-} \hlstd{gtex.meta_data[,}\hlnum{3}\hlstd{];}
 
 
-\hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
-    \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(tissue_labels)),}
-    \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(tissue_labels,}
-                          \hlkwc{levels} \hlstd{=} \hlkwd{rev}\hlstd{(}\hlkwd{unique}\hlstd{(tissue_labels) ) ) );}
-
-\hlstd{cols} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"blue"}\hlstd{,} \hlstr{"darkgoldenrod1"}\hlstd{,} \hlstr{"cyan"}\hlstd{,} \hlstr{"red"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{figure}[htp]
-\begin{center}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
-                \hlkwc{annotation}\hlstd{= annotation,}
-                \hlkwc{palette} \hlstd{= cols,}
-                \hlkwc{yaxis_label} \hlstd{=} \hlstr{""}\hlstd{,}
-                \hlkwc{order_sample} \hlstd{=} \hlnum{TRUE}\hlstd{,}
-                \hlkwc{split_line} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{split_lwd} \hlstd{=} \hlnum{.4}\hlstd{,}
-                                  \hlkwc{split_col} \hlstd{=} \hlstr{"white"}\hlstd{),}
-                \hlkwc{axis_tick} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{axis_ticks_length} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_y} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_x} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
-                                 \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=5in,height=7in]{figure/plot_topic_gtex-1} 
-
-\end{knitrout}
-\end{center}
-\end{figure}
-
-\clearpage
-
-\section{Cluster Annotations}
-
-We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package. We first perform the cluster annotations from the GoM model fit with \Robject{k}=$6$ on the single cell RNA-seq data due to Deng \textit{et al}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{theta_mat} \hlkwb{<-} \hlstd{MouseDeng2014.topicFit}\hlopt{$}\hlstd{clust_6}\hlopt{$}\hlstd{theta;}
-\hlstd{top_features} \hlkwb{<-} \hlkwd{ExtractTopFeatures}\hlstd{(theta_mat,} \hlkwc{top_features}\hlstd{=}\hlnum{100}\hlstd{,}
-                                   \hlkwc{method}\hlstd{=}\hlstr{"poisson"}\hlstd{,} \hlkwc{options}\hlstd{=}\hlstr{"min"}\hlstd{);}
-\hlstd{gene_list} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(top_features)[}\hlnum{1}\hlstd{],}
-                        \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) deng.gene_names[top_features[x,]]))}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-We tabulate the top $5$ genes for these $6$ clusters.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{library}\hlstd{(xtable)}
-\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{])}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlllll}
-  \hline
- & 1 & 2 & 3 & 4 & 5 \\
-  \hline
-1 & Timd2 & Isyna1 & Alppl2 & Pramel5 & Hsp90ab1 \\
-  2 & Upp1 & Tdgf1 & Aqp8 & Fabp5 & Tat \\
-  3 & Actb & Krt18 & Fabp3 & Id2 & Tspan8 \\
-  4 & Rtn2 & Ebna1bp2 & Zfp259 & Nasp & Cenpe \\
-  5 & LOC100502936 & Bcl2l10 & Tcl1 & E330034G19Rik & Oas1d \\
-  6 & Obox3 & Zfp352 & Gm8300 & Usp17l5 & BB287469 \\
-   \hline
-\end{tabular}
-\end{table}
-
-We next perform the same for the topic model fit on the GTEx V6 Brain samples data with \Robject{k}=$4$ clusters.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{theta_mat} \hlkwb{<-} \hlkwd{as.matrix}\hlstd{(}\hlkwd{read.table}\hlstd{(}\hlstr{"../data/theta_cis_genes_brain_2.txt"}\hlstd{));}
-\hlstd{top_features} \hlkwb{<-} \hlkwd{ExtractTopFeatures}\hlstd{(theta_mat,} \hlkwc{top_features}\hlstd{=}\hlnum{100}\hlstd{,}
-                                   \hlkwc{method}\hlstd{=}\hlstr{"poisson"}\hlstd{,} \hlkwc{options}\hlstd{=}\hlstr{"min"}\hlstd{);}
-\hlstd{gene_list} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(top_features)[}\hlnum{1}\hlstd{],}
-                        \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) gtex.gene_names[top_features[x,]]))}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-The top $3$ genes (ensemble IDs) driving these $4$ clusters.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{library}\hlstd{(xtable)}
-\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{])}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlll}
-  \hline
- & 1 & 2 & 3 \\
-  \hline
-  1 & ENSG00000120885.15 & ENSG00000130203.5 & ENSG00000131771.9 \\
-  2 & ENSG00000171617.9 & ENSG00000160014.12 & ENSG00000154146.8 \\
-  3 & ENSG00000112139.10 & ENSG00000139899.6 & ENSG00000008710.13 \\
-  4 & ENSG00000197971.10 & ENSG00000266844.1 & ENSG00000237973.1 \\
-   \hline
-\end{tabular}
-\end{table}
 
 
-\begin{thebibliography}{1}
-
-\bibitem{Pritchard2000}
-Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.
-\newblock Inference of population structure using multilocus genotype data.
-\newblock {\textit{Genetics}}. 155.2,  945-959, 200.
-
-\bibitem{Rosenberg2002}
-Rosenberg NA, Pritchard JK,  Weber JL, Cann HM,  Kidd KK,  Zhivotovsky LA,  Feldman MW.
-\newblock The genetic structure of human populations.
-\newblock {\textit{Science}}. 298,  2381-2385, 2002.
-
-\bibitem{Blei2003}
-Blei DM,  Ng AY, Jordan MI.
-\newblock Latent Dirichlet Allocation.
-\newblock {\textit{J. Mach. Learn. Res.}}. 3, 993-1022, 2003.
-
-\bibitem{Taddy2012}
-Matt Taddy.
-\newblock On Estimation and Selection for Topic Models.
-\newblock \textit{AISTATS 2012, JMLR W\&CP 22}.(maptpx R package), 2012.
-
-\bibitem{Jaitin2014}
-Jaitin DA,  Kenigsberg E et al.
-\newblock Massively Parallel Single-Cell RNA-Seq for Marker-Free Decomposition of Tissues into Cell Types.
-\newblock {\textit{Science}}. 343 (6172) 776-779, 2014.
-
-\bibitem{Deng2014}
-Deng Q,  Ramskold D,  Reinius B,  Sandberg R.
-\newblock Single-Cell RNA-Seq Reveals Dynamic, Random Monoallelic Gene Expression in Mammalian Cells.
-\newblock {\textit{Science}}.  343 (6167) 193-196, 2014.
-
-\bibitem{GTEX2013}
-The GTEx Consortium.
-\newblock The Genotype-Tissue Expression (GTEx) project.
-\newblock {\textit{Nature genetics}}. 45(6): 580-585. doi:10.1038/ng.2653, 2013.
-
-\end{thebibliography}
-
-% \bibliography{CountClust/REFERENCES}
-
-\section{Supplementary analysis}
-
-As an additional analysis, we apply the \CountClust{} tools on another single-cell RNA-seq data from mouse spleen due to Jaitin \textit{et al} 2014 \cite{Jaitin2014}. The data had technical effects in the form of \begin{verb} amplification batch \end{verb} which the user may want to correct for.
-
-We first install and load the data.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{devtools}\hlopt{::}\hlkwd{install_github}\hlstd{(}\hlstr{'jhsiao999/singleCellRNASeqMouseJaitinSpleen'}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{library}\hlstd{(singleCellRNASeqMouseJaitinSpleen)}
-\hlstd{jaitin.counts} \hlkwb{<-} \hlkwd{exprs}\hlstd{(MouseJaitinSpleen)}
-\hlstd{jaitin.meta_data} \hlkwb{<-} \hlkwd{pData}\hlstd{(MouseJaitinSpleen)}
-\hlstd{jaitin.gene_names} \hlkwb{<-} \hlkwd{rownames}\hlstd{(jaitin.counts)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-Extracting the non-ERCC genes satisfying some quality measures.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{ENSG_genes_index} \hlkwb{<-} \hlkwd{grep}\hlstd{(}\hlstr{"ERCC"}\hlstd{, jaitin.gene_names,} \hlkwc{invert} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{jaitin.counts_ensg} \hlkwb{<-} \hlstd{jaitin.counts[ENSG_genes_index, ]}
-\hlstd{filter_genes} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"M34473"}\hlstd{,}\hlstr{"abParts"}\hlstd{,}\hlstr{"M13680"}\hlstd{,}\hlstr{"Tmsb4x"}\hlstd{,}
-                  \hlstr{"S100a4"}\hlstd{,}\hlstr{"B2m"}\hlstd{,}\hlstr{"Atpase6"}\hlstd{,}\hlstr{"Rpl23"}\hlstd{,}\hlstr{"Rps18"}\hlstd{,}
-                  \hlstr{"Rpl13"}\hlstd{,}\hlstr{"Rps19"}\hlstd{,}\hlstr{"H2-Ab1"}\hlstd{,}\hlstr{"Rplp1"}\hlstd{,}\hlstr{"Rpl4"}\hlstd{,}
-                  \hlstr{"Rps26"}\hlstd{,}\hlstr{"EF437368"}\hlstd{)}
-\hlstd{fcounts} \hlkwb{<-} \hlstd{jaitin.counts_ensg[} \hlopt{-}\hlkwd{match}\hlstd{(filter_genes,} \hlkwd{rownames}\hlstd{(jaitin.counts_ensg)), ]}
-\hlstd{sample_counts} \hlkwb{<-} \hlkwd{colSums}\hlstd{(fcounts)}
-
-\hlstd{filter_sample_index} \hlkwb{<-} \hlkwd{which}\hlstd{(jaitin.meta_data}\hlopt{$}\hlstd{number_of_cells} \hlopt{==} \hlnum{1} \hlopt{&}
-                              \hlstd{jaitin.meta_data}\hlopt{$}\hlstd{group_name} \hlopt{==} \hlstr{"CD11c+"} \hlopt{&}
-                                 \hlstd{sample_counts} \hlopt{>} \hlnum{600}\hlstd{)}
-\hlstd{fcounts.filtered} \hlkwb{<-} \hlstd{fcounts[,filter_sample_index];}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-We filter the metadata likewise
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{jaitin.meta_data_filtered} \hlkwb{<-} \hlstd{jaitin.meta_data[filter_sample_index, ]}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization to show that the amplification batch indeed drives the clustering patterns.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(fcounts),}
-            \hlkwc{nclus_vec}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
-             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseJaitinSpleen-topicFit.rda"}\hlstd{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#data(MouseJaitinSpleen-topicFit)}
-\hlstd{MouseJaitinSpleen.topicFit} \hlkwb{<-} \hlkwd{readRDS}\hlstd{(}\hlstr{"../data/MouseJaitinSpleen-topicFit.rds"}\hlstd{)}
-\hlkwd{names}\hlstd{(MouseJaitinSpleen.topicFit}\hlopt{$}\hlstd{clust_7)}
-\end{alltt}
-\begin{verbatim}
-## [1] "K"     "theta" "omega" "BF"    "D"     "X"
-\end{verbatim}
-\begin{alltt}
-\hlstd{omega} \hlkwb{<-} \hlstd{MouseJaitinSpleen.topicFit}\hlopt{$}\hlstd{clust_7}\hlopt{$}\hlstd{omega}
-
-\hlstd{amp_batch} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(jaitin.meta_data_filtered[ ,} \hlstr{"amplification_batch"}\hlstd{])}
-\hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
-    \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NROW}\hlstd{(omega)) ),}
-    \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(amp_batch,}
-                          \hlkwc{levels} \hlstd{=} \hlkwd{rev}\hlstd{(}\hlkwd{sort}\hlstd{(}\hlkwd{unique}\hlstd{(amp_batch))) ) )}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{figure}[htp]
-\begin{center}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
-                \hlkwc{annotation} \hlstd{= annotation,}
-                \hlkwc{palette} \hlstd{= RColorBrewer}\hlopt{::}\hlkwd{brewer.pal}\hlstd{(}\hlnum{9}\hlstd{,} \hlstr{"Set1"}\hlstd{),}
-                \hlkwc{yaxis_label} \hlstd{=} \hlstr{"Amplification batch"}\hlstd{,}
-                \hlkwc{order_sample} \hlstd{=} \hlnum{FALSE}\hlstd{,}
-                \hlkwc{axis_tick} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{axis_ticks_length} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_y} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_ticks_lwd_x} \hlstd{=} \hlnum{.1}\hlstd{,}
-                                 \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
-                                 \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=3in,height=7in]{figure/plot_topic-1} 
-
-\end{knitrout}
-\end{center}
-\end{figure}
-
-It seems from the above Structure plot that \begin{verb} amplification batch \end{verb} drives the clusters. To remove the effect of amplification batch, one can use. For this, we use the \begin{verb} BatchCorrectedCounts() \end{verb} functionality of the package.
-
-\clearpage
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{batchcorrect.fcounts} \hlkwb{<-} \hlkwd{BatchCorrectedCounts}\hlstd{(}\hlkwd{t}\hlstd{(fcounts.filtered), amp_batch);}
-\hlkwd{dim}\hlstd{(batchcorrect.fcounts)}
-\end{alltt}
-\begin{verbatim}
-## [1]  1041 20091
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
 
 
-\section{Session Info}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{sessionInfo}\hlstd{()}
-\end{alltt}
-\begin{verbatim}
-## R version 3.2.2 (2015-08-14)
-## Platform: x86_64-apple-darwin13.4.0 (64-bit)
-## Running under: OS X 10.10.5 (Yosemite)
-## 
-## locale:
-## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-## 
-## attached base packages:
-## [1] parallel  stats     graphics  grDevices utils     datasets  methods  
-## [8] base     
-## 
-## other attached packages:
-##  [1] singleCellRNASeqMouseJaitinSpleen_0.99.0
-##  [2] cowplot_0.6.0                           
-##  [3] reshape2_1.4.1                          
-##  [4] ggplot2_2.0.0                           
-##  [5] GTExV6Brain_0.0.1                       
-##  [6] singleCellRNASeqMouseDeng2014_0.99.0    
-##  [7] Biobase_2.30.0                          
-##  [8] BiocGenerics_0.16.1                     
-##  [9] CountClust_0.1.0                        
-## [10] knitr_1.12.3                            
-## 
-## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.3        digest_0.6.9       plyr_1.8.3         grid_3.2.2        
-##  [5] gtable_0.1.2       formatR_1.2.1      magrittr_1.5       scales_0.3.0      
-##  [9] evaluate_0.8       highr_0.5.1        stringi_1.0-1      limma_3.26.3      
-## [13] labeling_0.3       BiocStyle_1.8.0    RColorBrewer_1.1-2 tools_3.2.2       
-## [17] stringr_1.0.0      munsell_0.4.2      colorspace_1.2-6
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
 
-\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

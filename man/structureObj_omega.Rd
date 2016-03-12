@@ -2,7 +2,7 @@
 % Please edit documentation in R/StructureObj_omega.R
 \name{StructureObj_omega}
 \alias{StructureObj_omega}
-\title{Structure Plot given topic model proportions!}
+\title{Structure Plot given topic model proportions (non GGplot version)!}
 \usage{
 StructureObj_omega(omega, samp_metadata, batch_lab, path_struct = NULL,
   partition = rep("TRUE", ncol(samp_metadata)), control = list())
@@ -33,15 +33,5 @@ Structure plot arranged as per the sample metadata information.
 \author{
 Kushal K Dey, Matt Taddy, Matthew Stephens, Ida Moltke
 }
-\references{
-Matt Taddy.On Estimation and Selection for Topic Models. AISTATS 2012, JMLR W\&CP 22.
-
-           Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly. Inference of population structure using multilocus genotype data.
-           Genetics 155.2 (2000): 945-959.
-}
-\keyword{Structure}
-\keyword{clustering,}
-\keyword{counts}
-\keyword{data,}
-\keyword{plot}
+\keyword{internal}
 

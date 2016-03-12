@@ -9,11 +9,25 @@ cg_topics(theta, feature.comp)
 \arguments{
 \item{theta}{The theta matrix obtained from the topic model fitting (it is a G x K matrix where G is number of features, K number of topics)}
 
-\item{feature.comp}{the numeric matrix (G x L) comprising of values for each feature g and component l. The component may be latitude, longitude or elevation in topographical data.}
+\item{feature.comp}{the numeric matrix (G x L) comprising of values for each feature g and feature metadata l.}
+}
+\value{
+Returns a matrix of cluster centers of gravity for the L feature metadata.
 }
 \description{
 This function computes the center of gravity for each cluster by taking weighted mean
  of each component of features where the weights are determined from the theta matrix of the topic model fit.
+}
+\examples{
+
+N=360;
+M=560;
+lat <- rep(1:N, M);
+long <- rep(1:M, each=N)
+comp <- cbind(lat, long);
+Topic_clus <- readRDS("../data/topic_clus_2_maps_no_abundance.rds")
+center_gravity <- cg_topics(Topic_clus$theta, comp);
+
 }
 \author{
 Kushal K Dey, Matthew Stephens

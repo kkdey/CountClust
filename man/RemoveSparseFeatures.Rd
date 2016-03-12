@@ -12,6 +12,11 @@ RemoveSparseFeatures(data, filter_prop = 0.9)
 \item{filter_prop}{threshold proportion, if the proportion of zeros for the feature exceeds this threshold
 then we remove the feaature altogether (default is 0.9)}
 }
+\value{
+Returns a list with
+   \item{data}{filtered data with sparse features removed}
+   \item{sparse_features}{the feature names of the features found sparse and removed}
+}
 \description{
 This function deals with zero counts in the counts dataset. If for a feature, the proportion of
 zeros across the samples is greater than filter_prop, then we remove the feature.

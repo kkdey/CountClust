@@ -5,15 +5,15 @@ Version: 0.1.0
 Date: 2015-09-04
 Authors@R: c(
     person("Kushal", "Dey", email = "kkdey@uchicago.edu", role = c("aut","cre")),
-    person("Joyce", "Hsiao", email = "joyce.hsiao1@gmail.com", role = c("contb"))
-    person("Matthew", "Stephens", email = "stephens999@gmail.com", role ="aut"),
+    person("Joyce", "Hsiao", email = "joyce.hsiao1@gmail.com", role = "aut"),
+    person("Matthew", "Stephens", email = "stephens999@gmail.com", role ="aut"))
 Maintainer: Kushal K Dey <kkdey@uchicago.edu>
 Description: Takes any count table data as input, performs data preprocessing, and
     uses topic model clustering (due to `maptpx` package of Matt Taddy) and produces
     cluster visualization in the form of Structure plot representation.
 License: GPL (>= 2)
 Imports:
-    ggplot2, cowplot, tsne, qtlcharts, limma, parallel
+    ggplot2, cowplot, reshape2, limma, parallel
 LazyData: TRUE
 Encoding: ASCII
 Suggests:

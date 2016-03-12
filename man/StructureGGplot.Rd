@@ -12,7 +12,7 @@ StructureGGplot(omega, annotation, palette = RColorBrewer::brewer.pal(8,
   axis_ticks_lwd_x = 0.1, axis_label_size = 3, axis_label_face = "bold"))
 }
 \arguments{
-\item{omega}{Cluster membership probabilities of each sample. Usually a sample by 
+\item{omega}{Cluster membership probabilities of each sample. Usually a sample by
 cluster matrix in the Topic model output. The cluster weights sum to 1
 for each sample.}
 
@@ -26,20 +26,33 @@ is assigned to the cluster labeled as 1, and second color in the vector
 is assigned to the cluster labeled as 2, etc. The number of colors must be
 the same or greater than the number of clusters. The clusters not assigned
 a color are filled with white in the figure. In addition, the recommended
-choice of color palette here is RColorBrewer, 
-for instance RColorBrewer::brewer.pal(8, "Accent") or 
+choice of color palette here is RColorBrewer,
+for instance RColorBrewer::brewer.pal(8, "Accent") or
 RColorBrewwer::brewer.pal(9, "Set1").}
 
 \item{figure_title}{Title of the plot.}
 
 \item{yaxis_label}{Axis label for the samples.}
+
+\item{order_sample}{if TRUE, we order samples in each annotation batch sorted by membership
+of most representative cluster. If FALSE, we keep the order in the data.}
+
+\item{sample_order_decreasing}{if order_sample TRUE, then this input determines if the ordering
+due to main cluster is in ascending or descending order.}
+
+\item{split_line}{Control parameters for line splitting the batches in the plot.}
+
+\item{axis_tick}{Control parameters for x-axis and y-axis tick sizes.}
+}
+\value{
+Plots the Structure plot visualization of the GoM model
 }
 \description{
-Make the traditional Structure histogram plot using the ggplot2 pacakges
+Make the traditional Structure histogram plot of GoM model using ggplot2
 }
 \examples{
 # load the previously analyzed results
-load("../../../count-clustering/project/rdas/deng_topic_fit.rda")
+load("../data/MouseDeng2014-topicFit.rda")
 
 # extract the omega matrix: membership weights of each cell
 names(Topic_clus_list)
@@ -48,15 +61,23 @@ omega <- Topic_clus_list$clust_6$omega
 
 # make annotation matrix
 annotation <- data.frame(
-  sample_id = c(1:NROW(omega)),
-  tissue_label = factor(rownames(omega),
-                        levels = c("zy", "early2cell", "mid2cell", "late2cell",
-                                    "4cell", "8cell", "16cell", "earlyblast",
-                                    "midblast", "lateblast")) )
-StructureGGplot(omega = omega, 
-                tissue_labels = cell_labels)                                    
-                
-# save_plot("../../../count-clustering/project/plots/deng-figures/deng-ggplot.png", 
-#         b, base_height = 4, base_width = 2)
+sample_id = paste0("X", c(1:NROW(omega))),
+tissue_label = factor(rownames(omega),
+                     levels = rev( c("zy", "early2cell",
+                                     "mid2cell", "late2cell",
+                                     "4cell", "8cell", "16cell",
+                                     "earlyblast","midblast",
+                                     "lateblast") ) ) )
+rownames(omega) <- annotation$sample_id;
+StructureGGplot(omega = omega,
+                 annotation = annotation,
+                 palette = RColorBrewer::brewer.pal(8, "Accent"),
+                 yaxis_label = "development phase",
+                 order_sample = TRUE,
+                 axis_tick = list(axis_ticks_length = .1,
+                                  axis_ticks_lwd_y = .1,
+                                  axis_ticks_lwd_x = .1,
+                                  axis_label_size = 7,
+                                  axis_label_face = "bold"))
 }
 

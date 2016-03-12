@@ -1,4 +1,4 @@
-#' @title Structure Plot given topic model proportions!
+#' @title Structure Plot given topic model proportions (non GGplot version)!
 #'
 #' @param omega the topic proportion matrix returned by topics() in maptpx,
 #'        or the omega component from structureObj, with samples along the rows and topics along columns.
@@ -16,13 +16,11 @@
 #' maptpx) and outputs the Structure plot with the column bars in
 #' Structure plot arranged as per the sample metadata information.
 #'
+#' @return  Returns a non-GGplot Structure plot visualization of GoM model.
+#'
 #' @author Kushal K Dey, Matt Taddy, Matthew Stephens, Ida Moltke
 #'
-#' @references Matt Taddy.On Estimation and Selection for Topic Models. AISTATS 2012, JMLR W\&CP 22.
-#'
-#'            Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly. Inference of population structure using multilocus genotype data.
-#'            Genetics 155.2 (2000): 945-959.
-#' @keywords counts data, clustering, Structure plot
+#' @keywords internal
 #'
 #' @export
 

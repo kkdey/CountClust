@@ -1,17 +1,41 @@
-#' @title Obtaining Batch effect Corrected counts !
-#'
+#' @title Obtain Batch effect Corrected counts !
 #'
 #' @param data counts data, with samples along the rows and features along the columns.
 #' @param batch_lab the batch label vector
 #' @param use_parallel if TRUE, we do a parallel analysis over featres, else serial application.
 #'
-#' @description This function first converts counts data to CPM data/ sqrt data, then apply a linear model with the batch effect as a factor. We take the sum of
-#'              intercept, residuals and mean batch effect across all the batches and then exponentiate it to bring the data back almost to the original
-#'              space of the counts data, except for the batch adjustment.Generate a Poisson random number for each of the means. The obtained counts
-#'              are then devoid of batch effects.
+#' @description This function first converts counts data to log CPM data , then apply a linear model with the batch effect as a factor. We take the sum of
+#'              intercept, residuals and mean batch effect across all the batches and then inverse transform it back to counts to get rid of batch effects.
 #'
+#' @return Returns a counts data. with same dimension as the input data, but which is corrected for batch_lab.
 #' @author Kushal K Dey, Joyce HSiao
 #' @keywords counts data, batch effect
+#' @examples
+#' N=500;
+#' Label.Batch=c(rep(1,N/4),rep(2,N/4),rep(3,N/4),rep(4,N/4));
+#' alpha_true=matrix(rnorm((K)*G,0.5,1),nrow=(K)); ### the matrix of fixed effects
+#' library(gtools)
+#' T=10;
+#' omega_true=matrix(rbind(rdirichlet(T*10,c(3,4,2,6)),rdirichlet(T*10,c(1,4,6,3)),
+#'                       rdirichlet(T*10,c(4,1,2,2)),rdirichlet(T*10,c(2,6,3,2)),
+#'                       rdirichlet(T*10,c(3,3,5,4))), nrow=N);
+#' B=max(Label.Batch);
+#' sigmab_true=2;
+#' beta_true=matrix(0,B,G);
+#' for(g in 1:G)
+#' {
+#'    beta_true[,g]=rnorm(B,mean=0,sd=sigmab_true);
+#' }
+#' read_counts=matrix(0,N,G);
+#' for(n in 1:N){
+#'    for(g in 1:G)
+#'      {
+#'         read_counts[n,]=rpois(1, omega_true[n,]%*%alpha_true[,g] + beta_true[Label.Batch[n],g];
+#'      }
+#'  }
+#'
+#'  batchcorrect.counts <- BatchCorrectedCounts(read_counts, Label.Batch);
+#'
 #' @export
 #'
 

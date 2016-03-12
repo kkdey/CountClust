@@ -2,15 +2,31 @@
 #'
 #' @param omega1 topic proportion fitted matrix (N x K) from model 1:
 #' @param omega2 topic proportion fitted matrix (N x K) from model 2:
-
+#'
 #' @description This function computes a re-ordering of the clusters from GoM model fit in
-#' in one model to make it comparable with that from another. The two models are applie on the
+#' in one model to make it comparable with that from another. The two models are applied on the
 #' same set of samples with same number of clusters, but the features may change from one model to another.
 #' The two models may not be of same type as well. One could be a DAPC model, the other a standard topic model.
-#' The idea is to check for consistency in topic proportion patterns across multiple GoM methods or across
+#' Aids in checking for consistency in topic proportion patterns across multiple GoM methods or across
 #' different types of feature sets.
 #'
 #' @author Kushal K Dey, Matthew Stephens
+#'
+#' @return  Returns a list containing
+#'            \item{kl.dist}{A symmetric KL divergence matrix across the re-ordered clusters of two omega matrices}
+#'            \item{kl.order_model2_topics}{re-ordering of the clusters for omega2 to match the clusters for omega1 based on KL divergence}
+#'            \item{kl.information_content}{A measure based on KL information to record how much information in omega2 is explained by omega1. Varies from 0 to 1}
+#'            \item{cor.dist}{A correlation matrix across the re-ordered clusters of two omega matrices}
+#'            \item{cor.order_model2_topics}{re-ordering of the clusters for omega2 to match the clusters for omega1 based on correlation information}
+#'            \item{cor.information_content}{A measure based on correlation information to record how much information in omega2 is explained by omega1. Varies from 0 to 1}
+#' @examples
+#' library(gtools)
+#' T=10;
+#' omega1=matrix(rbind(rdirichlet(T*10,c(3,4,2,6)),rdirichlet(T*10,c(1,4,6,3)),
+#'                       rdirichlet(T*10,c(4,1,2,2)), nrow=3*10*T);
+#' omega2=matrix(rbind(rdirichlet(T*10,c(1,2,4,6)),rdirichlet(T*10,c(1,4,6,3)),
+#'                       rdirichlet(T*10,c(3,1,5,2)), nrow=3*10*T);
+#' out <- compare_omega(omega1, omega2)
 #'
 #' @export
 
