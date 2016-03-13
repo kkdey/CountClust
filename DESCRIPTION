@@ -8,17 +8,17 @@ Authors@R: c(
     person("Joyce", "Hsiao", email = "joyce.hsiao1@gmail.com", role = "aut"),
     person("Matthew", "Stephens", email = "stephens999@gmail.com", role ="aut"))
 Maintainer: Kushal K Dey <kkdey@uchicago.edu>
-Description: Takes any count table data as input, performs data preprocessing, and
-    uses topic model clustering (due to `maptpx` package of Matt Taddy) and produces
-    cluster visualization in the form of Structure plot representation.
-Depends: 
+Description: Takes any count table data as input, performs data preprocessing,
+    and uses topic model clustering (due to `maptpx` package of Matt Taddy) and
+    produces cluster visualization in the form of Structure plot representation.
+Depends:
     R(>= 2.10.0),
     maptpx (>= 1.9-2),
 URL: https://github.com/kkdey/CountClust
 License: GPL (>= 2)
 LazyData: TRUE
 Encoding: UTF-8
-Imports: 
+Imports:
     cowplot,
     ggplot2,
     limma,
@@ -27,15 +27,15 @@ Imports:
     RColorBrewer,
     reshape2
 Suggests:
-    gtools, 
-    knitr, 
-    BiocStyle, 
-    plyr, 
+    gtools,
+    knitr,
+    BiocStyle,
+    plyr,
     roxygen2,
-Remotes:
-    hajKD/philentropy,
+Remotes: hajKD/philentropy,
     TaddyLab/maptpx,
     kkdey/GTExV6Brain,
     kkdey/singleCellRNASeqMouseDeng2014,
     jhsiao999/singleCellRNASeqMouseJaitinSpleen
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

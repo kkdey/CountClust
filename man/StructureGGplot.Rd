@@ -51,32 +51,6 @@ Plots the Structure plot visualization of the GoM model
 Make the traditional Structure histogram plot of GoM model using ggplot2
 }
 \examples{
-<<<<<<< HEAD
-## load the previously analyzed results
-# load("../../../count-clustering/project/rdas/deng_topic_fit.rda")
-
-## extract the omega matrix: membership weights of each cell
-# names(Topic_clus_list)
-# str(Topic_clus_list$clust_6)
-# omega <- Topic_clus_list$clust_6$omega
-
-## make annotation matrix
-# annotation <- data.frame(
-#   sample_id = c(1:NROW(omega)),
-#   tissue_label = factor(rownames(omega),
-#                         levels = c("zy", "early2cell", "mid2cell", "late2cell",
-#                                     "4cell", "8cell", "16cell", "earlyblast",
-#                                     "midblast", "lateblast")) )
-# StructureGGplot(omega = omega, 
-#                 tissue_labels = cell_labels)                                    
-#                 
-# save_plot("../../../count-clustering/project/plots/deng-figures/deng-ggplot.png", 
-#         b, base_height = 4, base_width = 2)
-}
-\author{
-Chiaowen Joyce Hsiao and Kushal K Dey
-}
-=======
 # load the previously analyzed results
 data("MouseDeng2014.FitGoM")
 
@@ -106,5 +80,4 @@ StructureGGplot(omega = omega,
                                   axis_label_face = "bold"))
 
 }
->>>>>>> upstream/master
 
