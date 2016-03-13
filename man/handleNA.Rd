@@ -32,9 +32,6 @@ handleNA(mat,thresh_prop=0.5)
 handleNA(mat)
 
 }
-\author{
-Kushal K Dey
-}
 \keyword{clustering}
 \keyword{counts}
 \keyword{data,}

@@ -7,7 +7,7 @@
 cg_topics(theta, feature.comp)
 }
 \arguments{
-\item{theta}{The theta matrix obtained from the topic model fitting (it is a G x K matrix where G is number of features, K number of topics)}
+\item{theta}{The cluster probability distribution/theta matrix obtained from the GoM model fitting (it is a G x K matrix where G is number of features, K number of topics)}
 
 \item{feature.comp}{the numeric matrix (G x L) comprising of values for each feature g and feature metadata l.}
 }
@@ -28,8 +28,5 @@ comp <- cbind(lat, long);
 data(AbundanceGoM)
 center_gravity <- cg_topics(AbundanceGoM$theta, comp);
 
-}
-\author{
-Kushal K Dey, Matthew Stephens
 }
 

@@ -42,9 +42,9 @@ deng.gene_names <- rownames(deng.counts)
 We apply the `StructureObj` function (which is a wrapper of the `topics` function in the maptpx package) for a vector of number of clusters, ranging from 2 to 7. 
 
 ```
-StructureObj(t(deng.counts),
-            nclus_vec=2:7, tol=0.1,
-             path_rda="data/MouseDeng2014-topicFit.rda")
+FitGoM(t(deng.counts),
+            K=c(3,6), tol=0.1,
+            path_rda="data/MouseDeng2014.FitGoM.rda")
 ```
 
 This function will output a list, each element representing a GoM model fit output for a particular cluster number. 
@@ -54,9 +54,9 @@ This function will output a list, each element representing a GoM model fit outp
 One can plot the `omega` from the `StructureObj` fit using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. 
 
 ```
-MouseDeng2014.topicFit <- get(load("../data/MouseDeng2014-topicFit.rda"))
-names(MouseDeng2014.topicFit$clust_6)
-omega <- MouseDeng2014.topicFit$clust_6$omega
+data("MouseDeng2014.FitGoM")
+names(MouseDeng2014.FitGoM)
+omega <- MouseDeng2014.FitGoM$clust_6$omega
 
 
 annotation <- data.frame(
@@ -83,7 +83,7 @@ StructureGGplot(omega = omega,
 
 ```
 
-<img src="test/structure_plot.png" alt="Structure Plot" height="700" width="400">
+<img src="vignettes/structure_plot.png" alt="Structure Plot" height="700" width="400">
 
 
 ### Cluster annotations

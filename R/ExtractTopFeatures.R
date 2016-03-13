@@ -1,6 +1,6 @@
 #' @title extractTopFeatures- extracting top driving genes driving GoM clusters
 #'
-#' @param theta The theta matrix obtained from the topic model fitting (it is a G x K matrix where G is number of features, K number of topics)
+#' @param theta The cluster probability distribution/theta matrix obtained from the GoM model fitting (it is a G x K matrix where G is number of features, K number of topics)
 #' @param top_features  The number of top features per cluster that drives away that cluster from others. Default value is 10
 #' @param method  The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"
 #' @param options if "min", for each cluster k, we select features that maximize the minimum KL divergence of
@@ -11,8 +11,6 @@
 #'
 #' @description This function uses relative expression profile of the GoM clusters for each feature, and applies a KL divergence mechanism to obtain
 #' a list of top features that drive the clusters.
-#'
-#' @author Kushal K Dey, Matthew Stephens
 #'
 #' @examples
 #' data("MouseDeng2014.FitGoM")

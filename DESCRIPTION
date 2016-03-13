@@ -14,10 +14,10 @@ Description: Takes any count table data as input, performs data preprocessing, a
 Depends: R(>= 2.10.0)
 License: GPL (>= 2)
 Imports:
-    maptpx, slam, philentropy, cowplot, reshape2, limma
+    maptpx, philentropy, ggplot2, cowplot, reshape2, limma
 LazyData: TRUE
 Encoding: UTF-8
 Suggests:
-    gtools, knitr, ggplot2, plyr, RColorBrewer, parallel
+    gtools, knitr, BiocStyle, plyr, RColorBrewer, parallel, GTExV6Brain, singleCellRNASeqMouseDeng2014, singleCellRNASeqMouseJaitinSpleen
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1

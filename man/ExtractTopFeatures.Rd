@@ -8,7 +8,7 @@ ExtractTopFeatures(theta, top_features = 10, method = c("poisson",
   "bernoulli"), options = c("min", "max"))
 }
 \arguments{
-\item{theta}{The theta matrix obtained from the topic model fitting (it is a G x K matrix where G is number of features, K number of topics)}
+\item{theta}{The cluster probability distribution/theta matrix obtained from the GoM model fitting (it is a G x K matrix where G is number of features, K number of topics)}
 
 \item{top_features}{The number of top features per cluster that drives away that cluster from others. Default value is 10}
 
@@ -31,8 +31,5 @@ theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                   method="poisson", options="min");
 
-}
-\author{
-Kushal K Dey, Matthew Stephens
 }
 

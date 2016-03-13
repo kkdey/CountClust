@@ -193,9 +193,9 @@ As an example, we fit the topic model for \Robject{k}=4 on the GTEx V6 Brain dat
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(gtex.counts),}
-            \hlkwc{nclus_vec}\hlstd{=}\hlnum{4}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
-             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/GTExV6Brain.FitGoM.rda"}\hlstd{)}
+\hlkwd{FitGoM}\hlstd{(}\hlkwd{t}\hlstd{(gtex.counts),}
+            \hlkwc{K}\hlstd{=}\hlnum{4}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
+            \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/GTExV6Brain.FitGoM.rda"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -205,9 +205,9 @@ One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(deng.counts),}
-            \hlkwc{nclus_vec}\hlstd{=}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
-             \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseDeng2014.FitGoM.rda"}\hlstd{)}
+\hlkwd{FitGoM}\hlstd{(}\hlkwd{t}\hlstd{(deng.counts),}
+            \hlkwc{K}\hlstd{=}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
+            \hlkwc{path_rda}\hlstd{=}\hlstr{"../data/MouseDeng2014.FitGoM.rda"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -569,7 +569,8 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{batchcorrect.fcounts} \hlkwb{<-} \hlkwd{BatchCorrectedCounts}\hlstd{(}\hlkwd{t}\hlstd{(fcounts.filtered), amp_batch,} \hlkwc{use_parallel} \hlstd{=} \hlnum{TRUE}\hlstd{);}
+\hlstd{batchcorrect.fcounts} \hlkwb{<-} \hlkwd{BatchCorrectedCounts}\hlstd{(}\hlkwd{t}\hlstd{(fcounts.filtered),}
+                                             \hlstd{amp_batch,} \hlkwc{use_parallel} \hlstd{=} \hlnum{TRUE}\hlstd{);}
 \hlkwd{dim}\hlstd{(batchcorrect.fcounts)}
 \end{alltt}
 \end{kframe}

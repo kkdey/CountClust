@@ -1,7 +1,7 @@
-#' @title Re-ordering topic proportion matrices and Information calculation
+#' @title Re-ordering cluster membership proportion matrices and Information calculation
 #'
-#' @param omega1 topic proportion fitted matrix (N x K) from model 1:
-#' @param omega2 topic proportion fitted matrix (N x K) from model 2:
+#' @param omega1 cluster membership proportion matrix (N x K) from model 1:
+#' @param omega2 cluster membership proportion matrix (N x K) from model 2:
 #'
 #' @description This function computes a re-ordering of the clusters from GoM model fit in
 #' in one model to make it comparable with that from another. The two models are applied on the
@@ -9,8 +9,6 @@
 #' The two models may not be of same type as well. One could be a DAPC model, the other a standard topic model.
 #' Aids in checking for consistency in topic proportion patterns across multiple GoM methods or across
 #' different types of feature sets.
-#'
-#' @author Kushal K Dey, Matthew Stephens
 #'
 #' @return  Returns a list containing
 #'            \item{kl.dist}{A symmetric KL divergence matrix across the re-ordered clusters of two omega matrices}

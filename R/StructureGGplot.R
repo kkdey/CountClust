@@ -147,7 +147,7 @@ StructureGGplot <- function(omega, annotation,
 
     # make ggplot
     a <- ggplot2::ggplot(df_mlt,
-                ggplot2::aes(x = document, y = value*10000, fill = factor(topic)) ) +
+                ggplot2::aes(x = df_mlt$document, y = df_mlt$value*10000, fill = factor(df_mlt$topic)) ) +
         ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
         ggplot2::scale_fill_manual(values = palette) +
         ggplot2::theme(legend.position = "right",

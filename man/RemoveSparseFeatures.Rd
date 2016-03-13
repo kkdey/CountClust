@@ -27,9 +27,6 @@ RemoveSparseFeatures(mat,filter_prop=0.5)
 RemoveSparseFeatures(mat)
 
 }
-\author{
-Kushal K Dey
-}
 \keyword{counts}
 \keyword{data,}
 \keyword{extraction}

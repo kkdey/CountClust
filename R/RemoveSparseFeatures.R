@@ -4,8 +4,6 @@
 #' @param  filter_prop   threshold proportion, if the proportion of zeros for the feature exceeds this threshold
 #'                       then we remove the feaature altogether (default is 0.9)
 #'
-#' @author Kushal K Dey
-#'
 #' @description This function deals with zero counts in the counts dataset. If for a feature, the proportion of
 #' zeros across the samples is greater than filter_prop, then we remove the feature.
 #'

@@ -8,7 +8,6 @@
 #'              intercept, residuals and mean batch effect across all the batches and then inverse transform it back to counts to get rid of batch effects.
 #'
 #' @return Returns a counts data. with same dimension as the input data, but which is corrected for batch_lab.
-#' @author Kushal K Dey, Joyce HSiao
 #' @keywords counts data, batch effect
 #' @examples
 #' N=500;

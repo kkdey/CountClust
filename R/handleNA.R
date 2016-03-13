@@ -5,8 +5,6 @@
 #' @param  data counts data
 #' @param  thresh_prop   threshold proportion of NAs for removal of feature or replacing the NA values
 #'
-#' @author Kushal K Dey
-#'
 #' @description This function deals with NA values in the counts dataset. If for a feature, the proportion of
 #' NAs is greater than threshold proportion, then we remove the feature, otherwise we use MAR substitution scheme
 #' using the distribution of the non NA values for the feature. If threshold proportion is 0, it implies removal of

@@ -2,14 +2,14 @@
 % Please edit documentation in R/compare_omega.R
 \name{compare_omega}
 \alias{compare_omega}
-\title{Re-ordering topic proportion matrices and Information calculation}
+\title{Re-ordering cluster membership proportion matrices and Information calculation}
 \usage{
 compare_omega(omega1, omega2)
 }
 \arguments{
-\item{omega1}{topic proportion fitted matrix (N x K) from model 1:}
+\item{omega1}{cluster membership proportion matrix (N x K) from model 1:}
 
-\item{omega2}{topic proportion fitted matrix (N x K) from model 2:}
+\item{omega2}{cluster membership proportion matrix (N x K) from model 2:}
 }
 \value{
 Returns a list containing
@@ -36,8 +36,5 @@ omega2=matrix(rbind(gtools::rdirichlet(T*10,c(1,2,4,6)),gtools::rdirichlet(T*10,
                       gtools::rdirichlet(T*10,c(3,1,5,2)), nrow=3*10*T));
 out <- compare_omega(omega1, omega2)
 
-}
-\author{
-Kushal K Dey, Matthew Stephens
 }
 

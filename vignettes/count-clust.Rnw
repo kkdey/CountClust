@@ -124,17 +124,17 @@ We use a wrapper function of the \textit{topics()} function in the \CRANpkg{mapt
 As an example, we fit the topic model for \Robject{k}=4 on the GTEx V6 Brain data and save the GoM model output file to user-defined directory.
 
 <<topic_fit_gtex, eval=FALSE>>=
-StructureObj(t(gtex.counts),
-            nclus_vec=4, tol=0.1,
-             path_rda="../data/GTExV6Brain.FitGoM.rda")
+FitGoM(t(gtex.counts),
+            K=4, tol=0.1,
+            path_rda="../data/GTExV6Brain.FitGoM.rda")
 @ %def
 
 One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} as we do for a list of cluster numbers from $2$ to $7$ for Deng \textit{et al} 2014 data.
 
 <<topic_fit_deng, eval=FALSE>>=
-StructureObj(t(deng.counts),
-            nclus_vec=2:7, tol=0.1,
-             path_rda="../data/MouseDeng2014.FitGoM.rda")
+FitGoM(t(deng.counts),
+            K=2:7, tol=0.1,
+            path_rda="../data/MouseDeng2014.FitGoM.rda")
 @ %def
 
 
@@ -415,7 +415,8 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
 \clearpage
 
 <<batch_correct, eval=FALSE, echo=TRUE>>=
-batchcorrect.fcounts <- BatchCorrectedCounts(t(fcounts.filtered), amp_batch, use_parallel = TRUE);
+batchcorrect.fcounts <- BatchCorrectedCounts(t(fcounts.filtered),
+                                             amp_batch, use_parallel = TRUE);
 dim(batchcorrect.fcounts)
 @ %def
 

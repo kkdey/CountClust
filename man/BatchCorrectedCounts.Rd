@@ -50,9 +50,6 @@ for(n in 1:N){
  batchcorrect.counts <- BatchCorrectedCounts(read_counts, Label.Batch, use_parallel=FALSE);
 
 }
-\author{
-Kushal K Dey, Joyce HSiao
-}
 \keyword{batch}
 \keyword{counts}
 \keyword{data,}
