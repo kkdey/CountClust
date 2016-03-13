@@ -51,7 +51,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
         df <- ddply(df, .(family, item), transform, value = cumsum(value/(sum(value))))
     else {
         maxFamily <- max(plyr::ddply(df,.(family,item), summarise, total = sum(value))$total)
-        df <- ddply(df, .(family, item), transform, value = cumsum(value))
+        df <- plyr::ddply(df, .(family, item), transform, value = cumsum(value))
         df$value <- df$value/maxFamily
     }
      
@@ -96,7 +96,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
     
     totalLength <- tail(df$xmin + binSize + spaceFamily, 1)/circleProportion - 0
     
-    p <- ggplot(df) + geom_rect(aes(xmin = xmin, xmax = xmax,
+    p <- ggplot2::ggplot(df) + ggplot2::geom_rect(aes(xmin = xmin, xmax = xmax,
                                     ymin = ymin, ymax = ymax, fill = score))
     readableAngle <- function(x) {
         angle <- x * (-360/totalLength) - alphaStart * 180/pi + 90
@@ -108,7 +108,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
         ifelse(sign(cos(angle * pi/180)) + sign(sin(angle * pi/180)) == -2, 1, 0)
     }
     
-    dfItemLabels <- ddply(df, .(family, item), summarize, xmin = xmin[1])
+    dfItemLabels <- plyr::ddply(df, .(family, item), summarize, xmin = xmin[1])
     dfItemLabels <- within(dfItemLabels, {
         x <- xmin + binSize/2
         angle <- readableAngle(xmin + binSize/2)
@@ -119,7 +119,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
 #     p <- p + geom_text(aes(x = x, label = item, angle = angle,
 #                            hjust = hjust), y = 1.02, size = 3, vjust = 0.5, data = dfItemLabels)
     
-    p <- p + geom_segment(aes(x = xmin, xend = xend, y = y, yend = y),
+    p <- p + ggplot2::geom_segment(aes(x = xmin, xend = xend, y = y, yend = y),
                           colour = "white", data = guidesDF)
     
     # add guide labels
@@ -132,7 +132,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
         guideLabels <- data.frame(x = 0, y = affine(1 - guides/maxFamily),
                                   label = paste(guides, " ", sep = ""))
     
-    p <- p + geom_text(aes(x = x, y = y, label = label), data = guideLabels,
+    p <- p + ggplot2::geom_text(aes(x = x, y = y, label = label), data = guideLabels,
                        angle = -alphaStart * 180/pi, hjust = 1, size = 4)
     if (familyLabels) {
         familyLabelsDF <- aggregate(xmin ~ family, data = df,
@@ -141,19 +141,19 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
             x <- xmin
             angle <- xmin * (-360/totalLength) - alphaStart * 180/pi
         })
-        p <- p + geom_text(aes(x = x, label = family, angle = angle),
+        p <- p + ggplot2::geom_text(aes(x = x, label = family, angle = angle),
                            data = familyLabelsDF, y = familyLabelDistance)
     }
     
-    p <- p + theme(panel.background = element_blank(), axis.title.x = element_blank(),
+    p <- p + ggplot2::theme(panel.background = element_blank(), axis.title.x = element_blank(),
                    axis.title.y = element_blank(), panel.grid.major = element_blank(),
                    panel.grid.minor = element_blank(), axis.text.x = element_blank(),
                    axis.text.y = element_blank(), axis.ticks = element_blank())
     
-    p <- p + xlim(0, tail(df$xmin + binSize + spaceFamily, 1)/circleProportion)
-    p <- p + ylim(0, outerRadius + 0.2)
-    p <- p + coord_polar(start = alphaStart)
+    p <- p + ggplot2::xlim(0, tail(df$xmin + binSize + spaceFamily, 1)/circleProportion)
+    p <- p + ggplot2::ylim(0, outerRadius + 0.2)
+    p <- p + ggplot2::coord_polar(start = alphaStart)
     #    p <- p + scale_fill_brewer(palette = "Set1", type = "qual")
-    p <- p + scale_fill_manual(values = palette)
+    p <- p + ggplot2::scale_fill_manual(values = palette)
     p
 }
