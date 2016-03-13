@@ -11,4 +11,4 @@ export(compare_omega)
 export(handleNA)
 export(polarHistogramStructure)
 
-importFrom(‘cowplot’, ‘ggplot2’, ‘limma’, ‘parallel’, ‘RColorBrewer’, ‘reshape2’)
+importFrom(“cowplot”, “ggplot2”, “limma”, “parallel”, “RColorBrewer’, “reshape2”)
