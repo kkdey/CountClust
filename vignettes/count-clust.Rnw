@@ -88,7 +88,7 @@ library(CountClust)
 We install the data packages as \begin{verb} expressionSet \end{verb} objects for bulk-RNA reads data from GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEX2013} and a singlecell-RNA reads data due to Deng \textit{et al} 2014 \cite{Deng2014}.
 
 
-<<data_install, eval=FALSE>>=
+<<data_install, eval=TRUE>>=
 library(devtools)
 install_github('kkdey/singleCellRNASeqMouseDeng2014')
 install_github('kkdey/GTExV6Brain')

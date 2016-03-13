@@ -33,7 +33,6 @@
 #' @return A ggplot-version of the GoM model visualization
 #'
 #' @import cowplot
-#' @import ggplot2
 #' @import reshape2
 #' @import plyr
 #' @import RColorBrewer

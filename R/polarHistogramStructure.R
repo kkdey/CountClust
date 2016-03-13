@@ -21,7 +21,6 @@
 #' @return Returns a polar histogram. 
 #'
 #' @import plyr
-#' @import ggplot2
 #' @export
 #'
 #' @examples
@@ -54,6 +53,7 @@ polarHistogramStructure <-function (df,
         p
     }
     
+    attach(df)
     if (!is.null(family))
         df$family <- applyLookup(family, df$item)
     df <- plyr::arrange(df, family, item, score)
