@@ -4,13 +4,14 @@
 #' @param  filter_prop   threshold proportion, if the proportion of zeros for the feature exceeds this threshold
 #'                       then we remove the feaature altogether (default is 0.9)
 #'
-#' @author Kushal K Dey
-#'
 #' @description This function deals with zero counts in the counts dataset. If for a feature, the proportion of
 #' zeros across the samples is greater than filter_prop, then we remove the feature.
 #'
 #' @keywords counts data, feature extraction
 #'
+#' @return  Returns a list with
+#'    \item{data}{filtered data with sparse features removed}
+#'    \item{sparse_features}{the feature names of the features found sparse and removed}
 #' @export
 #' @examples
 #' mat <- rbind(c(2,0,3,0,4),c(4,5,5,0,0),c(30,34,63,25,0),c(0,0,0,0,0));

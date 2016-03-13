@@ -1,18 +1,24 @@
-#' @title The CountsClust function- a function for clustering and visualization of counts!
+#' @title extractTopFeatures- extracting top driving genes driving GoM clusters
 #'
-#' @param theta The theta matrix obtained from the topic model fitting (it is a G x K matrix where G is number of features, K number of topics)
+#' @param theta The cluster probability distribution/theta matrix obtained from the GoM model fitting (it is a G x K matrix where G is number of features, K number of topics)
 #' @param top_features  The number of top features per cluster that drives away that cluster from others. Default value is 10
 #' @param method  The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"
+#' @param options if "min", for each cluster k, we select features that maximize the minimum KL divergence of
+#'        cluster k against all other clusters for each feature. If "max", we select features  that maximize the
+#'        maximum KL divergence of cluster k against all other clusters for each feature.
 #'
-#' @description This function uses the relativ expression profile of the clusters across the features, and applies a KL divergence mechanism to obtain
-#' a list of features that are significant in driving the clusters. Often annotating these features may give us an idea as to whether there is a common
-#' property among the features for each cluster.
+#' @return A matrix (K x top_features) which tabulates in k th  row the top feature indices driving the cluster k.
 #'
-#' @author Kushal K Dey, Matthew Stephens
+#' @description This function uses relative expression profile of the GoM clusters for each feature, and applies a KL divergence mechanism to obtain
+#' a list of top features that drive the clusters.
+#'
+#' @examples
+#' data("MouseDeng2014.FitGoM")
+#' theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
+#' top_features <- ExtractTopFeatures(theta_mat, top_features=100,
+#'                                   method="poisson", options="min");
 #'
 #' @export
-#'
-#'
 
 ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","bernoulli"), options=c("min", "max"))
 {
@@ -27,7 +33,7 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
   }
 
   if(method=="bernoulli"){
-    KL_score <- lapply(1:K, function(n) {
+    KL_score <- lapply(1:dim(theta)[2], function(n) {
       out <- t(apply(theta, 1, function(x){
         y=x[n] *log(x[n]/x) + (1 - x[n])*log((1-x[n])/(1-x));
         return(y)

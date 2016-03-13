@@ -11,10 +11,16 @@ handleNA(data, thresh_prop = 0)
 
 \item{thresh_prop}{threshold proportion of NAs for removal of feature or replacing the NA values}
 }
+\value{
+Returns a list with
+     \item{data}{The modified data with NA substitution and removal}
+     \item{na_removed_cols}{The columns in the data with NAs that were removed}
+     \item{na_sub_cols}{The columns in the data with NAs that were substituted}
+}
 \description{
-This function deals with NA values in the counts dataset. If for a feature, the proportion of 
-NAs is greater than threshold proportion, then we remove the feature, otherwise we use MAR substitution scheme 
-using the distribution of the non NA values for the feature. If threshold proportion is 0, it implies removal of 
+This function deals with NA values in the counts dataset. If for a feature, the proportion of
+NAs is greater than threshold proportion, then we remove the feature, otherwise we use MAR substitution scheme
+using the distribution of the non NA values for the feature. If threshold proportion is 0, it implies removal of
 all features with NA values. The default value of threshold proportion is 0.
 }
 \details{
@@ -24,10 +30,7 @@ This function removes NAs from the counts data
 mat <- rbind(c(2,4,NA),c(4,7,8),c(3,NA,NA));
 handleNA(mat,thresh_prop=0.5)
 handleNA(mat)
-  
-}
-\author{
-Kushal K Dey
+
 }
 \keyword{clustering}
 \keyword{counts}

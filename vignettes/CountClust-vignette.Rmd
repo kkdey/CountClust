@@ -1,6 +1,6 @@
 ---
 title: "CountClust- R package for clustering of counts data"
-author:  Kushal K Dey \,\ Matthew Stephens
+author:  Kushal K Dey \,\ Chiaowen Joyce Hsiao \,\ Matthew Stephens
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -11,118 +11,99 @@ vignette: >
 
 ## Installation
 
-To download and install this package, 
+`CountClust` requires the following CRAN-R packages: `maptpx`, `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`.
 
 ```
-install.packages("devtools")
+source("http://bioconductor.org/biocLite.R")
+biocLite("CountClust")
+```
+
+For installing the working version of this package and loading the data required for this vignette, we use CRAN-R package `devtools`.
+
+```
 library(devtools)
-install_github("kkdey/CountClust")
+install_github('kkdey/CountClust')
 ```
 
-Load the package in R
+Then load the package with:
 
 ```
 library(CountClust)
 ```
 
-## Data Format
+## Application of CountClust
 
-**CountClust** takes as input a counts table with samples along the rows (which we want to cluster) and features along the columns (which represents the dimensionality of the clusters). The package fits a topic mixed membersjip model on the samples based on these features and then visulaize and annotate these clusters to extract the top features driving each cluster.
-
-## Data Loading and Preprocessing
-
-Load the counts data (samples along the rows, variables or features along the columns) in R. Here we use a test data comprising of the brain samples in GTEX V6 data
+We load the single cell RNA-seq data due to [Deng et al 2014](http://www.ncbi.nlm.nih.gov/pubmed/24408435). The data contains RNA-seq read counts for single cells at different stages of mouse embryo development (from zygote to blastocyst). 
 
 ```
-brain_data <- t(data.frame(data.table::fread("test/cis_gene_expression_brain.txt"))[,-(1:2)]);
-dim(brain_data)
-```
-As data preprocessing step, once can delete or substitute the columns that contain NAs. If for a feature, the proportion of NAs is greater than threshold proportion (`thresh_prop`), then we remove the feature, otherwise we use MAR substitution scheme using the distribution of the non NA values for the feature. 
-
-```
-handleNA(data, thresh_prop=0)
-handleNA(data, thresh_prop=0.2)
+library(singleCellRNASeqMouseDeng2014)
+deng.counts <- exprs(Deng2014MouseESC)
+deng.meta_data <- pData(Deng2014MouseESC)
+deng.gene_names <- rownames(deng.counts)
 ```
 
-Next we remove features which are too sparse (sparsity threshold provided by the user).This function deals with zero counts in the counts dataset. If for a feature, the proportion of zeros across the samples is greater than filter_prop, then we remove the feature.
+### GoM Model fit 
+
+We apply the `StructureObj` function (which is a wrapper of the `topics` function in the maptpx package) for a vector of number of clusters, ranging from 2 to 7. 
 
 ```
-RemoveSparseFeatures(data,filter_prop=0.5)
+FitGoM(t(deng.counts),
+            K=c(3,6), tol=0.1,
+            path_rda="data/MouseDeng2014.FitGoM.rda")
 ```
 
-## Model fitting
+This function will output a list, each element representing a GoM model fit output for a particular cluster number. 
 
-Once the data preprocessing step is completed, we perform the mixed membership clustering of the samples based on the counts expression values across the features. We use the R package [maptpx](https://cran.r-project.org/web/packages/maptpx/index.html) package due to Matt Taddy. The *StructureObj()* function performs this step and saves the model output as rda file in the path provided by the user.
+### Cluster Visualization
 
-Assume that `metadata` is a n (samples) by t (metadata labels) matrix that contains values for each metadata recorded in each column of this matrix. 
-
-We load the brain metadata (here `t=1`) for our example.  
+One can plot the `omega` from the `StructureObj` fit using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. 
 
 ```
-metadata <- cbind.data.frame(read.table("test/metadata_brain.txt")[,3]);
-colnames(metadata) <- "brain_labs"
-dim(metadata)
-```
+data("MouseDeng2014.FitGoM")
+names(MouseDeng2014.FitGoM)
+omega <- MouseDeng2014.FitGoM$clust_6$omega
 
-Before applying the model, create the directories to save the rda file and the cluster plots.
 
-```
-if(!dir.exists("test/Structure")) dir.create("test/Structure")
-if(!dir.exists("test/Structure")) dir.create("test/Structure")
-```
+annotation <- data.frame(
+  sample_id = paste0("X", c(1:NROW(omega))),
+  tissue_label = factor(rownames(omega),
+                        levels = rev( c("zy", "early2cell",
+                                        "mid2cell", "late2cell",
+                                        "4cell", "8cell", "16cell",
+                                        "earlyblast","midblast",
+                                         "lateblast") ) ) )
 
-If the user wants to fit clustering for 2,3,4
+rownames(omega) <- annotation$sample_id;
 
-```
-clus_vec <- 3;
-StructureObj(brain_data, nclus_vec=clus_vec, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
-             plot=TRUE, path_rda="test/topics_data.rda", path_struct="test/Structure")
-```
-
-```
-clus_vec <- c(2,3,4);
-StructureObj(brain_data, nclus_vec=clus_vec, samp_metadata = metadata, tol=0.1, batch_lab = NULL,
-             plot=FALSE, path_rda="test/topics_data.rda", path_struct="test/Structure")
-                         
-```
-
-If `plot=TRUE`, the above function will create the Structure plot visualization of the clusters, one for each of the cluster values selected and arrangement of bars due to each of the `metadata` columns. 
-
-This function will output two things:
-
--  a rda file containing all topic model information named "test/topics_data.rda" 
--  The Structure plot for K=3 arranged by the metadata provided in test/Structure. If samp_metadata is a matrix 
-   with several columns, then Structure plots arranged by each column in samp_metadata will be created.
-
-The rda file contains the W (the topic proportion matrix) and T (topic distribution) files, so if you need to change the Structure plot, the user need not rerun the *StructureObj()* fit again and you can just load the W matrix in rda file into out *StrutureObj_omega()* function.
+StructureGGplot(omega = omega,
+                annotation = annotation,
+                palette = RColorBrewer::brewer.pal(8, "Accent"),
+                yaxis_label = "Amplification batch",
+                order_sample = TRUE,
+                axis_tick = list(axis_ticks_length = .1,
+                                 axis_ticks_lwd_y = .1,
+                                 axis_ticks_lwd_x = .1,
+                                 axis_label_size = 7,
+                                 axis_label_face = "bold"))
 
 ```
-brain_structure <- get(load("test/topics_data.rda"));
-StructureObj_omega(brain_structure[[1]]$omega, samp_metadata = brain_metadata, 
-                          batch_lab = NULL, path_struct="test/Structure",
-                          control=list(cex.axis=1, struct.width=500, struct.height=500))
-```
 
-Then go to `test/Structure` and you will be able to see the Structure plot for K=3 with width and the height
-of the Structure plot modified.
+<img src="structure_plot.png" alt="Structure Plot" height="700" width="400">
 
-The Structure plot generated looks like the following
 
-<img src='../test/Structure/clus_3/struct_clus_3_labs.png' style="width:550px;height:300px;">
+### Cluster annotations
 
-## Cluster annotations
-
-To extract the variables that drive the clusters (cluster annotation)
+We can extract the features that drive the clusters for K=6 as follows 
 
 ```
-theta <- brain_structure[[1]]$theta;
-features <- ExtractTopFeatures(theta,top_features=50,method="poisson")
+theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
+top_features <- ExtractTopFeatures(theta_mat, top_features=100,
+                                   method="poisson", options="min");
+gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
+                        function(x) deng.gene_names[top_features[x,]]))
 ```
-It will provide you with a list of top 50 variables/features per cluster that drive that cluster to be
-different from the rest.
+It will provide you with a list of top 100 variables/features per cluster that are relatively most highly expressed in that cluster compared to the other clusters, or in other words, plays the most important role in driving or separating out that cluster from the rest. 
 
-## Version
-0.0.1
 
 ## Licenses
 
@@ -134,9 +115,7 @@ For any queries, contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
 
 ## Acknowledgements
 
-- Matt Taddy, University of Chicago, Booth School of Business
-- Gao Wang, Stephens Lab, University of Chicago
-- Joyce Hsiao, Stephens Lab and Gilad Lab, University of Chicago
-- Raman Shah, Stephens Lab, University of Chicago
+- Raman Shah
+- Matt Taddy
 
 
