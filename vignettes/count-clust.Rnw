@@ -126,7 +126,7 @@ As an example, we fit the topic model for \Robject{k}=4 on the GTEx V6 Brain dat
 <<topic_fit_gtex, eval=FALSE>>=
 StructureObj(t(gtex.counts),
             nclus_vec=4, tol=0.1,
-             path_rda="../data/MouseDeng2014-topicFit.rda")
+             path_rda="../data/GTExV6Brain.FitGoM.rda")
 @ %def
 
 One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} as we do for a list of cluster numbers from $2$ to $7$ for Deng \textit{et al} 2014 data.
@@ -134,7 +134,7 @@ One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} 
 <<topic_fit_deng, eval=FALSE>>=
 StructureObj(t(deng.counts),
             nclus_vec=2:7, tol=0.1,
-             path_rda="../data/MouseDeng2014-topicFit.rda")
+             path_rda="../data/MouseDeng2014.FitGoM.rda")
 @ %def
 
 
@@ -144,10 +144,9 @@ StructureObj(t(deng.counts),
 Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al} 2014 data.
 
 <<plot_topic_deng_annot,eval=TRUE, warning=FALSE>>=
-
-MouseDeng2014.topicFit <- get(load("../data/MouseDeng2014-topicFit.rda"))
-names(MouseDeng2014.topicFit$clust_6)
-omega <- MouseDeng2014.topicFit$clust_6$omega
+data("MouseDeng2014.FitGoM")
+names(MouseDeng2014.FitGoM$clust_6)
+omega <- MouseDeng2014.FitGoM$clust_6$omega
 
 
 annotation <- data.frame(
@@ -186,9 +185,8 @@ In the above plot, the samples in each batch have been sorted by the proportiona
 Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 data for Brain samples .
 
 <<gtex_annot, eval=TRUE>>=
-omega <- read.table("../data/omega_cis_genes_brain_2.txt",
-                    header = TRUE, sep = " ",
-                    stringsAsFactors = FALSE)
+data("GTExV6Brain.FitGoM")
+omega <- GTExV6Brain.FitGoM$omega;
 dim(omega)
 colnames(omega) <- c(1:NCOL(omega))
 
@@ -229,7 +227,7 @@ StructureGGplot(omega = omega,
 We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package. We first perform the cluster annotations from the GoM model fit with \Robject{k}=$6$ on the single cell RNA-seq data due to Deng \textit{et al}
 
 <<extract_features_deng, eval=TRUE, warning=FALSE>>=
-theta_mat <- MouseDeng2014.topicFit$clust_6$theta;
+theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
 gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
@@ -262,7 +260,7 @@ xtable(gene_list[,1:5])
 We next perform the same for the topic model fit on the GTEx V6 Brain samples data with \Robject{k}=$4$ clusters.
 
 <<extract_features_gtex, eval=TRUE, warning=FALSE>>=
-theta_mat <- as.matrix(read.table("../data/theta_cis_genes_brain_2.txt"));
+theta_mat <- GTExV6Brain.FitGoM$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
 gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
@@ -379,14 +377,13 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
 <<topic_fit_jaitin, eval=FALSE, echo=TRUE>>=
 StructureObj(t(fcounts),
             nclus_vec=7, tol=0.1,
-             path_rda="../data/MouseJaitinSpleen-topicFit.rda")
+             path_rda="../data/MouseJaitinSpleen.FitGoM.rda")
 @ %def
 
 <<plot_topic_annot, eval=TRUE, echo=TRUE>>=
-#data(MouseJaitinSpleen-topicFit)
-MouseJaitinSpleen.topicFit <- readRDS("../data/MouseJaitinSpleen-topicFit.rds")
-names(MouseJaitinSpleen.topicFit$clust_7)
-omega <- MouseJaitinSpleen.topicFit$clust_7$omega
+data("MouseJaitinSpleen.FitGoM")
+names(MouseJaitinSpleen.FitGoM$clust_7)
+omega <- MouseJaitinSpleen.FitGoM$clust_7$omega
 
 amp_batch <- as.numeric(jaitin.meta_data_filtered[ , "amplification_batch"])
 annotation <- data.frame(
@@ -417,8 +414,8 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
 
 \clearpage
 
-<<batch_correct, eval=TRUE, echo=TRUE>>=
-batchcorrect.fcounts <- BatchCorrectedCounts(t(fcounts.filtered), amp_batch);
+<<batch_correct, eval=FALSE, echo=TRUE>>=
+batchcorrect.fcounts <- BatchCorrectedCounts(t(fcounts.filtered), amp_batch, use_parallel = TRUE);
 dim(batchcorrect.fcounts)
 @ %def
 

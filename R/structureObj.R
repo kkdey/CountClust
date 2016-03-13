@@ -3,7 +3,7 @@
 #' @param data counts data, with samples along the rows and features along the columns.
 #' @param nclus_vec the vector of clusters or topics to be fitted.
 #' @param tol the tolerance value for topic model fit (set to 0.001 as default)
-#' @param path The directory path where we want to save the data and Structure plots.
+#' @param path_rda The directory path where we want to save the data and Structure plots.
 
 #' @description This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or
 #' cluster to fit, along with sample metadata information and fits the topic model (due to Matt Taddy, check package

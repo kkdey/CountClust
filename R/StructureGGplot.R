@@ -28,14 +28,15 @@
 #'
 #' @return Plots the Structure plot visualization of the GoM model
 #'
+#' @export
+#'
 #' @examples
 #' # load the previously analyzed results
-#' load("../data/MouseDeng2014-topicFit.rda")
+#' data("MouseDeng2014.FitGoM")
 #'
 #' # extract the omega matrix: membership weights of each cell
-#' names(Topic_clus_list)
-#' str(Topic_clus_list$clust_6)
-#' omega <- Topic_clus_list$clust_6$omega
+#' names(MouseDeng2014.FitGoM$clust_6)
+#' omega <- MouseDeng2014.FitGoM$clust_6$omega
 #'
 #' # make annotation matrix
 #' annotation <- data.frame(
@@ -57,8 +58,9 @@
 #'                                   axis_ticks_lwd_x = .1,
 #'                                   axis_label_size = 7,
 #'                                   axis_label_face = "bold"))
-#' @export
 #'
+
+
 
 
 StructureGGplot <- function(omega, annotation,
@@ -74,6 +76,7 @@ StructureGGplot <- function(omega, annotation,
                                              axis_ticks_lwd_x = .1,
                                              axis_label_size = 3,
                                              axis_label_face = "bold") ) {
+
 
     # check if the number of colors is same as or more than the number of clusters
     if (dim(omega)[2] > length(palette)) {
@@ -121,11 +124,11 @@ StructureGGplot <- function(omega, annotation,
     df_mlt$topic <- factor(df_mlt$topic)
 
     # set blank background
-    theme_set(theme_bw(base_size = 12)) +
-        theme_update( panel.grid.minor.x = element_blank(),
-                      panel.grid.minor.y = element_blank(),
-                      panel.grid.major.x = element_blank(),
-                      panel.grid.major.y = element_blank() )
+    ggplot2::theme_set(ggplot2::theme_bw(base_size = 12)) +
+        ggplot2::theme_update( panel.grid.minor.x = ggplot2::element_blank(),
+                      panel.grid.minor.y = ggplot2::element_blank(),
+                      panel.grid.major.x = ggplot2::element_blank(),
+                      panel.grid.major.y = ggplot2::element_blank() )
 
     # inflat nubmers to avoid rounding errors
     value_ifl <- 10000
@@ -143,45 +146,45 @@ StructureGGplot <- function(omega, annotation,
     #cbind(tissue_breaks, cumsum(table(annotation$tissue_label)))
 
     # make ggplot
-    a <- ggplot(df_mlt,
-                aes(x = document, y = value*10000, fill = factor(topic)) ) +
-        xlab(yaxis_label) + ylab("") +
-        scale_fill_manual(values = palette) +
-        theme(legend.position = "right",
-              legend.key.size = unit(.2, "cm"),
-              legend.text = element_text(size = 5),
+    a <- ggplot2::ggplot(df_mlt,
+                ggplot2::aes(x = document, y = value*10000, fill = factor(topic)) ) +
+        ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
+        ggplot2::scale_fill_manual(values = palette) +
+        ggplot2::theme(legend.position = "right",
+              legend.key.size = ggplot2::unit(.2, "cm"),
+              legend.text = ggplot2::element_text(size = 5),
 ##<-- TBD: center legend title
 #              legend.title = element_text(hjust = 1),
-              axis.text = element_text(size = axis_tick$axis_label_size,
+              axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
                                        face = axis_tick$axis_label_face),
-              axis.ticks.y = element_line(size = axis_tick$axis_ticks_lwd_y),
-              axis.ticks.x = element_line(size = axis_tick$axis_ticks_lwd_x),
-              axis.ticks.length = unit(axis_tick$axis_ticks_length, "cm"),
-              title = element_text(size = 6) ) +
-        ggtitle(figure_title) +
-        scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
+              axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
+              axis.ticks.x = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_x),
+              axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
+              title = ggplot2::element_text(size = 6) ) +
+        ggplot2::ggtitle(figure_title) +
+        ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                             labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         # Add tissue axis labels
-        scale_x_discrete(breaks = levels(df_mlt$document)[tissue_breaks],
+        ggplot2::scale_x_discrete(breaks = levels(df_mlt$document)[tissue_breaks],
                          labels = names(tissue_breaks)) +
         # Add legend title
-        labs(fill = "Clusters") +
-        coord_flip()
+        ggplot2::labs(fill = "Clusters") +
+        ggplot2::coord_flip()
 
 
     # width = 1: increase bar width and in turn remove space
     # between bars
-    b <- a + geom_bar(stat = "identity",
+    b <- a + ggplot2::geom_bar(stat = "identity",
                       position = "stack",
                       width = 1)
-    b <- b + panel_border(remove = TRUE)
+    b <- b + cowplot::panel_border(remove = TRUE)
     # Add demarcation (TBI)
-    b <- b + geom_vline(
+    b <- b + ggplot2::geom_vline(
         xintercept = cumsum(table(droplevels(annotation$tissue_label)))[
             -length(table(droplevels(annotation$tissue_label)))],
         col = split_line$split_col,
         size = split_line$split_lwd)
-    b <- ggdraw(switch_axis_position((b), axis = "y"))
+    b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
     b
     # tidy up the figure output using cowplot::plot_grid (optoinal)
 #    cowplot::plot_grid(b)

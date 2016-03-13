@@ -11,12 +11,13 @@ Maintainer: Kushal K Dey <kkdey@uchicago.edu>
 Description: Takes any count table data as input, performs data preprocessing, and
     uses topic model clustering (due to `maptpx` package of Matt Taddy) and produces
     cluster visualization in the form of Structure plot representation.
+Depends: R(>= 2.10.0)
 License: GPL (>= 2)
 Imports:
-    ggplot2, cowplot, reshape2, limma, parallel
+    maptpx, slam, philentropy, cowplot, reshape2, limma
 LazyData: TRUE
-Encoding: ASCII
+Encoding: UTF-8
 Suggests:
-    knitr
+    gtools, knitr, ggplot2, plyr, RColorBrewer, parallel
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1

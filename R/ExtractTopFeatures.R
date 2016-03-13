@@ -15,11 +15,10 @@
 #' @author Kushal K Dey, Matthew Stephens
 #'
 #' @examples
-#' theta_mat <- MouseDeng2014.topicFit$clust_6$theta;
+#' data("MouseDeng2014.FitGoM")
+#' theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
 #' top_features <- ExtractTopFeatures(theta_mat, top_features=100,
 #'                                   method="poisson", options="min");
-#' gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
-#'                                   function(x) deng.gene_names[top_features[x,]]))
 #'
 #' @export
 
@@ -36,7 +35,7 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
   }
 
   if(method=="bernoulli"){
-    KL_score <- lapply(1:K, function(n) {
+    KL_score <- lapply(1:dim(theta)[2], function(n) {
       out <- t(apply(theta, 1, function(x){
         y=x[n] *log(x[n]/x) + (1 - x[n])*log((1-x[n])/(1-x));
         return(y)

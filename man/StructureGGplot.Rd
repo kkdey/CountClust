@@ -52,12 +52,11 @@ Make the traditional Structure histogram plot of GoM model using ggplot2
 }
 \examples{
 # load the previously analyzed results
-load("../data/MouseDeng2014-topicFit.rda")
+data("MouseDeng2014.FitGoM")
 
 # extract the omega matrix: membership weights of each cell
-names(Topic_clus_list)
-str(Topic_clus_list$clust_6)
-omega <- Topic_clus_list$clust_6$omega
+names(MouseDeng2014.FitGoM$clust_6)
+omega <- MouseDeng2014.FitGoM$clust_6$omega
 
 # make annotation matrix
 annotation <- data.frame(
@@ -79,5 +78,6 @@ StructureGGplot(omega = omega,
                                   axis_ticks_lwd_x = .1,
                                   axis_label_size = 7,
                                   axis_label_face = "bold"))
+
 }
 

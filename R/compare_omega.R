@@ -20,12 +20,11 @@
 #'            \item{cor.order_model2_topics}{re-ordering of the clusters for omega2 to match the clusters for omega1 based on correlation information}
 #'            \item{cor.information_content}{A measure based on correlation information to record how much information in omega2 is explained by omega1. Varies from 0 to 1}
 #' @examples
-#' library(gtools)
 #' T=10;
-#' omega1=matrix(rbind(rdirichlet(T*10,c(3,4,2,6)),rdirichlet(T*10,c(1,4,6,3)),
-#'                       rdirichlet(T*10,c(4,1,2,2)), nrow=3*10*T);
-#' omega2=matrix(rbind(rdirichlet(T*10,c(1,2,4,6)),rdirichlet(T*10,c(1,4,6,3)),
-#'                       rdirichlet(T*10,c(3,1,5,2)), nrow=3*10*T);
+#' omega1=matrix(rbind(gtools::rdirichlet(T*10,c(3,4,2,6)),gtools::rdirichlet(T*10,c(1,4,6,3)),
+#'                       gtools::rdirichlet(T*10,c(4,1,2,2)), nrow=3*10*T));
+#' omega2=matrix(rbind(gtools::rdirichlet(T*10,c(1,2,4,6)),gtools::rdirichlet(T*10,c(1,4,6,3)),
+#'                       gtools::rdirichlet(T*10,c(3,1,5,2)), nrow=3*10*T));
 #' out <- compare_omega(omega1, omega2)
 #'
 #' @export

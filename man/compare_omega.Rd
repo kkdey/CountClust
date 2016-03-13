@@ -29,12 +29,11 @@ Aids in checking for consistency in topic proportion patterns across multiple Go
 different types of feature sets.
 }
 \examples{
-library(gtools)
 T=10;
-omega1=matrix(rbind(rdirichlet(T*10,c(3,4,2,6)),rdirichlet(T*10,c(1,4,6,3)),
-                      rdirichlet(T*10,c(4,1,2,2)), nrow=3*10*T);
-omega2=matrix(rbind(rdirichlet(T*10,c(1,2,4,6)),rdirichlet(T*10,c(1,4,6,3)),
-                      rdirichlet(T*10,c(3,1,5,2)), nrow=3*10*T);
+omega1=matrix(rbind(gtools::rdirichlet(T*10,c(3,4,2,6)),gtools::rdirichlet(T*10,c(1,4,6,3)),
+                      gtools::rdirichlet(T*10,c(4,1,2,2)), nrow=3*10*T));
+omega2=matrix(rbind(gtools::rdirichlet(T*10,c(1,2,4,6)),gtools::rdirichlet(T*10,c(1,4,6,3)),
+                      gtools::rdirichlet(T*10,c(3,1,5,2)), nrow=3*10*T));
 out <- compare_omega(omega1, omega2)
 
 }

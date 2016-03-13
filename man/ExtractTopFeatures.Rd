@@ -26,11 +26,10 @@ This function uses relative expression profile of the GoM clusters for each feat
 a list of top features that drive the clusters.
 }
 \examples{
-theta_mat <- MouseDeng2014.topicFit$clust_6$theta;
+data("MouseDeng2014.FitGoM")
+theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                   method="poisson", options="min");
-gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
-                                  function(x) deng.gene_names[top_features[x,]]))
 
 }
 \author{

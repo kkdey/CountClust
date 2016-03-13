@@ -22,13 +22,15 @@ This function first converts counts data to log CPM data , then apply a linear m
 }
 \examples{
 N=500;
+K=4;
+G=100;
 Label.Batch=c(rep(1,N/4),rep(2,N/4),rep(3,N/4),rep(4,N/4));
-alpha_true=matrix(rnorm((K)*G,0.5,1),nrow=(K)); ### the matrix of fixed effects
+alpha_true=matrix(rnorm((K)*G,0.5,1),nrow=(K));
 library(gtools)
 T=10;
-omega_true=matrix(rbind(rdirichlet(T*10,c(3,4,2,6)),rdirichlet(T*10,c(1,4,6,3)),
-                      rdirichlet(T*10,c(4,1,2,2)),rdirichlet(T*10,c(2,6,3,2)),
-                      rdirichlet(T*10,c(3,3,5,4))), nrow=N);
+omega_true=matrix(rbind(gtools::rdirichlet(T*10,c(3,4,2,6)),gtools::rdirichlet(T*10,c(1,4,6,3)),
+                      gtools::rdirichlet(T*10,c(4,1,2,2)),gtools::rdirichlet(T*10,c(2,6,3,2)),
+                      gtools::rdirichlet(T*10,c(3,3,5,4))), nrow=N);
 B=max(Label.Batch);
 sigmab_true=2;
 beta_true=matrix(0,B,G);
@@ -40,11 +42,12 @@ read_counts=matrix(0,N,G);
 for(n in 1:N){
    for(g in 1:G)
      {
-        read_counts[n,]=rpois(1, omega_true[n,]\%*\%alpha_true[,g] + beta_true[Label.Batch[n],g];
+        read_counts[n,g]=rpois(1, omega_true[n,]\%*\%exp(alpha_true[,g]
+                                   + beta_true[Label.Batch[n],g]));
      }
  }
 
- batchcorrect.counts <- BatchCorrectedCounts(read_counts, Label.Batch);
+ batchcorrect.counts <- BatchCorrectedCounts(read_counts, Label.Batch, use_parallel=FALSE);
 
 }
 \author{

@@ -24,6 +24,9 @@ plot for i th metadata, no vertical line parititon between classes is used.}
 \item{control()}{A list of control parameters for the Structure plot. The control list has the arguments
 struct.width, struct.height, cex.axis, cex.main, lwd, las and color and margin parameters.}
 }
+\value{
+Returns a non-GGplot Structure plot visualization of GoM model.
+}
 \description{
 This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or
 cluster to fit, along with sample metadata information and fits the topic model (due to Matt Taddy, check package
