@@ -12,7 +12,7 @@ Description: Takes any count table data as input, performs data preprocessing, a
     uses topic model clustering (due to `maptpx` package of Matt Taddy) and produces
     cluster visualization in the form of Structure plot representation.
 Depends: 
-    R(>= 2.10.0),
+    R(>= 3.2.0),
     maptpx (>= 1.9-2),
 URL: https://github.com/kkdey/CountClust
 License: GPL (>= 2)
