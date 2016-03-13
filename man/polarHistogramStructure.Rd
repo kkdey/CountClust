@@ -11,24 +11,31 @@ polarHistogramStructure(df, family = NULL, columnNames = NULL,
   direction = "inwards", familyLabels = FALSE, normalised = TRUE, palette)
 }
 \arguments{
-\item{df}{A data.frame including columns of (family, item, score, value). family denotes
-phenotype, such as tissue type. item denotes sample lables, such as brain tissue no. 1.
-score denotes cluster memebership of each sample. value denotes cluster membership
-probabilities of each sample. famiy, item, and score vectors are required to be factor.}
+\item{df}{A data.frame including columns of (family, item, score, value). 
+family denotes phenotype, such as tissue type. item denotes 
+sample lables, such as brain tissue no. 1. Score denotes cluster 
+memebership of each sample. value denotes cluster membership
+probabilities of each sample. famiy, item, and score vectors 
+are required to be factor.}
 
 \item{outerRadius}{Length of the radius to the outer edge of the circle.}
 
-\item{guides}{A vector of values used for visual guides. Typically ranges between 0 to 100.}
+\item{guides}{A vector of values used for visual guides. Typically ranges 
+between 0 to 100.}
 
-\item{circleProportion}{Percent of the ciricle (in radius) to be used in plotting.}
+\item{circleProportion}{Percent of the ciricle (in radius) to be used in 
+plotting.}
 
 \item{palette}{A vector of colors for the clusters.}
 
 \item{Family}{A factor vector of phenotype for each sample. The level of the famliy vector determins
 the order of the samples in the}
 }
+\value{
+Returns a polar histogram.
+}
 \description{
-The core of this function is based on Christophe Ladroue's work in library(phenotypicForest)
+This function is adapted from Christophe Ladroue's work in library(phenotypicForest)
 (https://github.com/chrislad/phenotypicForest/blob/master/R/polarHistogram.R)
 }
 \examples{

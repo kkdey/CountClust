@@ -12,20 +12,24 @@ StructureGGplot(omega, annotation, palette = RColorBrewer::brewer.pal(8,
   axis_ticks_lwd_x = 0.1, axis_label_size = 3, axis_label_face = "bold"))
 }
 \arguments{
-\item{omega}{Cluster membership probabilities of each sample. Usually a sample by
-cluster matrix in the Topic model output. The cluster weights sum to 1
-for each sample.}
+\item{omega}{Cluster membership probabilities of each sample. Usually a 
+sample by cluster matrix in the Topic model output. The 
+cluster weights sum to 1 for each sample.}
 
-\item{annotation}{A data.frame of two columns: sample_id and tissue_label. sample_id
-is the unique identifying number of each sample (alphanumeric).
-tissue_lable is a factor of tissue labels, with levels of the factor
-arranged in the order of the tissues in the Structure (left to right).}
+\item{annotation}{A data.frame of two columns: sample_id and tissue_label. 
+sample_id is the unique identifying number of each 
+sample (alphanumeric). tissue_lable is a factor of 
+tissue labels, with levels of the factor arranged 
+in the order of the tissues in the Structure 
+(left to right).}
 
-\item{palette}{A vector of colors assigned to the clusters. First color in the vector
-is assigned to the cluster labeled as 1, and second color in the vector
-is assigned to the cluster labeled as 2, etc. The number of colors must be
-the same or greater than the number of clusters. The clusters not assigned
-a color are filled with white in the figure. In addition, the recommended
+\item{palette}{A vector of colors assigned to the clusters. First color 
+in the vector is assigned to the cluster labeled as 1, 
+and second color in the vector is assigned to the cluster 
+labeled as 2, etc. The number of colors must be the same 
+or greater than the number of clusters. The clusters not 
+assigned a color are filled with white in the figure. 
+In addition, the recommended
 choice of color palette here is RColorBrewer,
 for instance RColorBrewer::brewer.pal(8, "Accent") or
 RColorBrewwer::brewer.pal(9, "Set1").}
@@ -45,7 +49,7 @@ due to main cluster is in ascending or descending order.}
 \item{axis_tick}{Control parameters for x-axis and y-axis tick sizes.}
 }
 \value{
-Plots the Structure plot visualization of the GoM model
+A ggplot-version of the GoM model visualization
 }
 \description{
 Make the traditional Structure histogram plot of GoM model using ggplot2

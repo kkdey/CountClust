@@ -2,24 +2,28 @@
 % Please edit documentation in R/cg_topics.R
 \name{cg_topics}
 \alias{cg_topics}
-\title{The center of gravity of the clusters}
+\title{Compute the center of gravity of the clusters}
 \usage{
 cg_topics(theta, feature.comp)
 }
 \arguments{
-\item{theta}{The cluster probability distribution/theta matrix obtained from the GoM model fitting (it is a G x K matrix where G is number of features, K number of topics)}
+\item{theta}{The cluster probability distribution/theta matrix obtained 
+from the GoM model fitting (it is a G x K matrix where G is number 
+of features, K number of topics)}
 
-\item{feature.comp}{the numeric matrix (G x L) comprising of values for each feature g and feature metadata l.}
+\item{feature.comp}{the numeric matrix (G x L) comprising of values 
+for each feature g and feature metadata l.}
 }
 \value{
-Returns a matrix of cluster centers of gravity for the L feature metadata.
+Returns a matrix of cluster centers of gravity for the L 
+	feature metadata.
 }
 \description{
-This function computes the center of gravity for each cluster by taking weighted mean
- of each component of features where the weights are determined from the theta matrix of the topic model fit.
+This function computes the center of gravity for each cluster 
+	by taking weighted mean of each component of features where the weights 
+		are determined from the theta matrix of the topic model fit.
 }
 \examples{
-
 N=360;
 M=560;
 lat <- rep(1:N, M);

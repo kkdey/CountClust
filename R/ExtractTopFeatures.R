@@ -1,16 +1,25 @@
-#' @title extractTopFeatures- extracting top driving genes driving GoM clusters
+#' @title Extracting top driving genes driving GoM clusters
 #'
-#' @param theta The cluster probability distribution/theta matrix obtained from the GoM model fitting (it is a G x K matrix where G is number of features, K number of topics)
-#' @param top_features  The number of top features per cluster that drives away that cluster from others. Default value is 10
-#' @param method  The underlying model assumed for KL divergence measurement. Two choices considered- "bernoulli" and "poisson"
-#' @param options if "min", for each cluster k, we select features that maximize the minimum KL divergence of
-#'        cluster k against all other clusters for each feature. If "max", we select features  that maximize the
-#'        maximum KL divergence of cluster k against all other clusters for each feature.
+#' @description This function uses relative gene expression profile of the GoM 
+#'        clusters and applies a KL-divergence based method to 
+#'        obtain a list of top features that drive each of the clusters.
 #'
-#' @return A matrix (K x top_features) which tabulates in k th  row the top feature indices driving the cluster k.
+#' @param theta The cluster probability distribution/theta matrix obtained 
+#'                from the GoM model fitting (it is a G x K matrix where G is 
+#'                number of features, K number of topics).
+#' @param top_features  The number of top features per cluster that drives 
+#'                        away that cluster from others. Default value is 10.
+#' @param method  The underlying model assumed for KL divergence measurement. 
+#'                  Two choices considered are "bernoulli" and "poisson".
+#' @param options if "min", for each cluster k, we select features that 
+#'                  maximize the minimum KL divergence of cluster k against 
+#'                  all other clusters for each feature. If "max", we select 
+#'                  features  that maximize the maximum KL divergence of cluster 
+#'                  k against all other clusters for each feature.
 #'
-#' @description This function uses relative expression profile of the GoM clusters for each feature, and applies a KL divergence mechanism to obtain
-#' a list of top features that drive the clusters.
+#' @return A matrix (K x top_features) which tabulates in k-th row the 
+#'        top feature indices driving the cluster k.
+#'
 #'
 #' @examples
 #' data("MouseDeng2014.FitGoM")
@@ -20,7 +29,10 @@
 #'
 #' @export
 
-ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","bernoulli"), options=c("min", "max"))
+ExtractTopFeatures <- function(theta, 
+                               top_features = 10, 
+                               method = c("poisson","bernoulli"), 
+                               options=c("min", "max"))
 {
   if(method=="poisson") {
   KL_score <- lapply(1:dim(theta)[2], function(n) {
@@ -48,8 +60,10 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
     for(k in 1:dim(theta)[2])
     {
       temp_mat <- KL_score[[k]][,-k];
-      if(options=="min"){vec <- apply(as.matrix(temp_mat), 1, function(x) min(x))}
-      if(options=="max"){vec <- apply(as.matrix(temp_mat), 1, function(x) max(x))}
+      if(options=="min"){
+          vec <- apply(as.matrix(temp_mat), 1, function(x) min(x))}
+      if(options=="max"){
+          vec <- apply(as.matrix(temp_mat), 1, function(x) max(x))}
       #vec <- temp_mat;
       ordered_kl <- order(vec, decreasing = TRUE);
       counter <- 1
@@ -70,8 +84,10 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
     for(k in 1:dim(theta)[2])
     {
       temp_mat <- KL_score[[k]][,-k];
-      if(options=="min"){vec <- apply(temp_mat, 1, function(x) min(x))}
-      if(options=="max"){vec <- apply(temp_mat, 1, function(x) max(x))}
+      if(options=="min"){
+          vec <- apply(temp_mat, 1, function(x) min(x))}
+      if(options=="max"){
+          vec <- apply(temp_mat, 1, function(x) max(x))}
 
       ordered_kl <- order(vec, decreasing = TRUE);
       counter <- 1
@@ -81,7 +97,8 @@ ExtractTopFeatures <- function(theta, top_features=10, method=c("poisson","berno
         if(which.max(theta[ordered_kl[counter],])==k){
           indices_mat[k, flag] <- ordered_kl[counter];
           flag <- flag + 1;
-          counter <- counter + 1;}else{
+          counter <- counter + 1;
+          } else {
           counter <- counter + 1;
         }
       }

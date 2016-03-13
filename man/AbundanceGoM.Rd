@@ -8,6 +8,9 @@
 \usage{
 AbundanceGoM
 }
+\value{
+A list of GoM model output
+}
 \description{
 GoM model fit for abundance data
 }

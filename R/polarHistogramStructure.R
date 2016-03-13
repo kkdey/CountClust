@@ -1,35 +1,45 @@
 #' Polar histogram designed for STRUCTURE plots
 #' 
-#' The core of this function is based on Christophe Ladroue's work in library(phenotypicForest)
+#' This function is adapted from Christophe Ladroue's work in library(phenotypicForest)
 #' (https://github.com/chrislad/phenotypicForest/blob/master/R/polarHistogram.R)
 #'
-#' @param df A data.frame including columns of (family, item, score, value). family denotes
-#'           phenotype, such as tissue type. item denotes sample lables, such as brain tissue no. 1.
-#'           score denotes cluster memebership of each sample. value denotes cluster membership
-#'           probabilities of each sample. famiy, item, and score vectors are required to be factor.
-#' @param guides A vector of values used for visual guides. Typically ranges between 0 to 100.
+#' @param df A data.frame including columns of (family, item, score, value). 
+#'            family denotes phenotype, such as tissue type. item denotes 
+#'            sample lables, such as brain tissue no. 1. Score denotes cluster 
+#'            memebership of each sample. value denotes cluster membership
+#'            probabilities of each sample. famiy, item, and score vectors 
+#'            are required to be factor.
+#' @param guides A vector of values used for visual guides. Typically ranges 
+#'                  between 0 to 100.
 #' @param outerRadius Length of the radius to the outer edge of the circle.
-#' @param circleProportion Percent of the ciricle (in radius) to be used in plotting.
+#' @param circleProportion Percent of the ciricle (in radius) to be used in 
+#'                            plotting.
 #' @param palette A vector of colors for the clusters.
 #' @param Family A factor vector of phenotype for each sample. The level of the famliy vector determins
 #'               the order of the samples in the 
 #' 
+#' @return Returns a polar histogram. 
+#'
+#' @import plyr
+#' @import ggplot2
 #' @export
 #'
 #' @examples
 #' polarHistogramStructure()
-polarHistogramStructure <-function (df, family = NULL, columnNames = NULL, 
+polarHistogramStructure <-function (df, 
+                           family = NULL, 
+                           columnNames = NULL, 
                            binSize = 1,
                            spaceItem = 0.2, spaceFamily = 1.2, 
                            familyLabelDistance = 1.2,
                            innerRadius = 0.3, outerRadius = 1,
                            guides = c(10, 20, 40, 80), 
                            alphaStart = -0.3, circleProportion = 0.8,
-                           direction = "inwards", familyLabels = FALSE, normalised = TRUE,
+                           direction = "inwards", familyLabels = FALSE, 
+                           normalised = TRUE,
                            palette)
 {
     
-    require(ggplot2)
     if (!is.null(columnNames)) {
         namesColumn <- names(columnNames)
         names(namesColumn) <- columnNames
@@ -46,7 +56,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
     
     if (!is.null(family))
         df$family <- applyLookup(family, df$item)
-    df <- arrange(df, family, item, score)
+    df <- plyr::arrange(df, family, item, score)
     if(normalised)
         df <- ddply(df, .(family, item), transform, value = cumsum(value/(sum(value))))
     else {
@@ -65,7 +75,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
     df3$indexFamily <- cumsum(df3$indexFamily)
     df <- merge(df, df2, by = c("family", "item"))
     df <- merge(df, df3, by = "family")
-    df <- arrange(df, family, item, score)
+    df <- plyr::arrange(df, family, item, score)
     
     affine <- switch(direction,
                      inwards = function(y) (outerRadius - innerRadius) * y + innerRadius,
@@ -96,7 +106,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
     
     totalLength <- tail(df$xmin + binSize + spaceFamily, 1)/circleProportion - 0
     
-    p <- ggplot2::ggplot(df) + ggplot2::geom_rect(aes(xmin = xmin, xmax = xmax,
+    p <- ggplot(df) + geom_rect(aes(xmin = xmin, xmax = xmax,
                                     ymin = ymin, ymax = ymax, fill = score))
     readableAngle <- function(x) {
         angle <- x * (-360/totalLength) - alphaStart * 180/pi + 90
@@ -119,7 +129,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
 #     p <- p + geom_text(aes(x = x, label = item, angle = angle,
 #                            hjust = hjust), y = 1.02, size = 3, vjust = 0.5, data = dfItemLabels)
     
-    p <- p + ggplot2::geom_segment(aes(x = xmin, xend = xend, y = y, yend = y),
+    p <- p + geom_segment(aes(x = xmin, xend = xend, y = y, yend = y),
                           colour = "white", data = guidesDF)
     
     # add guide labels
@@ -132,7 +142,7 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
         guideLabels <- data.frame(x = 0, y = affine(1 - guides/maxFamily),
                                   label = paste(guides, " ", sep = ""))
     
-    p <- p + ggplot2::geom_text(aes(x = x, y = y, label = label), data = guideLabels,
+    p <- p + geom_text(aes(x = x, y = y, label = label), data = guideLabels,
                        angle = -alphaStart * 180/pi, hjust = 1, size = 4)
     if (familyLabels) {
         familyLabelsDF <- aggregate(xmin ~ family, data = df,
@@ -141,19 +151,19 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
             x <- xmin
             angle <- xmin * (-360/totalLength) - alphaStart * 180/pi
         })
-        p <- p + ggplot2::geom_text(aes(x = x, label = family, angle = angle),
+        p <- p + geom_text(aes(x = x, label = family, angle = angle),
                            data = familyLabelsDF, y = familyLabelDistance)
     }
     
-    p <- p + ggplot2::theme(panel.background = element_blank(), axis.title.x = element_blank(),
+    p <- p + theme(panel.background = element_blank(), axis.title.x = element_blank(),
                    axis.title.y = element_blank(), panel.grid.major = element_blank(),
                    panel.grid.minor = element_blank(), axis.text.x = element_blank(),
                    axis.text.y = element_blank(), axis.ticks = element_blank())
     
-    p <- p + ggplot2::xlim(0, tail(df$xmin + binSize + spaceFamily, 1)/circleProportion)
-    p <- p + ggplot2::ylim(0, outerRadius + 0.2)
-    p <- p + ggplot2::coord_polar(start = alphaStart)
+    p <- p + xlim(0, tail(df$xmin + binSize + spaceFamily, 1)/circleProportion)
+    p <- p + ylim(0, outerRadius + 0.2)
+    p <- p + coord_polar(start = alphaStart)
     #    p <- p + scale_fill_brewer(palette = "Set1", type = "qual")
-    p <- p + ggplot2::scale_fill_manual(values = palette)
+    p <- p + scale_fill_manual(values = palette)
     p
 }
