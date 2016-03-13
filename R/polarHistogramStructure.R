@@ -29,12 +29,11 @@ polarHistogramStructure <-function (df, family = NULL, columnNames = NULL,
                            palette)
 {
     
-    library(plyr)
-    library(ggplot2)
+    require(ggplot2)
     if (!is.null(columnNames)) {
         namesColumn <- names(columnNames)
         names(namesColumn) <- columnNames
-        df <- rename(df, namesColumn)
+        df <- plyr::rename(df, namesColumn)
     }
     
     applyLookup <- function(groups, keys, unassigned = "unassigned") {
