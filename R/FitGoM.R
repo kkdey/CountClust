@@ -31,11 +31,12 @@
 
 
 
-FitGoM <- function(data, K, tol, path_rda=NULL, shape=NULL, control=list())
+FitGoM <- function(data, K, tol, path_rda=NULL, control=list())
 {
   ## dealing with blank rows: we first remove them
 
-  control.default <- list(shape=NULL, initopics=NULL, bf=FALSE, kill=2, ord=TRUE, verb=1)
+  control.default <- list(shape=NULL, initopics=NULL, bf=FALSE,
+                          kill=2, ord=TRUE, verb=1)
 
   namc=names(control)
   if (!all(namc %in% names(control.default)))
@@ -53,7 +54,7 @@ FitGoM <- function(data, K, tol, path_rda=NULL, shape=NULL, control=list())
 
   Topic_clus_list <- lapply(K, function(per_clust) {
     suppressWarnings(out <- maptpx::topics(as.matrix(data), K = per_clust, control$shape, control$initopics, tol,
-                                           control$bf, control$ill, control$ord, control$verb))
+                                           control$bf, control$kill, control$ord, control$verb))
     return(out)
   })
 

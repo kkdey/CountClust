@@ -104,25 +104,35 @@ Many software packages available for document clustering are applicable to model
 
 \section{\CountClust{} Installation}
 
-\CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{slam},  \CRANpkg{ggplot2}, \CRANpkg{cowplot},\CRANpkg{parallel} along with the \Bioconductor{} package: \Biocpkg{limma}.
-
-Installing \CountClust{} from \Bioconductor{} will install all these dependencies:
+\CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{slam},  \CRANpkg{ggplot2}, \CRANpkg{cowplot},\CRANpkg{parallel}, \CRANpkg{reshape2}, \CRANpkg{RColorBrewer},
+\CRANpkg{devtools} along with the \Bioconductor{} package: \Biocpkg{limma}.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{source}\hlstd{(}\hlstr{"http://bioconductor.org/biocLite.R"}\hlstd{)}
-\hlkwd{biocLite}\hlstd{(}\hlstr{"CountClust"}\hlstd{)}
+\hlkwd{install.packages}\hlstd{(}\hlstr{"CountClust"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-For installing the working version of this package and loading the data required for this vignette, we use CRAN-R package \CRANpkg{devtools}.
+For the latest updated version of the package \begin{verb} maptpx \end{verb} package (with some bug fixes from the CRAN version), we recommend the user to install the Github version. The user also needs to install the R package \begin{verb} philentropy \end{verb} from Github.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
+\hlkwd{install_github}\hlstd{(}\hlstr{"TaddyLab/maptpx"}\hlstd{)}
+\hlkwd{install_github}\hlstd{(}\hlstr{"HajkD/philentropy"}\hlstd{,}
+               \hlkwc{build_vignettes} \hlstd{=} \hlnum{TRUE}\hlstd{,}   \hlkwc{dependencies} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The working version of the \CountClust{} package is available on Github, along with the data packages used as examples in this vignette.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/CountClust'}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -140,7 +150,11 @@ Then load the package with:
 
 \section{Data Preparation}
 
-We install the data packages as \begin{verb} expressionSet \end{verb} objects for bulk-RNA reads data from GTEx (Genotype Tissue Expression) V6 Project Brain tissue samples \cite{GTEX2013} and a singlecell-RNA reads data due to Deng \textit{et al} 2014 \cite{Deng2014}.
+We install data packages as \begin{verb} expressionSet \end{verb} objects for bulk RNA-seq reads data from Brain tissue samples of human donors under GTEx (Genotype Tissue Expression) V6 Project  \cite{GTEX2013} and a singlecell RNA-seq reads data across developmental stages in mouse embryo due to Deng \textit{et al} 2014 \cite{Deng2014}.
+
+The data package due to Deng \textit{et al} is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
+
+The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
 
 \begin{knitrout}
@@ -576,6 +590,9 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
 \end{kframe}
 \end{knitrout}
 
+\section{Acknowledgements}
+
+We would like to thank Deng \textit{et al} and the GTEx Consortium for having making the data publicly available. We would like to thank Matt Taddy, Amos Tanay, Po Yuan Tung and Raman Shah for helpful discussions related to the project and the package.
 
 \section{Session Info}
 

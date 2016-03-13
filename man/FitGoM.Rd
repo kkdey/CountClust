@@ -4,7 +4,7 @@
 \alias{FitGoM}
 \title{Grade of Membership (GoM) model fit !}
 \usage{
-FitGoM(data, K, tol, path_rda = NULL, shape = NULL, control = list())
+FitGoM(data, K, tol, path_rda = NULL, control = list())
 }
 \arguments{
 \item{data}{counts data, with samples along the rows and features along the columns.}
