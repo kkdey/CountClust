@@ -23,7 +23,6 @@ Imports:
     ggplot2,
     limma,
     parallel,
-    philentropy,
     RColorBrewer,
     reshape2
 Suggests:
