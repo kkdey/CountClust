@@ -7,22 +7,29 @@
 FitGoM(data, K, tol, path_rda = NULL, control = list())
 }
 \arguments{
-\item{data}{counts data, with samples along the rows and features along the columns.}
+\item{data}{counts data, with samples along the rows and features 
+along the columns.}
 
 \item{K}{the vector of clusters or topics to be fitted.}
 
-\item{tol}{the tolerance value for GoM model log posterior increase at successive iterations (set to 0.1 as default)}
+\item{tol}{Tolerance value for GoM model log posterior increase 
+at successive iterations (set to 0.1 as default).}
 
-\item{path_rda}{The directory path for saving the GoM model output. If NULL, it will return the output to console.}
+\item{path_rda}{The directory path for saving the GoM model output. 
+If NULL, it will return the output to console.}
 
-\item{control}{The control parameters as in topics() function of maptpx package.}
+\item{control}{Control parameters. Same as topics() function of 
+maptpx package.}
 }
 \value{
-Saves the GoM model fit output for each cluster in vector K at the directory path in path_rda.
+Saves the GoM model fit output for each cluster in vector K at the 
+               directory path in path_rda.
 }
 \description{
-This function takes the counts data (no. of samples x no. of features) and the value of K, the number of topics or
-cluster to fit, fits the GoM model (using topics() function of maptpx package) and saves the model fit putput
+Fits a grade of membership model to count data. Default input
+               includes a sample-by-feature matrix, the number of clusters (topics) 
+               to fit (K). The function is a wrapper of the topics() function 
+               implemented in Matt Taddy's maptpx pacakge.
 }
 \examples{
 
@@ -35,10 +42,12 @@ FitGoM(ex.counts,
            K=4, tol=1000, control=list(kill=1))
 }
 \references{
-Matt Taddy.On Estimation and Selection for Topic Models. AISTATS 2012, JMLR W\&CP 22.
+Matt Taddy. On Estimation and Selection for Topic Models. 
+               AISTATS 2012, JMLR W\&CP 22.
 
-           Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly. Inference of population structure using multilocus genotype data.
-           Genetics 155.2 (2000): 945-959.
+           Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly. 
+               Inference of population structure using multilocus genotype 
+               data. Genetics 155.2 (2000): 945-959.
 }
 \keyword{Structure}
 \keyword{clustering,}

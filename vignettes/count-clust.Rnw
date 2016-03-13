@@ -98,7 +98,7 @@ The data package due to Deng \textit{et al} is a processed version of the data p
 The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
 
-<<data_install, eval=FALSE>>=
+<<data_install, eval=TRUE>>=
 library(devtools)
 install_github('kkdey/singleCellRNASeqMouseDeng2014')
 install_github('kkdey/GTExV6Brain')
