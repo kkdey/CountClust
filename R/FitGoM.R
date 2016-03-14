@@ -45,7 +45,6 @@ FitGoM <- function(data,
                    K,
                    tol,
                    path_rda = NULL,
-                   shape = NULL,
                    control=list())
 {
   ## dealing with blank rows: we first remove them

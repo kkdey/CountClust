@@ -98,7 +98,7 @@ The data package due to Deng \textit{et al} is a processed version of the data p
 The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
 
-<<data_install, eval=TRUE>>=
+<<data_install, eval=FALSE>>=
 library(devtools)
 install_github('kkdey/singleCellRNASeqMouseDeng2014')
 install_github('kkdey/GTExV6Brain')
@@ -108,7 +108,7 @@ install_github('kkdey/GTExV6Brain')
 
 Load the scRNA-seq data due to Deng \textit{et al} 2014.
 
-<<data_load_deng, eval=TRUE>>=
+<<data_load_deng, eval=FALSE>>=
 library(singleCellRNASeqMouseDeng2014)
 deng.counts <- exprs(Deng2014MouseESC)
 deng.meta_data <- pData(Deng2014MouseESC)
@@ -119,7 +119,7 @@ deng.gene_names <- rownames(deng.counts)
 
 Load the bulk-RNA seq data from GTEx V6 brain data.
 
-<<data_load_gtex, eval=TRUE>>=
+<<data_load_gtex, eval=FALSE>>=
 library(GTExV6Brain)
 gtex.counts <- exprs(GTExV6Brain)
 gtex.meta_data <- pData(GTExV6Brain)
@@ -153,7 +153,7 @@ FitGoM(t(deng.counts),
 
 Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al} 2014 data.
 
-<<plot_topic_deng_annot,eval=TRUE, warning=FALSE>>=
+<<plot_topic_deng_annot,eval=FALSE, warning=FALSE>>=
 data("MouseDeng2014.FitGoM")
 names(MouseDeng2014.FitGoM$clust_6)
 omega <- MouseDeng2014.FitGoM$clust_6$omega
@@ -171,9 +171,8 @@ annotation <- data.frame(
 rownames(omega) <- annotation$sample_id;
 @ %def
 
-\begin{figure}[h]
-\begin{center}
-<<plot_topic_deng,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+
+<<plot_topic_deng,eval=FALSE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(8, "Accent"),
@@ -187,6 +186,10 @@ StructureGGplot(omega = omega,
 
 
 @ %def
+
+\begin{figure}[htp]
+\begin{center}
+\includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1}
 \end{center}
 \end{figure}
 
@@ -194,7 +197,7 @@ In the above plot, the samples in each batch have been sorted by the proportiona
 
 Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 data for Brain samples .
 
-<<gtex_annot, eval=TRUE>>=
+<<gtex_annot, eval=FALSE>>=
 data("GTExV6Brain.FitGoM")
 omega <- GTExV6Brain.FitGoM$omega;
 dim(omega)
@@ -211,9 +214,8 @@ annotation <- data.frame(
 cols <- c("blue", "darkgoldenrod1", "cyan", "red")
 @ %def
 
-\begin{figure}[htp]
-\begin{center}
-<<plot_topic_gtex,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=5, fig.height=7, out.width="5in", out.height="7in">>=
+
+<<plot_topic_gtex,eval=FALSE, warning=FALSE, fig.show="asis", dpi=144, fig.width=5, fig.height=7, out.width="5in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation= annotation,
                 palette = cols,
@@ -227,6 +229,11 @@ StructureGGplot(omega = omega,
                                  axis_label_size = 7,
                                  axis_label_face = "bold"))
 @ %def
+
+
+\begin{figure}[htp]
+\begin{center}
+\includegraphics[width=4in,height=6in]{figure/gtex_annot-1}
 \end{center}
 \end{figure}
 
@@ -236,7 +243,7 @@ StructureGGplot(omega = omega,
 
 We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package. We first perform the cluster annotations from the GoM model fit with \Robject{k}=$6$ on the single cell RNA-seq data due to Deng \textit{et al}
 
-<<extract_features_deng, eval=TRUE, warning=FALSE>>=
+<<extract_features_deng, eval=FALSE, warning=FALSE>>=
 theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
@@ -269,7 +276,7 @@ xtable(gene_list[,1:5])
 
 We next perform the same for the topic model fit on the GTEx V6 Brain samples data with \Robject{k}=$4$ clusters.
 
-<<extract_features_gtex, eval=TRUE, warning=FALSE>>=
+<<extract_features_gtex, eval=FALSE, warning=FALSE>>=
 theta_mat <- GTExV6Brain.FitGoM$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
@@ -350,7 +357,7 @@ We first install and load the data.
 devtools::install_github('jhsiao999/singleCellRNASeqMouseJaitinSpleen')
 @ %def
 
-<<data_load_jaitin, echo=TRUE, eval=TRUE>>=
+<<data_load_jaitin, echo=TRUE, eval=FALSE>>=
 library(singleCellRNASeqMouseJaitinSpleen)
 jaitin.counts <- exprs(MouseJaitinSpleen)
 jaitin.meta_data <- pData(MouseJaitinSpleen)
@@ -359,7 +366,7 @@ jaitin.gene_names <- rownames(jaitin.counts)
 
 Extracting the non-ERCC genes satisfying some quality measures.
 
-<<non_ercc, eval=TRUE, echo=TRUE>>=
+<<non_ercc, eval=FALSE, echo=TRUE>>=
 ENSG_genes_index <- grep("ERCC", jaitin.gene_names, invert = TRUE)
 jaitin.counts_ensg <- jaitin.counts[ENSG_genes_index, ]
 filter_genes <- c("M34473","abParts","M13680","Tmsb4x",
@@ -378,7 +385,7 @@ fcounts.filtered <- fcounts[,filter_sample_index];
 
 We filter the metadata likewise
 
-<<metadata, eval=TRUE, echo=TRUE>>=
+<<metadata, eval=FALSE, echo=TRUE>>=
 jaitin.meta_data_filtered <- jaitin.meta_data[filter_sample_index, ]
 @ %def
 
@@ -390,7 +397,7 @@ StructureObj(t(fcounts),
              path_rda="../data/MouseJaitinSpleen.FitGoM.rda")
 @ %def
 
-<<plot_topic_annot, eval=TRUE, echo=TRUE>>=
+<<plot_topic_annot, eval=FALSE, echo=TRUE>>=
 data("MouseJaitinSpleen.FitGoM")
 names(MouseJaitinSpleen.FitGoM$clust_7)
 omega <- MouseJaitinSpleen.FitGoM$clust_7$omega
@@ -402,9 +409,8 @@ annotation <- data.frame(
                           levels = rev(sort(unique(amp_batch))) ) )
 @ %def
 
-\begin{figure}[htp]
-\begin{center}
-<<plot_topic, eval=TRUE, echo=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+
+<<plot_topic, eval=FALSE, echo=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -417,6 +423,10 @@ StructureGGplot(omega = omega,
                                  axis_label_face = "bold"))
 
 @ %def
+
+\begin{figure}[htp]
+\begin{center}
+\includegraphics[width=3in,height=7in]{figure/plot_topic_2-1}
 \end{center}
 \end{figure}
 

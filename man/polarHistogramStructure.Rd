@@ -11,19 +11,19 @@ polarHistogramStructure(df, family = NULL, columnNames = NULL,
   direction = "inwards", familyLabels = FALSE, normalised = TRUE, palette)
 }
 \arguments{
-\item{df}{A data.frame including columns of (family, item, score, value). 
-family denotes phenotype, such as tissue type. item denotes 
-sample lables, such as brain tissue no. 1. Score denotes cluster 
+\item{df}{A data.frame including columns of (family, item, score, value).
+family denotes phenotype, such as tissue type. item denotes
+sample lables, such as brain tissue no. 1. Score denotes cluster
 memebership of each sample. value denotes cluster membership
-probabilities of each sample. famiy, item, and score vectors 
+probabilities of each sample. famiy, item, and score vectors
 are required to be factor.}
 
 \item{outerRadius}{Length of the radius to the outer edge of the circle.}
 
-\item{guides}{A vector of values used for visual guides. Typically ranges 
+\item{guides}{A vector of values used for visual guides. Typically ranges
 between 0 to 100.}
 
-\item{circleProportion}{Percent of the ciricle (in radius) to be used in 
+\item{circleProportion}{Percent of the ciricle (in radius) to be used in
 plotting.}
 
 \item{palette}{A vector of colors for the clusters.}

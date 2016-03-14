@@ -2,22 +2,18 @@
 #'
 #' Make the traditional Structure histogram plot of GoM model using ggplot2
 #'
-#' @param omega Cluster membership probabilities of each sample. Usually a 
-#'              sample by cluster matrix in the Topic model output. The 
-#'              cluster weights sum to 1 for each sample.
-#' @param annotation A data.frame of two columns: sample_id and tissue_label. 
-#'                    sample_id is the unique identifying number of each 
-#'                    sample (alphanumeric). tissue_lable is a factor of 
-#'                    tissue labels, with levels of the factor arranged 
-#'                    in the order of the tissues in the Structure 
-#'                    (left to right).
-#' @param palette A vector of colors assigned to the clusters. First color 
-#'                in the vector is assigned to the cluster labeled as 1, 
-#'                and second color in the vector is assigned to the cluster 
-#'                labeled as 2, etc. The number of colors must be the same 
-#'                or greater than the number of clusters. The clusters not 
-#'                assigned a color are filled with white in the figure. 
-#'                In addition, the recommended
+#' @param omega Cluster membership probabilities of each sample. Usually a sample by
+#'              cluster matrix in the Topic model output. The cluster weights sum to 1
+#'              for each sample.
+#' @param annotation A data.frame of two columns: sample_id and tissue_label. sample_id
+#'                  is the unique identifying number of each sample (alphanumeric).
+#'                  tissue_lable is a factor of tissue labels, with levels of the factor
+#'                  arranged in the order of the tissues in the Structure (left to right).
+#' @param palette A vector of colors assigned to the clusters. First color in the vector
+#'                is assigned to the cluster labeled as 1, and second color in the vector
+#'                is assigned to the cluster labeled as 2, etc. The number of colors must be
+#'                the same or greater than the number of clusters. The clusters not assigned
+#'                a color are filled with white in the figure. In addition, the recommended
 #'                choice of color palette here is RColorBrewer,
 #'                for instance RColorBrewer::brewer.pal(8, "Accent") or
 #'                RColorBrewwer::brewer.pal(9, "Set1").
@@ -30,12 +26,8 @@
 #' @param split_line Control parameters for line splitting the batches in the plot.
 #' @param axis_tick Control parameters for x-axis and y-axis tick sizes.
 #'
-#' @return A ggplot-version of the GoM model visualization
+#' @return Plots the Structure plot visualization of the GoM model
 #'
-#' @import cowplot
-#' @import reshape2
-#' @import plyr
-#' @import RColorBrewer
 #' @export
 #'
 #' @examples
@@ -132,11 +124,11 @@ StructureGGplot <- function(omega, annotation,
     df_mlt$topic <- factor(df_mlt$topic)
 
     # set blank background
-    theme_set(theme_bw(base_size = 12)) +
-        theme_update( panel.grid.minor.x = element_blank(),
-                      panel.grid.minor.y = element_blank(),
-                      panel.grid.major.x = element_blank(),
-                      panel.grid.major.y = element_blank() )
+    ggplot2::theme_set(ggplot2::theme_bw(base_size = 12)) +
+        ggplot2::theme_update( panel.grid.minor.x = ggplot2::element_blank(),
+                      panel.grid.minor.y = ggplot2::element_blank(),
+                      panel.grid.major.x = ggplot2::element_blank(),
+                      panel.grid.major.y = ggplot2::element_blank() )
 
     # inflat nubmers to avoid rounding errors
     value_ifl <- 10000
@@ -154,40 +146,40 @@ StructureGGplot <- function(omega, annotation,
     #cbind(tissue_breaks, cumsum(table(annotation$tissue_label)))
 
     # make ggplot
-    a <- ggplot(df_mlt,
-                aes(x = df_mlt$document, y = df_mlt$value*10000, fill = factor(df_mlt$topic)) ) +
-        xlab(yaxis_label) + ylab("") +
-        scale_fill_manual(values = palette) +
-        theme(legend.position = "right",
-              legend.key.size = unit(.2, "cm"),
-              legend.text = element_text(size = 5),
+    a <- ggplot2::ggplot(df_mlt,
+                ggplot2::aes(x = df_mlt$document, y = df_mlt$value*10000, fill = factor(df_mlt$topic)) ) +
+        ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
+        ggplot2::scale_fill_manual(values = palette) +
+        ggplot2::theme(legend.position = "right",
+              legend.key.size = ggplot2::unit(.2, "cm"),
+              legend.text = ggplot2::element_text(size = 5),
 ##<-- TBD: center legend title
 #              legend.title = element_text(hjust = 1),
-              axis.text = element_text(size = axis_tick$axis_label_size,
+              axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
                                        face = axis_tick$axis_label_face),
-              axis.ticks.y = element_line(size = axis_tick$axis_ticks_lwd_y),
-              axis.ticks.x = element_line(size = axis_tick$axis_ticks_lwd_x),
-              axis.ticks.length = unit(axis_tick$axis_ticks_length, "cm"),
-              title = element_text(size = 6) ) +
-        ggtitle(figure_title) +
-        scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
+              axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
+              axis.ticks.x = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_x),
+              axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
+              title = ggplot2::element_text(size = 6) ) +
+        ggplot2::ggtitle(figure_title) +
+        ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                             labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         # Add tissue axis labels
-        scale_x_discrete(breaks = levels(df_mlt$document)[tissue_breaks],
+        ggplot2::scale_x_discrete(breaks = levels(df_mlt$document)[tissue_breaks],
                          labels = names(tissue_breaks)) +
         # Add legend title
-        labs(fill = "Clusters") +
-        coord_flip()
+        ggplot2::labs(fill = "Clusters") +
+        ggplot2::coord_flip()
 
 
     # width = 1: increase bar width and in turn remove space
     # between bars
-    b <- a + geom_bar(stat = "identity",
+    b <- a + ggplot2::geom_bar(stat = "identity",
                       position = "stack",
                       width = 1)
     b <- b + cowplot::panel_border(remove = TRUE)
     # Add demarcation (TBI)
-    b <- b + geom_vline(
+    b <- b + ggplot2::geom_vline(
         xintercept = cumsum(table(droplevels(annotation$tissue_label)))[
             -length(table(droplevels(annotation$tissue_label)))],
         col = split_line$split_col,

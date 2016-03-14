@@ -7,28 +7,28 @@
 FitGoM(data, K, tol, path_rda = NULL, control = list())
 }
 \arguments{
-\item{data}{counts data, with samples along the rows and features 
+\item{data}{counts data, with samples along the rows and features
 along the columns.}
 
 \item{K}{the vector of clusters or topics to be fitted.}
 
-\item{tol}{Tolerance value for GoM model log posterior increase 
+\item{tol}{Tolerance value for GoM model log posterior increase
 at successive iterations (set to 0.1 as default).}
 
-\item{path_rda}{The directory path for saving the GoM model output. 
+\item{path_rda}{The directory path for saving the GoM model output.
 If NULL, it will return the output to console.}
 
-\item{control}{Control parameters. Same as topics() function of 
+\item{control}{Control parameters. Same as topics() function of
 maptpx package.}
 }
 \value{
-Saves the GoM model fit output for each cluster in vector K at the 
+Saves the GoM model fit output for each cluster in vector K at the
                directory path in path_rda.
 }
 \description{
 Fits a grade of membership model to count data. Default input
-               includes a sample-by-feature matrix, the number of clusters (topics) 
-               to fit (K). The function is a wrapper of the topics() function 
+               includes a sample-by-feature matrix, the number of clusters (topics)
+               to fit (K). The function is a wrapper of the topics() function
                implemented in Matt Taddy's maptpx pacakge.
 }
 \examples{
@@ -42,11 +42,11 @@ FitGoM(ex.counts,
            K=4, tol=1000, control=list(kill=1))
 }
 \references{
-Matt Taddy. On Estimation and Selection for Topic Models. 
+Matt Taddy. On Estimation and Selection for Topic Models.
                AISTATS 2012, JMLR W\&CP 22.
 
-           Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly. 
-               Inference of population structure using multilocus genotype 
+           Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.
+               Inference of population structure using multilocus genotype
                data. Genetics 155.2 (2000): 945-959.
 }
 \keyword{Structure}
