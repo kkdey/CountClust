@@ -36,10 +36,10 @@
 #' tt=10;
 #' omega1=matrix(rbind(gtools::rdirichlet(tt*10,c(3,4,2,6)),
 #'                      gtools::rdirichlet(tt*10,c(1,4,6,3)),
-#'                       gtools::rdirichlet(tt*10,c(4,1,2,2)), nrow=3*10*tt));
+#'                       gtools::rdirichlet(tt*10,c(4,1,2,2))), nrow=3*10*tt);
 #' omega2=matrix(rbind(gtools::rdirichlet(tt*10,c(1,2,4,6)),
 #'                        gtools::rdirichlet(tt*10,c(1,4,6,3)),
-#'                       gtools::rdirichlet(tt*10,c(3,1,5,2)), nrow=3*10*tt));
+#'                       gtools::rdirichlet(tt*10,c(3,1,5,2))), nrow=3*10*tt);
 #' out <- compare_omega(omega1, omega2)
 #'
 #' @import gtools
@@ -55,10 +55,8 @@ compare_omega <- function(omega1, omega2)
     {
       for(n in 1:dim(omega2)[2])
       {
-        kl.out[m,n] <- 0.5* philentropy::distance(t(cbind(omega1[,m], omega2[,n])),
-          method="kullback-leibler") + 0.5* philentropy::distance(t(cbind(omega2[,n],
-          omega1[,m])),
-          method="kullback-leibler") ;
+        KLdiv.mat <- flexmix::KLdiv(as.matrix(cbind(omega1[,m],omega2[,n])));
+        kl.out[m,n] <- 0.5* (KLdiv.mat[1,2]+ KLdiv.mat[2,1]);
       }
     }
 

@@ -45,10 +45,10 @@ This function computes a re-ordering of the clusters from GoM
 tt=10;
 omega1=matrix(rbind(gtools::rdirichlet(tt*10,c(3,4,2,6)),
                      gtools::rdirichlet(tt*10,c(1,4,6,3)),
-                      gtools::rdirichlet(tt*10,c(4,1,2,2)), nrow=3*10*tt));
+                      gtools::rdirichlet(tt*10,c(4,1,2,2))), nrow=3*10*tt);
 omega2=matrix(rbind(gtools::rdirichlet(tt*10,c(1,2,4,6)),
                        gtools::rdirichlet(tt*10,c(1,4,6,3)),
-                      gtools::rdirichlet(tt*10,c(3,1,5,2)), nrow=3*10*tt));
+                      gtools::rdirichlet(tt*10,c(3,1,5,2))), nrow=3*10*tt);
 out <- compare_omega(omega1, omega2)
 
 }

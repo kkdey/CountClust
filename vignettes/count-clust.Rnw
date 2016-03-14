@@ -57,24 +57,21 @@ options(digits=3, width=80, prompt=" ", continue=" ")
 In the context of RNA-seq expression (bulk or singlecell seq) data, the grade of membership model allows each sample (usually a tissue sample or a single cell) to have some proportion of its RNA-seq reads coming from each cluster. For typical bulk RNA-seq experiments this assumption
 can be argued as follows: each tissue sample is a mixture of different cell types, and so clusters could represent cell types (which are determined by the expression patterns of the genes), and the membership of a sample in each cluster could represent the proportions of each cell type present in that sample.
 
-Many software packages available for document clustering are applicable to modeling RNA-seq data. Here, we use the R package {\tt maptpx} \cite{Taddy2012} to fit these models, and we add functionality for visualizing the results and annotating clusters by their most distinctive genes to help biological interpretation. We also provide additional functionality to correct for batch effects and also compare the outputs from two different grade of membership model fits to the same set of samples but different in terms of feature description or model assumptions.
+Many software packages available for document clustering are applicable to modeling RNA-seq data. Here, we use the R package {\tt maptpx} \cite{Taddy2012} to fit these models, and add functionality for visualizing the results and annotating clusters by their most distinctive genes to help biological interpretation. We also provide additional functionality to correct for batch effects and also compare the outputs from two different grade of membership model fits to the same set of samples but different in terms of feature description or model assumptions.
 
 \section{\CountClust{} Installation}
 
-\CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{slam},  \CRANpkg{ggplot2}, \CRANpkg{cowplot},\CRANpkg{parallel}, \CRANpkg{reshape2}, \CRANpkg{RColorBrewer},
-\CRANpkg{devtools} along with the \Bioconductor{} package: \Biocpkg{limma}.
+\CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{ggplot2}, \CRANpkg{cowplot}, \CRANpkg{parallel}, \CRANpkg{reshape2}, \CRANpkg{RColorBrewer}, \CRANpkg{flexmix}, \CRANpkg{gtools}, \CRANpkg{devtools} along with the \Bioconductor{} package: \Biocpkg{limma}.
 
 <<install_countclust_cran, eval=FALSE>>=
 install.packages("CountClust")
 @ %def
 
-For the latest updated version of the package \begin{verb} maptpx \end{verb} package (with some bug fixes from the CRAN version), we recommend the user to install the Github version. The user also needs to install the R package \begin{verb} philentropy \end{verb} from Github.
+For the latest updated version of the package \begin{verb} maptpx \end{verb} package (with some bug fixes from the CRAN version), we recommend the user to install the Github version.
 
 <<install_github, eval=FALSE>>=
 library(devtools)
 install_github("TaddyLab/maptpx")
-install_github("HajkD/philentropy",
-               build_vignettes = TRUE,   dependencies = TRUE)
 @
 
 The working version of the \CountClust{} package is available on Github, along with the data packages used as examples in this vignette.
@@ -153,7 +150,7 @@ FitGoM(t(deng.counts),
 
 Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al} 2014 data.
 
-<<plot_topic_deng_annot,eval=FALSE, warning=FALSE>>=
+<<plot_topic_deng_annot,eval=TRUE, warning=FALSE>>=
 data("MouseDeng2014.FitGoM")
 names(MouseDeng2014.FitGoM$clust_6)
 omega <- MouseDeng2014.FitGoM$clust_6$omega
@@ -171,8 +168,9 @@ annotation <- data.frame(
 rownames(omega) <- annotation$sample_id;
 @ %def
 
-
-<<plot_topic_deng,eval=FALSE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+\begin{figure}[htp]
+\begin{center}
+<<plot_topic_deng,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(8, "Accent"),
@@ -186,12 +184,14 @@ StructureGGplot(omega = omega,
 
 
 @ %def
-
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1}
 \end{center}
 \end{figure}
+
+%\begin{figure}[htp]
+%\begin{center}
+%\includegraphics[width=3in,height=7in]{figures/plot_topic_deng-1}
+%\end{center}
+%\end{figure}
 
 In the above plot, the samples in each batch have been sorted by the proportional memebership of the most representative cluster in that batch. One can also use \begin{verb} order_sample=FALSE \end{verb} for the un-ordered version, which retains the order as in the data (see Supplementary analysis for example).
 
@@ -233,7 +233,7 @@ StructureGGplot(omega = omega,
 
 \begin{figure}[htp]
 \begin{center}
-\includegraphics[width=4in,height=6in]{figure/gtex_annot-1}
+\includegraphics[width=4in,height=6in]{figures/gtex_annot-1}
 \end{center}
 \end{figure}
 
@@ -426,7 +426,7 @@ StructureGGplot(omega = omega,
 
 \begin{figure}[htp]
 \begin{center}
-\includegraphics[width=3in,height=7in]{figure/plot_topic_2-1}
+\includegraphics[width=3in,height=7in]{figures/plot_topic_2-1}
 \end{center}
 \end{figure}
 

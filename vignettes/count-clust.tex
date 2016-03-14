@@ -85,7 +85,7 @@
 This \R{} package implements tools to visualize the clusters obtained from fitting topic models using a Structure plot \cite{Rosenberg2002} and extract the top features/genes that distinguish the clusters. In presence of known technical or batch effects, the package also allows for correction of these confounding effects.
 
 \vspace{1em}
-\textbf{\CountClust{} version:} 0.1.0 \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
+\textbf{\CountClust{} version:} 0.99.0 \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
 \end{abstract}
 
 
@@ -100,12 +100,11 @@ This \R{} package implements tools to visualize the clusters obtained from fitti
 In the context of RNA-seq expression (bulk or singlecell seq) data, the grade of membership model allows each sample (usually a tissue sample or a single cell) to have some proportion of its RNA-seq reads coming from each cluster. For typical bulk RNA-seq experiments this assumption
 can be argued as follows: each tissue sample is a mixture of different cell types, and so clusters could represent cell types (which are determined by the expression patterns of the genes), and the membership of a sample in each cluster could represent the proportions of each cell type present in that sample.
 
-Many software packages available for document clustering are applicable to modeling RNA-seq data. Here, we use the R package {\tt maptpx} \cite{Taddy2012} to fit these models, and we add functionality for visualizing the results and annotating clusters by their most distinctive genes to help biological interpretation. We also provide additional functionality to correct for batch effects and also compare the outputs from two different grade of membership model fits to the same set of samples but different in terms of feature description or model assumptions.
+Many software packages available for document clustering are applicable to modeling RNA-seq data. Here, we use the R package {\tt maptpx} \cite{Taddy2012} to fit these models, and add functionality for visualizing the results and annotating clusters by their most distinctive genes to help biological interpretation. We also provide additional functionality to correct for batch effects and also compare the outputs from two different grade of membership model fits to the same set of samples but different in terms of feature description or model assumptions.
 
 \section{\CountClust{} Installation}
 
-\CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{slam},  \CRANpkg{ggplot2}, \CRANpkg{cowplot},\CRANpkg{parallel}, \CRANpkg{reshape2}, \CRANpkg{RColorBrewer},
-\CRANpkg{devtools} along with the \Bioconductor{} package: \Biocpkg{limma}.
+\CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{ggplot2}, \CRANpkg{cowplot}, \CRANpkg{parallel}, \CRANpkg{reshape2}, \CRANpkg{RColorBrewer}, \CRANpkg{flexmix}, \CRANpkg{gtools}, \CRANpkg{devtools} along with the \Bioconductor{} package: \Biocpkg{limma}.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -115,15 +114,13 @@ Many software packages available for document clustering are applicable to model
 \end{kframe}
 \end{knitrout}
 
-For the latest updated version of the package \begin{verb} maptpx \end{verb} package (with some bug fixes from the CRAN version), we recommend the user to install the Github version. The user also needs to install the R package \begin{verb} philentropy \end{verb} from Github.
+For the latest updated version of the package \begin{verb} maptpx \end{verb} package (with some bug fixes from the CRAN version), we recommend the user to install the Github version.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
 \hlkwd{install_github}\hlstd{(}\hlstr{"TaddyLab/maptpx"}\hlstd{)}
-\hlkwd{install_github}\hlstd{(}\hlstr{"HajkD/philentropy"}\hlstd{,}
-               \hlkwc{build_vignettes} \hlstd{=} \hlnum{TRUE}\hlstd{,}   \hlkwc{dependencies} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -237,6 +234,11 @@ Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al}
 \begin{alltt}
 \hlkwd{data}\hlstd{(}\hlstr{"MouseDeng2014.FitGoM"}\hlstd{)}
 \hlkwd{names}\hlstd{(MouseDeng2014.FitGoM}\hlopt{$}\hlstd{clust_6)}
+\end{alltt}
+\begin{verbatim}
+## [1] "K"     "theta" "omega" "BF"    "D"     "X"
+\end{verbatim}
+\begin{alltt}
 \hlstd{omega} \hlkwb{<-} \hlstd{MouseDeng2014.FitGoM}\hlopt{$}\hlstd{clust_6}\hlopt{$}\hlstd{omega}
 
 
@@ -254,7 +256,8 @@ Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al}
 \end{kframe}
 \end{knitrout}
 
-
+\begin{figure}[htp]
+\begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -270,13 +273,17 @@ Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al}
                                  \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
 \end{alltt}
 \end{kframe}
-\end{knitrout}
+\includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1} 
 
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1}
+\end{knitrout}
 \end{center}
 \end{figure}
+
+%\begin{figure}[htp]
+%\begin{center}
+%\includegraphics[width=3in,height=7in]{figures/plot_topic_deng-1}
+%\end{center}
+%\end{figure}
 
 In the above plot, the samples in each batch have been sorted by the proportional memebership of the most representative cluster in that batch. One can also use \begin{verb} order_sample=FALSE \end{verb} for the un-ordered version, which retains the order as in the data (see Supplementary analysis for example).
 
@@ -326,7 +333,7 @@ Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 
 
 \begin{figure}[htp]
 \begin{center}
-\includegraphics[width=4in,height=6in]{figure/gtex_annot-1}
+\includegraphics[width=4in,height=6in]{figures/gtex_annot-1}
 \end{center}
 \end{figure}
 
@@ -561,7 +568,7 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
 
 \begin{figure}[htp]
 \begin{center}
-\includegraphics[width=3in,height=7in]{figure/plot_topic_2-1}
+\includegraphics[width=3in,height=7in]{figures/plot_topic_2-1}
 \end{center}
 \end{figure}
 
@@ -591,7 +598,7 @@ We would like to thank Deng \textit{et al} and the GTEx Consortium for having ma
 \hlkwd{sessionInfo}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## R version 3.2.2 (2015-08-14)
+## R version 3.2.4 (2016-03-10)
 ## Platform: x86_64-apple-darwin13.4.0 (64-bit)
 ## Running under: OS X 10.10.5 (Yosemite)
 ## 
@@ -602,11 +609,15 @@ We would like to thank Deng \textit{et al} and the GTEx Consortium for having ma
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] CountClust_0.1.0 knitr_1.12.3    
+## [1] CountClust_0.99.0 ggplot2_2.1.0     knitr_1.12.3     
 ## 
 ## loaded via a namespace (and not attached):
-## [1] BiocStyle_1.8.0 magrittr_1.5    formatR_1.2.1   tools_3.2.2    
-## [5] stringi_1.0-1   highr_0.5.1     stringr_1.0.0   evaluate_0.8
+##  [1] Rcpp_0.12.3        gtools_3.5.0       digest_0.6.9       grid_3.2.4        
+##  [5] plyr_1.8.3         gtable_0.2.0       formatR_1.2.1      magrittr_1.5      
+##  [9] evaluate_0.8       scales_0.4.0       highr_0.5.1        stringi_1.0-1     
+## [13] reshape2_1.4.1     limma_3.26.3       cowplot_0.6.1      labeling_0.3      
+## [17] BiocStyle_1.8.0    RColorBrewer_1.1-2 tools_3.2.4        stringr_1.0.0     
+## [21] munsell_0.4.3      parallel_3.2.4     colorspace_1.2-6
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

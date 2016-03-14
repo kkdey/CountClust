@@ -33,12 +33,8 @@ Fits a grade of membership model to count data. Default input
 }
 \examples{
 
-library(GTExV6Brain)
-gtex.counts <- exprs(GTExV6Brain)
-gtex.meta_data <- pData(GTExV6Brain)
-gtex.gene_names <- rownames(gtex.counts)
-ex.counts <- t(gtex.counts[1:200,])
-FitGoM(ex.counts,
+data("ex.counts")
+out <- FitGoM(ex.counts,
            K=4, tol=1000, control=list(kill=1))
 }
 \references{
