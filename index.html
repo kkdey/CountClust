@@ -31,27 +31,25 @@
         <h1>
 <a id="countclust" class="anchor" href="#countclust" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CountClust</h1>
 
-<p>A R package for counts clustering-</p>
+<p>A R package for Grade of Membership (GoM) model fit and Visualization of counts data-</p>
 
 <p><a href="http://kkdey.github.io/">Kushal K Dey</a>, <a href="http://cbcb.umd.edu/%7Echsiao/">Chiaowen Joyce Hsiao</a>, <a href="http://stephenslab.uchicago.edu/">Matthew Stephens</a></p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
-<p><code>CountClust</code> requires the <code>limma</code> package from <a href="https://bioconductor.org/packages/release/bioc/html/limma.html">Bioconductor</a>:</p>
+<p><code>CountClust</code> requires the following CRAN-R packages: <code>maptpx</code>, <code>slam</code>, <code>ggplot2</code>, <code>cowplot</code>, <code>parallel</code> along with the Bioconductor package: <code>limma</code>.</p>
 
-<pre><code>source("http://bioconductor.org/biocLite.R")
-biocLite("limma")
+<pre><code>install.packages("CountClust")
 </code></pre>
 
-<p>To download and install this package,</p>
+<p>For installing the working version of this package and loading the data required for this vignette, we use CRAN-R package <code>devtools</code>.</p>
 
-<pre><code>install.packages("devtools")
-library(devtools)
-install_github("kkdey/CountClust")
+<pre><code>library(devtools)
+install_github('kkdey/CountClust')
 </code></pre>
 
-<p>Load the package in R</p>
+<p>Then load the package with:</p>
 
 <pre><code>library(CountClust)
 </code></pre>
@@ -59,73 +57,75 @@ install_github("kkdey/CountClust")
 <h2>
 <a id="application-of-countclust" class="anchor" href="#application-of-countclust" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Application of CountClust</h2>
 
-<p>Load the counts data (samples along the rows, variables or features along the columns) in R. Here we use a test data comprising of the brain samples in GTEX V6 data</p>
+<p>We load the single cell RNA-seq data due to <a href="http://www.ncbi.nlm.nih.gov/pubmed/24408435">Deng et al 2014</a>. The data contains RNA-seq read counts for single cells at different stages of mouse embryo development (from zygote to blastocyst). </p>
 
-<pre><code>brain_data &lt;- t(data.frame(data.table::fread("test/cis_gene_expression_brain.txt"))[,-(1:2)]);
-</code></pre>
-
-<p>Next we load the brain metadata</p>
-
-<pre><code>brain_labels &lt;- as.vector((read.table("metadata_brain.txt")[,3]));
-
+<pre><code>library(singleCellRNASeqMouseDeng2014)
+deng.counts &lt;- exprs(Deng2014MouseESC)
+deng.meta_data &lt;- pData(Deng2014MouseESC)
+deng.gene_names &lt;- rownames(deng.counts)
 </code></pre>
 
 <h3>
-<a id="model-fit" class="anchor" href="#model-fit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Model fit</h3>
+<a id="gom-model-fit" class="anchor" href="#gom-model-fit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>GoM Model fit</h3>
 
-<p>We  apply the StructureObj function to fit the topic model (due to the <strong>maptpx</strong> package of Matt Taddy) for clusters 2 and 3. </p>
+<p>We apply the <code>StructureObj</code> function (which is a wrapper of the <code>topics</code> function in the maptpx package) for a vector of number of clusters, ranging from 2 to 7. </p>
 
-<pre><code>if(!dir.exists("test/Structure")) dir.create("test/Structure")
-StructureObj(brain_data, nclus_vec=2:3, tol=0.1, path_rda="test/topics_data.rda")
+<pre><code>FitGoM(t(deng.counts),
+            K=c(3,6), tol=0.1,
+            path_rda="data/MouseDeng2014.FitGoM.rda")
 </code></pre>
 
-<p>This function will output a rda file containing a list of size 2 (corresponding to clusters 2 and 3). Each element of the list is a topic model class (as defined by <code>topics()</code> function in  <code>maptpx</code> package) and contains the W (the topic proportion matrix) and T (topic distribution) files.</p>
+<p>This function will output a list, each element representing a GoM model fit output for a particular cluster number. </p>
 
 <h3>
 <a id="cluster-visualization" class="anchor" href="#cluster-visualization" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cluster Visualization</h3>
 
-<p>One can plot the W matrix using a Structure plot. Here we provide an example of the Structure plot for K=3 for the above topic model fit. </p>
+<p>One can plot the <code>omega</code> from the <code>StructureObj</code> fit using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. </p>
 
-<pre><code>Topic_clus &lt;- get(load("topics_data.rda"));
-omega &lt;- Topic_clus$clust_3$omega;
+<pre><code>data("MouseDeng2014.FitGoM")
+names(MouseDeng2014.FitGoM)
+omega &lt;- MouseDeng2014.FitGoM$clust_6$omega
 
-rownames(omega) &lt;- paste0("X", 1:length(brain_labels))
+
 annotation &lt;- data.frame(
-  sample_id = paste0("X", 1:length(brain_labels)),
-  tissue_label = factor(brain_labels,
-                        levels = rev(unique(brain_labels)) ) )
+  sample_id = paste0("X", c(1:NROW(omega))),
+  tissue_label = factor(rownames(omega),
+                        levels = rev( c("zy", "early2cell",
+                                        "mid2cell", "late2cell",
+                                        "4cell", "8cell", "16cell",
+                                        "earlyblast","midblast",
+                                         "lateblast") ) ) )
 
-
-cols &lt;- c("blue", "darkgoldenrod1", "cyan")
-
+rownames(omega) &lt;- annotation$sample_id;
 
 StructureGGplot(omega = omega,
-                annotation= annotation,
-                palette = cols,
-                yaxis_label = "",
+                annotation = annotation,
+                palette = RColorBrewer::brewer.pal(8, "Accent"),
+                yaxis_label = "Amplification batch",
                 order_sample = TRUE,
-                split_line = list(split_lwd = .4,
-                                  split_col = "white"),
                 axis_tick = list(axis_ticks_length = .1,
                                  axis_ticks_lwd_y = .1,
                                  axis_ticks_lwd_x = .1,
-                                 axis_label_size = 10,
+                                 axis_label_size = 7,
                                  axis_label_face = "bold"))
 
 </code></pre>
 
-<p><img src="https://github.com/kkdey/CountClust/blob/master/test/structure_plot.png" alt="Structure Plot" height="900" width="400"></p>
+<p><img src="vignettes/structure_plot.png" alt="Structure Plot" height="700" width="400"></p>
 
 <h3>
 <a id="cluster-annotations" class="anchor" href="#cluster-annotations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cluster annotations</h3>
 
-<p>We can extract the features that drive the clusters for K=3 as follows </p>
+<p>We can extract the features that drive the clusters for K=6 as follows </p>
 
-<pre><code>theta &lt;- Topic_clus$clust_3$theta;
-features &lt;- ExtractTopFeatures(theta,top_features=50, method="poisson", options="min")
+<pre><code>theta_mat &lt;- MouseDeng2014.topicFit$clust_6$theta;
+top_features &lt;- ExtractTopFeatures(theta_mat, top_features=100,
+                                   method="poisson", options="min");
+gene_list &lt;- do.call(rbind, lapply(1:dim(top_features)[1],
+                        function(x) deng.gene_names[top_features[x,]]))
 </code></pre>
 
-<p>It will provide you with a list of top 50 variables/features per cluster that are relatively most highly expressed in that cluster compared to the other clusters, or in other words, plays the most important role in driving or separating out that cluster from the rest. </p>
+<p>It will provide you with a list of top 100 variables/features per cluster that are relatively most highly expressed in that cluster compared to the other clusters, or in other words, plays the most important role in driving or separating out that cluster from the rest. </p>
 
 <h2>
 <a id="licenses" class="anchor" href="#licenses" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Licenses</h2>
