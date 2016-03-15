@@ -7,5 +7,5 @@
 \contentsline {section}{\numberline {5}Structure plot visualization}{4}{section.5}
 \contentsline {section}{\numberline {6}Cluster Annotations}{8}{section.6}
 \contentsline {section}{\numberline {7}Supplementary analysis}{9}{section.7}
-\contentsline {section}{\numberline {8}Acknowledgements}{14}{section.8}
-\contentsline {section}{\numberline {9}Session Info}{14}{section.9}
+\contentsline {section}{\numberline {8}Acknowledgements}{13}{section.8}
+\contentsline {section}{\numberline {9}Session Info}{13}{section.9}

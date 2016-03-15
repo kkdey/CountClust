@@ -402,7 +402,7 @@ We tabulate the top $5$ genes for these $6$ clusters.
 \end{alltt}
 \begin{verbatim}
 ## % latex table generated in R 3.2.4 by xtable 1.8-2 package
-## % Tue Mar 15 16:10:39 2016
+## % Tue Mar 15 16:44:48 2016
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rlllll}
@@ -608,7 +608,8 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
 \end{kframe}
 \end{knitrout}
 
-
+\begin{figure}[htp]
+\begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -627,10 +628,6 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
 \includegraphics[width=3in,height=7in]{figure/plot_topic-1} 
 
 \end{knitrout}
-
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[width=3in,height=7in]{figures/plot_topic_2-1}
 \end{center}
 \end{figure}
 
@@ -642,12 +639,9 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{batchcorrect.fcounts} \hlkwb{<-} \hlkwd{BatchCorrectedCounts}\hlstd{(}\hlkwd{t}\hlstd{(fcounts.filtered),}
-                                             \hlstd{amp_batch,} \hlkwc{use_parallel} \hlstd{=} \hlnum{TRUE}\hlstd{);}
+                                          \hlstd{amp_batch,} \hlkwc{use_parallel} \hlstd{=} \hlnum{FALSE}\hlstd{);}
 \hlkwd{dim}\hlstd{(batchcorrect.fcounts)}
 \end{alltt}
-\begin{verbatim}
-## [1]  1041 20091
-\end{verbatim}
 \end{kframe}
 \end{knitrout}
 

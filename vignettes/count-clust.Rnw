@@ -428,7 +428,8 @@ annotation <- data.frame(
                           levels = rev(sort(unique(amp_batch))) ) )
 @ %def
 
-
+\begin{figure}[htp]
+\begin{center}
 <<plot_topic, eval=TRUE, echo=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation = annotation,
@@ -442,10 +443,6 @@ StructureGGplot(omega = omega,
                                  axis_label_face = "bold"))
 
 @ %def
-
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[width=3in,height=7in]{figures/plot_topic_2-1}
 \end{center}
 \end{figure}
 
@@ -453,9 +450,9 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
 
 \clearpage
 
-<<batch_correct, eval=TRUE, echo=TRUE>>=
+<<batch_correct, eval=FALSE, echo=TRUE>>=
 batchcorrect.fcounts <- BatchCorrectedCounts(t(fcounts.filtered),
-                                             amp_batch, use_parallel = TRUE);
+                                          amp_batch, use_parallel = FALSE);
 dim(batchcorrect.fcounts)
 @ %def
 
