@@ -43,6 +43,7 @@
 #' out <- compare_omega(omega1, omega2)
 #'
 #' @import gtools
+#' @import flexmix
 #' @export
 
 compare_omega <- function(omega1, omega2)

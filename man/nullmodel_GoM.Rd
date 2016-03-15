@@ -35,4 +35,14 @@ Use null models (popular in ecology) to generate randomized matrix
              null matrices and compare the fit on null model data with that on the
              observed data. Used for validating the GoM clusters
 }
+\examples{
+
+data("ex.counts")
+nullmodel_GoM(ex.counts,
+              K=2,
+              tol=500,
+              null.model="frequency",
+              iter_randomized=3,
+              plot=FALSE)
+}
 

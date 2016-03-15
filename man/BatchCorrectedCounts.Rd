@@ -7,23 +7,23 @@
 BatchCorrectedCounts(data, batch_lab, use_parallel = TRUE)
 }
 \arguments{
-\item{data}{count matrix, with samples along the rows and features 
+\item{data}{count matrix, with samples along the rows and features
 along the columns.}
 
 \item{batch_lab}{batch label vector.}
 
-\item{use_parallel}{if TRUE, we do a parallel analysis over features, 
+\item{use_parallel}{if TRUE, we do a parallel analysis over features,
 else serial application.}
 }
 \value{
-Returns a counts data. with same dimension as the input data, 
+Returns a counts data. with same dimension as the input data,
         but which is corrected for batch_lab.
 }
 \description{
-This function first converts counts data to log CPM data , 
-   then apply a linear model with the batch effect as a factor. We take 
-   the sum of intercept, residuals and mean batch effect across all the 
-   batches and then inverse transform it back to counts to get rid of 
+This function first converts counts data to log CPM data ,
+   then apply a linear model with the batch effect as a factor. We take
+   the sum of intercept, residuals and mean batch effect across all the
+   batches and then inverse transform it back to counts to get rid of
    batch effects.
 }
 \examples{
@@ -56,7 +56,7 @@ for(n in 1:N){
      }
  }
 
- batchcorrect.counts <- BatchCorrectedCounts(read_counts, 
+ batchcorrect.counts <- BatchCorrectedCounts(read_counts,
                            Label.Batch,  use_parallel=FALSE);
 
 }

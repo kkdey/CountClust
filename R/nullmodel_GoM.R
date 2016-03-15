@@ -17,9 +17,20 @@
 #'        \item{GoMBF.obs}{log BF for the observed counts with K=2 against the null with no clusters}
 #'        \item{GoMBF.rand}{a vector of log BF for each randomized count matrix  with K=2 against the null with no clusters}
 #'        \item{pval}{the p-value of the observed log Bayes factor against the ones from randomized matrices}
-#' @import picante
 #'
+#' @importFrom  picante randomizeMatrix
+#' @import slam
 #' @export
+#'
+#' @examples
+#'
+#' data("ex.counts")
+#' nullmodel_GoM(ex.counts,
+#'               K=2,
+#'               tol=500,
+#'               null.model="frequency",
+#'               iter_randomized=3,
+#'               plot=FALSE)
 
 
 nullmodel_GoM <- function(counts,

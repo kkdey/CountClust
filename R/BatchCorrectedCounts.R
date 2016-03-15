@@ -1,22 +1,22 @@
 #' @title Obtain Batch effect Corrected counts
 #'
-#' @description This function first converts counts data to log CPM data , 
-#'    then apply a linear model with the batch effect as a factor. We take 
-#'    the sum of intercept, residuals and mean batch effect across all the 
-#'    batches and then inverse transform it back to counts to get rid of 
+#' @description This function first converts counts data to log CPM data ,
+#'    then apply a linear model with the batch effect as a factor. We take
+#'    the sum of intercept, residuals and mean batch effect across all the
+#'    batches and then inverse transform it back to counts to get rid of
 #'    batch effects.
 #'
-#' @param data count matrix, with samples along the rows and features 
+#' @param data count matrix, with samples along the rows and features
 #'             along the columns.
 #' @param batch_lab batch label vector.
-#' @param use_parallel if TRUE, we do a parallel analysis over features, 
+#' @param use_parallel if TRUE, we do a parallel analysis over features,
 #'        else serial application.
 #'
-#' @return Returns a counts data. with same dimension as the input data, 
+#' @return Returns a counts data. with same dimension as the input data,
 #'         but which is corrected for batch_lab.
 #'
 #' @keywords counts data, batch effect
-#' 
+#'
 #' @examples
 #' # Simulation example
 #' N=500;
@@ -47,12 +47,12 @@
 #'      }
 #'  }
 #'
-#'  batchcorrect.counts <- BatchCorrectedCounts(read_counts, 
+#'  batchcorrect.counts <- BatchCorrectedCounts(read_counts,
 #'                            Label.Batch,  use_parallel=FALSE);
 #'
-#' @import gtools
-#' @import limma
-#' @import parallel
+#' @importFrom gtools rdirichlet
+#' @importFrom  limma voom
+#' @importFrom parallel mclapply
 #' @export
 #'
 BatchCorrectedCounts <- function(data, batch_lab, use_parallel = TRUE)
@@ -61,7 +61,7 @@ BatchCorrectedCounts <- function(data, batch_lab, use_parallel = TRUE)
   trans_data <- out_voom$E;
   lib_size <- rowSums(data);
   if(use_parallel){
-    batch_removed_counts_mean <- do.call(cbind, 
+    batch_removed_counts_mean <- do.call(cbind,
         parallel::mclapply(1:dim(trans_data)[2], function(g)
         {
             out <- lm(trans_data[,g] ~  as.factor(batch_lab),

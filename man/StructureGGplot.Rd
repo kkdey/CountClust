@@ -51,7 +51,6 @@ Plots the Structure plot visualization of the GoM model
 Make the traditional Structure histogram plot of GoM model using ggplot2
 }
 \examples{
-# load the previously analyzed results
 data("MouseDeng2014.FitGoM")
 
 # extract the omega matrix: membership weights of each cell

@@ -28,10 +28,7 @@
 #'
 #' @return Plots the Structure plot visualization of the GoM model
 #'
-#' @export
-#'
 #' @examples
-#' # load the previously analyzed results
 #' data("MouseDeng2014.FitGoM")
 #'
 #' # extract the omega matrix: membership weights of each cell
@@ -59,9 +56,11 @@
 #'                                   axis_label_size = 7,
 #'                                   axis_label_face = "bold"))
 #'
-
-
-
+#' @import ggplot2
+#' @importFrom cowplot ggdraw panel_border switch_axis_position plot_grid
+#' @import plyr
+#' @import reshape2
+#' @export
 
 StructureGGplot <- function(omega, annotation,
                             palette = RColorBrewer::brewer.pal(8, "Accent"),

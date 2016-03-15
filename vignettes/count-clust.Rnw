@@ -63,16 +63,17 @@ Many software packages available for document clustering are applicable to model
 
 \CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{ggplot2}, \CRANpkg{cowplot}, \CRANpkg{parallel}, \CRANpkg{reshape2}, \CRANpkg{RColorBrewer}, \CRANpkg{flexmix}, \CRANpkg{gtools}, \CRANpkg{devtools} along with the \Bioconductor{} package: \Biocpkg{limma}.
 
-<<install_countclust_cran, eval=FALSE>>=
-install.packages("CountClust")
+<<install_countclust_bio, eval=FALSE>>=
+source("http://bioconductor.org/biocLite.R")
+biocLite("CountClust")
 @ %def
 
 For the latest updated version of the package \begin{verb} maptpx \end{verb} package (with some bug fixes from the CRAN version), we recommend the user to install the Github version.
 
-<<install_github, eval=FALSE>>=
+<<install_github, eval=TRUE>>=
 library(devtools)
 install_github("TaddyLab/maptpx")
-@
+@ %def
 
 The working version of the \CountClust{} package is available on Github, along with the data packages used as examples in this vignette.
 
@@ -90,14 +91,20 @@ library(CountClust)
 
 We install data packages as \begin{verb} expressionSet \end{verb} objects for bulk RNA-seq reads data from Brain tissue samples of human donors under GTEx (Genotype Tissue Expression) V6 Project  \cite{GTEX2013} and a singlecell RNA-seq reads data across developmental stages in mouse embryo due to Deng \textit{et al} 2014 \cite{Deng2014}.
 
-The data package due to Deng \textit{et al} is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
+%The data package due to Deng \textit{et al} is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
 
-The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
+\begin{verb} singleCellRNASeqMouseDeng2014 \end{verb} data package due to Deng \textit{et al} is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
 
+%The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
-<<data_install, eval=FALSE>>=
+\begin{verb} GTExV6Brain \end{verb} The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
+
+<<data_install_deng, eval=TRUE>>=
 library(devtools)
 install_github('kkdey/singleCellRNASeqMouseDeng2014')
+@ %def
+
+<<data_install_gtex, eval=FALSE>>=
 install_github('kkdey/GTExV6Brain')
 @ %def
 
@@ -105,7 +112,7 @@ install_github('kkdey/GTExV6Brain')
 
 Load the scRNA-seq data due to Deng \textit{et al} 2014.
 
-<<data_load_deng, eval=FALSE>>=
+<<data_load_deng, eval=TRUE>>=
 library(singleCellRNASeqMouseDeng2014)
 deng.counts <- exprs(Deng2014MouseESC)
 deng.meta_data <- pData(Deng2014MouseESC)
@@ -150,12 +157,17 @@ FitGoM(t(deng.counts),
 
 Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al} 2014 data.
 
-<<plot_topic_deng_annot,eval=TRUE, warning=FALSE>>=
+We load the GoM fit for \Robject{k}=6.
+
+<<prepare_deng_gom,eval=TRUE, warning=FALSE>>=
 data("MouseDeng2014.FitGoM")
 names(MouseDeng2014.FitGoM$clust_6)
 omega <- MouseDeng2014.FitGoM$clust_6$omega
+@ %def
 
+We prepare the annotations for the visualization.
 
+<<plot_topic_deng_annot, eval=TRUE, warning=FALSE>>=
 annotation <- data.frame(
   sample_id = paste0("X", c(1:NROW(omega))),
   tissue_label = factor(rownames(omega),
@@ -167,6 +179,8 @@ annotation <- data.frame(
 
 rownames(omega) <- annotation$sample_id;
 @ %def
+
+Now we perform the visualization.
 
 \begin{figure}[htp]
 \begin{center}
@@ -197,12 +211,18 @@ In the above plot, the samples in each batch have been sorted by the proportiona
 
 Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 data for Brain samples .
 
-<<gtex_annot, eval=FALSE>>=
+We load the GoM fit for \Robject{k}=4.
+
+<<prepare_gtex_gom, eval=TRUE>>=
 data("GTExV6Brain.FitGoM")
 omega <- GTExV6Brain.FitGoM$omega;
 dim(omega)
 colnames(omega) <- c(1:NCOL(omega))
+@ %def
 
+We now prepare the annotations for the visualization.
+
+<<annot_gtex, eval=FALSE>>=
 tissue_labels <- gtex.meta_data[,3];
 
 
@@ -214,6 +234,7 @@ annotation <- data.frame(
 cols <- c("blue", "darkgoldenrod1", "cyan", "red")
 @ %def
 
+Now we perform the visualization.
 
 <<plot_topic_gtex,eval=FALSE, warning=FALSE, fig.show="asis", dpi=144, fig.width=5, fig.height=7, out.width="5in", out.height="7in">>=
 StructureGGplot(omega = omega,
@@ -243,7 +264,7 @@ StructureGGplot(omega = omega,
 
 We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package. We first perform the cluster annotations from the GoM model fit with \Robject{k}=$6$ on the single cell RNA-seq data due to Deng \textit{et al}
 
-<<extract_features_deng, eval=FALSE, warning=FALSE>>=
+<<extract_features_deng, eval=TRUE, warning=FALSE>>=
 theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
@@ -253,9 +274,8 @@ gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
 
 We tabulate the top $5$ genes for these $6$ clusters.
 
-<<top_genes_clusters_deng, eval=FALSE>>=
-library(xtable)
-xtable(gene_list[,1:5])
+<<top_genes_clusters_deng, eval=TRUE>>=
+xtable::xtable(gene_list[,1:5])
 @ %def
 
 \begin{table}[ht]
@@ -287,8 +307,7 @@ gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
 The top $3$ genes (ensemble IDs) driving these $4$ clusters.
 
 <<top_genes_clusters_gtex, eval=FALSE>>=
-library(xtable)
-xtable(gene_list[,1:3])
+xtable::xtable(gene_list[,1:3])
 @ %def
 
 \begin{table}[ht]
@@ -353,11 +372,11 @@ As an additional analysis, we apply the \CountClust{} tools on another single-ce
 
 We first install and load the data.
 
-<<data_install_jaitin, echo=TRUE, eval=FALSE>>=
+<<data_install_jaitin, echo=TRUE, eval=TRUE>>=
 devtools::install_github('jhsiao999/singleCellRNASeqMouseJaitinSpleen')
 @ %def
 
-<<data_load_jaitin, echo=TRUE, eval=FALSE>>=
+<<data_load_jaitin, echo=TRUE, eval=TRUE>>=
 library(singleCellRNASeqMouseJaitinSpleen)
 jaitin.counts <- exprs(MouseJaitinSpleen)
 jaitin.meta_data <- pData(MouseJaitinSpleen)
@@ -366,7 +385,7 @@ jaitin.gene_names <- rownames(jaitin.counts)
 
 Extracting the non-ERCC genes satisfying some quality measures.
 
-<<non_ercc, eval=FALSE, echo=TRUE>>=
+<<non_ercc, eval=TRUE, echo=TRUE>>=
 ENSG_genes_index <- grep("ERCC", jaitin.gene_names, invert = TRUE)
 jaitin.counts_ensg <- jaitin.counts[ENSG_genes_index, ]
 filter_genes <- c("M34473","abParts","M13680","Tmsb4x",
@@ -385,7 +404,7 @@ fcounts.filtered <- fcounts[,filter_sample_index];
 
 We filter the metadata likewise
 
-<<metadata, eval=FALSE, echo=TRUE>>=
+<<metadata, eval=TRUE, echo=TRUE>>=
 jaitin.meta_data_filtered <- jaitin.meta_data[filter_sample_index, ]
 @ %def
 
@@ -397,7 +416,7 @@ StructureObj(t(fcounts),
              path_rda="../data/MouseJaitinSpleen.FitGoM.rda")
 @ %def
 
-<<plot_topic_annot, eval=FALSE, echo=TRUE>>=
+<<plot_topic_annot, eval=TRUE, echo=TRUE>>=
 data("MouseJaitinSpleen.FitGoM")
 names(MouseJaitinSpleen.FitGoM$clust_7)
 omega <- MouseJaitinSpleen.FitGoM$clust_7$omega
@@ -410,7 +429,7 @@ annotation <- data.frame(
 @ %def
 
 
-<<plot_topic, eval=FALSE, echo=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+<<plot_topic, eval=TRUE, echo=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -434,7 +453,7 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
 
 \clearpage
 
-<<batch_correct, eval=FALSE, echo=TRUE>>=
+<<batch_correct, eval=TRUE, echo=TRUE>>=
 batchcorrect.fcounts <- BatchCorrectedCounts(t(fcounts.filtered),
                                              amp_batch, use_parallel = TRUE);
 dim(batchcorrect.fcounts)

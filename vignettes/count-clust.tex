@@ -85,7 +85,7 @@
 This \R{} package implements tools to visualize the clusters obtained from fitting topic models using a Structure plot \cite{Rosenberg2002} and extract the top features/genes that distinguish the clusters. In presence of known technical or batch effects, the package also allows for correction of these confounding effects.
 
 \vspace{1em}
-\textbf{\CountClust{} version:} 0.99.0 \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
+\textbf{\CountClust{} version:} 0.99.1 \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
 \end{abstract}
 
 
@@ -109,7 +109,8 @@ Many software packages available for document clustering are applicable to model
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{install.packages}\hlstd{(}\hlstr{"CountClust"}\hlstd{)}
+\hlkwd{source}\hlstd{(}\hlstr{"http://bioconductor.org/biocLite.R"}\hlstd{)}
+\hlkwd{biocLite}\hlstd{(}\hlstr{"CountClust"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -149,16 +150,26 @@ Then load the package with:
 
 We install data packages as \begin{verb} expressionSet \end{verb} objects for bulk RNA-seq reads data from Brain tissue samples of human donors under GTEx (Genotype Tissue Expression) V6 Project  \cite{GTEX2013} and a singlecell RNA-seq reads data across developmental stages in mouse embryo due to Deng \textit{et al} 2014 \cite{Deng2014}.
 
-The data package due to Deng \textit{et al} is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
+%The data package due to Deng \textit{et al} is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
 
-The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
+\begin{verb} singleCellRNASeqMouseDeng2014 \end{verb} data package due to Deng \textit{et al} is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
 
+%The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
+
+\begin{verb} GTExV6Brain \end{verb} The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
 \hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/singleCellRNASeqMouseDeng2014'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/GTExV6Brain'}\hlstd{)}
 \end{alltt}
 \end{kframe}
@@ -229,6 +240,8 @@ One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} 
 
 Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al} 2014 data.
 
+We load the GoM fit for \Robject{k}=6.
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -240,8 +253,15 @@ Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al}
 \end{verbatim}
 \begin{alltt}
 \hlstd{omega} \hlkwb{<-} \hlstd{MouseDeng2014.FitGoM}\hlopt{$}\hlstd{clust_6}\hlopt{$}\hlstd{omega}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
+We prepare the annotations for the visualization.
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
   \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NROW}\hlstd{(omega))),}
   \hlkwc{tissue_label} \hlstd{=} \hlkwd{factor}\hlstd{(}\hlkwd{rownames}\hlstd{(omega),}
@@ -255,6 +275,8 @@ Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+Now we perform the visualization.
 
 \begin{figure}[htp]
 \begin{center}
@@ -289,14 +311,29 @@ In the above plot, the samples in each batch have been sorted by the proportiona
 
 Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 data for Brain samples .
 
+We load the GoM fit for \Robject{k}=4.
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{data}\hlstd{(}\hlstr{"GTExV6Brain.FitGoM"}\hlstd{)}
 \hlstd{omega} \hlkwb{<-} \hlstd{GTExV6Brain.FitGoM}\hlopt{$}\hlstd{omega;}
 \hlkwd{dim}\hlstd{(omega)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1259    4
+\end{verbatim}
+\begin{alltt}
 \hlkwd{colnames}\hlstd{(omega)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NCOL}\hlstd{(omega))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
+We now prepare the annotations for the visualization.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlstd{tissue_labels} \hlkwb{<-} \hlstd{gtex.meta_data[,}\hlnum{3}\hlstd{];}
 
 
@@ -310,6 +347,7 @@ Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 
 \end{kframe}
 \end{knitrout}
 
+Now we perform the visualization.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -360,9 +398,27 @@ We tabulate the top $5$ genes for these $6$ clusters.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{library}\hlstd{(xtable)}
-\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{])}
+\hlstd{xtable}\hlopt{::}\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{])}
 \end{alltt}
+\begin{verbatim}
+## % latex table generated in R 3.2.4 by xtable 1.8-2 package
+## % Tue Mar 15 16:10:39 2016
+## \begin{table}[ht]
+## \centering
+## \begin{tabular}{rlllll}
+##   \hline
+##  & 1 & 2 & 3 & 4 & 5 \\ 
+##   \hline
+## 1 & Timd2 & Isyna1 & Alppl2 & Pramel5 & Hsp90ab1 \\ 
+##   2 & Upp1 & Tdgf1 & Aqp8 & Fabp5 & Tat \\ 
+##   3 & Actb & Krt18 & Fabp3 & Id2 & Tspan8 \\ 
+##   4 & Rtn2 & Ebna1bp2 & Zfp259 & Nasp & Cenpe \\ 
+##   5 & LOC100502936 & Bcl2l10 & Tcl1 & E330034G19Rik & Oas1d \\ 
+##   6 & Obox3 & Zfp352 & Gm8300 & Usp17l5 & BB287469 \\ 
+##    \hline
+## \end{tabular}
+## \end{table}
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 
@@ -401,8 +457,7 @@ The top $3$ genes (ensemble IDs) driving these $4$ clusters.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{library}\hlstd{(xtable)}
-\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{])}
+\hlstd{xtable}\hlopt{::}\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{])}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -537,6 +592,11 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
 \begin{alltt}
 \hlkwd{data}\hlstd{(}\hlstr{"MouseJaitinSpleen.FitGoM"}\hlstd{)}
 \hlkwd{names}\hlstd{(MouseJaitinSpleen.FitGoM}\hlopt{$}\hlstd{clust_7)}
+\end{alltt}
+\begin{verbatim}
+## [1] "K"     "theta" "omega" "BF"    "D"     "X"
+\end{verbatim}
+\begin{alltt}
 \hlstd{omega} \hlkwb{<-} \hlstd{MouseJaitinSpleen.FitGoM}\hlopt{$}\hlstd{clust_7}\hlopt{$}\hlstd{omega}
 
 \hlstd{amp_batch} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(jaitin.meta_data_filtered[ ,} \hlstr{"amplification_batch"}\hlstd{])}
@@ -564,6 +624,8 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
                                  \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=3in,height=7in]{figure/plot_topic-1} 
+
 \end{knitrout}
 
 \begin{figure}[htp]
@@ -583,6 +645,9 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
                                              \hlstd{amp_batch,} \hlkwc{use_parallel} \hlstd{=} \hlnum{TRUE}\hlstd{);}
 \hlkwd{dim}\hlstd{(batchcorrect.fcounts)}
 \end{alltt}
+\begin{verbatim}
+## [1]  1041 20091
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 
@@ -606,18 +671,35 @@ We would like to thank Deng \textit{et al} and the GTEx Consortium for having ma
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## [1] parallel  stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
 ## 
 ## other attached packages:
-## [1] CountClust_0.99.0 ggplot2_2.1.0     knitr_1.12.3     
+## [1] singleCellRNASeqMouseJaitinSpleen_0.99.0
+## [2] singleCellRNASeqMouseDeng2014_0.99.0    
+## [3] Biobase_2.30.0                          
+## [4] BiocGenerics_0.16.1                     
+## [5] CountClust_0.99.1                       
+## [6] ggplot2_2.1.0                           
+## [7] devtools_1.9.1                          
+## [8] knitr_1.12.3                            
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.3        gtools_3.5.0       digest_0.6.9       grid_3.2.4        
-##  [5] plyr_1.8.3         gtable_0.2.0       formatR_1.2.1      magrittr_1.5      
-##  [9] evaluate_0.8       scales_0.4.0       highr_0.5.1        stringi_1.0-1     
-## [13] reshape2_1.4.1     limma_3.26.3       cowplot_0.6.1      labeling_0.3      
-## [17] BiocStyle_1.8.0    RColorBrewer_1.1-2 tools_3.2.4        stringr_1.0.0     
-## [21] munsell_0.4.3      parallel_3.2.4     colorspace_1.2-6
+##  [1] Rcpp_0.12.3          RColorBrewer_1.1-2   BiocInstaller_1.20.1
+##  [4] formatR_1.2.1        plyr_1.8.3           highr_0.5.1         
+##  [7] tools_3.2.4          digest_0.6.9         evaluate_0.8        
+## [10] memoise_1.0.0        gtable_0.2.0         nlme_3.1-125        
+## [13] lattice_0.20-33      mgcv_1.8-12          Matrix_1.2-4        
+## [16] curl_0.9.4           httr_1.0.0           stringr_1.0.0       
+## [19] cluster_2.0.3        gtools_3.5.0         stats4_3.2.4        
+## [22] grid_3.2.4           nnet_7.3-12          cowplot_0.6.1       
+## [25] R6_2.1.2             maptpx_1.9-2         flexmix_2.3-13      
+## [28] limma_3.26.8         reshape2_1.4.1       magrittr_1.5        
+## [31] scales_0.4.0         modeltools_0.2-21    MASS_7.3-45         
+## [34] xtable_1.8-2         BiocStyle_1.8.0      picante_1.6-2       
+## [37] permute_0.9-0        colorspace_1.2-6     ape_3.4             
+## [40] labeling_0.3         stringi_1.0-1        munsell_0.4.3       
+## [43] slam_0.1-32          vegan_2.3-4
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

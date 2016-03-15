@@ -27,14 +27,16 @@
 #'
 #' @keywords counts data, clustering, Structure plot
 #'
-#' @export
 #'
 #' @examples
 #'
 #' data("ex.counts")
 #' out <- FitGoM(ex.counts,
 #'            K=4, tol=1000, control=list(kill=1))
-
+#'
+#' @importFrom maptpx topics
+#' @import slam
+#' @export
 
 
 FitGoM <- function(data,
