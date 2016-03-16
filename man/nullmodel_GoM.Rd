@@ -9,13 +9,15 @@ nullmodel_GoM(counts, K, tol = 0.1, null.model = c("frequency", "richness",
   plot = TRUE)
 }
 \arguments{
-\item{counts}{The counts matrix (N x G): N- the number of samples, G- number of features}
+\item{counts}{The counts matrix (N x G): N- the number of samples, G- number
+of features}
 
 \item{K}{The number of clusters to fit}
 
 \item{tol}{The tolerance of the GoM model fitted}
 
-\item{null.model}{The type of nullmodel used (similar to the randomizeMatrix() function argument in picante package)}
+\item{null.model}{The type of nullmodel used (similar to the
+randomizeMatrix() function argument in picante package)}
 
 \item{iter_fill}{The number of swaps/fills in each randomized matrix build}
 
@@ -25,15 +27,18 @@ nullmodel_GoM(counts, K, tol = 0.1, null.model = c("frequency", "richness",
 }
 \value{
 Returns a list with
-       \item{GoMBF.obs}{log BF for the observed counts with K=2 against the null with no clusters}
-       \item{GoMBF.rand}{a vector of log BF for each randomized count matrix  with K=2 against the null with no clusters}
-       \item{pval}{the p-value of the observed log Bayes factor against the ones from randomized matrices}
+       \item{GoMBF.obs}{log BF for the observed counts with K=2 against the
+       null with no clusters}
+       \item{GoMBF.rand}{a vector of log BF for each randomized count matrix
+       with K=2 against the null with no clusters}
+       \item{pval}{the p-value of the observed log Bayes factor against the
+       ones from randomized matrices}
 }
 \description{
-Use null models (popular in ecology) to generate randomized matrix
-             of counts given the observed data matrix, fit the GoM model to these
-             null matrices and compare the fit on null model data with that on the
-             observed data. Used for validating the GoM clusters
+Use null models (popular in ecology) to generate randomized
+matrix of counts given the observed data matrix, fit the GoM model to these
+null matrices and compare the fit on null model data with that on the
+observed data. Used for validating the GoM clusters
 }
 \examples{
 

@@ -1,9 +1,9 @@
 #' @title Grade of Membership (GoM) model fit !
 #'
 #' @description Fits a grade of membership model to count data. Default input
-#'                includes a sample-by-feature matrix, the number of clusters (topics)
-#'                to fit (K). The function is a wrapper of the topics() function
-#'                implemented in Matt Taddy's maptpx pacakge.
+#'                includes a sample-by-feature matrix, the number of clusters
+#'                (topics) to fit (K). The function is a wrapper of the topics()
+#'                function implemented in Matt Taddy's maptpx pacakge.
 #'
 #' @param data counts data, with samples along the rows and features
 #'              along the columns.
@@ -36,6 +36,7 @@
 #'
 #' @importFrom maptpx topics
 #' @import slam
+#' @importFrom utils modifyList
 #' @export
 
 
@@ -45,55 +46,56 @@ FitGoM <- function(data,
                    path_rda = NULL,
                    control=list())
 {
-  ## dealing with blank rows: we first remove them
+    ## dealing with blank rows: we first remove them
 
-  control.default <- list(shape=NULL, initopics=NULL, bf=FALSE,
-                          kill=2, ord=TRUE, verb=1)
+    control.default <- list(shape=NULL, initopics=NULL, bf=FALSE,
+                            kill=2, ord=TRUE, verb=1)
 
-  namc=names(control)
-  if (!all(namc %in% names(control.default)))
-    stop("unknown names in control: ",
-         namc[!(namc %in% names(control.default))])
-  control=modifyList(control.default, control)
+    namc=names(control)
+    if (!all(namc %in% names(control.default)))
+        stop("unknown names in control: ",
+             namc[!(namc %in% names(control.default))])
+    control=modifyList(control.default, control)
 
 
 
-  indices_blank <- as.numeric(which(apply(data,1,max) == 0))
-  if(length(indices_blank)!=0){
-      data <- as.matrix(data[-indices_blank,]);
-  }
+    indices_blank <- as.numeric(which(apply(data,1,max) == 0))
+    if(length(indices_blank)!=0){
+        data <- as.matrix(data[-indices_blank,]);
+    }
 
-  message('Fitting the topic model (due to Matt Taddy)',
-    domain = NULL, appendLF = TRUE)
+    message('Fitting the topic model (due to Matt Taddy)',
+            domain = NULL, appendLF = TRUE)
 
-  Topic_clus_list <- lapply(K, function(per_clust) {
+    Topic_clus_list <- lapply(K, function(per_clust) {
 
-  suppressWarnings(out <- maptpx::topics(
-                                as.matrix(data),
-                                K = per_clust,
-                                control$shape,
-                                control$initopics,
-                                tol,
-                                control$bf,
-                                control$ill,
-                                control$ord,
-                                control$verb))
-    return(out)
-  })
+        suppressWarnings(out <- maptpx::topics(
+            as.matrix(data),
+            K = per_clust,
+            control$shape,
+            control$initopics,
+            tol,
+            control$bf,
+            control$ill,
+            control$ord,
+            control$verb))
+        return(out)
+    })
 
-  names(Topic_clus_list) <- paste0("clust_",K)
-  if(!is.null(path_rda)){
-  save(Topic_clus_list, file = path_rda);
-  }else{
-    return(Topic_clus_list)
-  }
-#  if(plot) {
-#  message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
-#  for(num in 1:length(nclus_vec))
-#  {
-#       StructureObj_omega(Topic_clus_list[[num]]$omega,samp_metadata, batch_lab, path_struct,
-#                            partition=partition,
-#                            control=control)
-#  }}
+    names(Topic_clus_list) <- paste0("clust_",K)
+    if(!is.null(path_rda)){
+        save(Topic_clus_list, file = path_rda);
+    }else{
+        return(Topic_clus_list)
+    }
+    #  if(plot) {
+    #  message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
+    #  for(num in 1:length(nclus_vec))
+    #  {
+    #       StructureObj_omega(Topic_clus_list[[num]]$omega,samp_metadata,
+    #                          batch_lab, path_struct,
+    #                          partition=partition,
+    #                          control=control)
+    #  }}
 
 }

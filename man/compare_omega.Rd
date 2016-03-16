@@ -29,7 +29,8 @@ Returns a list containing
                                  omega1 based on correlation information}
            \item{cor.information_content}{A measure based on correlation
                                 information to record how much information
-                                in omega2 is explained by omega1. Varies from 0 to 1}
+                                in omega2 is explained by omega1. Varies
+                                from 0 to 1}
 }
 \description{
 This function computes a re-ordering of the clusters from GoM

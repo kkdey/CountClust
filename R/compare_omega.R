@@ -30,7 +30,8 @@
 #'                                  omega1 based on correlation information}
 #'            \item{cor.information_content}{A measure based on correlation
 #'                                 information to record how much information
-#'                                 in omega2 is explained by omega1. Varies from 0 to 1}
+#'                                 in omega2 is explained by omega1. Varies
+#'                                 from 0 to 1}
 #'
 #' @examples
 #' tt=10;
@@ -43,7 +44,8 @@
 #' out <- compare_omega(omega1, omega2)
 #'
 #' @import gtools
-#' @import flexmix
+#' @importFrom flexmix KLdiv
+#' @importFrom stats cor
 #' @export
 
 compare_omega <- function(omega1, omega2)
@@ -54,18 +56,18 @@ compare_omega <- function(omega1, omega2)
     kl.out <- matrix(0,dim(omega1)[2],dim(omega2)[2]);
     for(m in 1:dim(omega1)[2])
     {
-      for(n in 1:dim(omega2)[2])
-      {
-        KLdiv.mat <- flexmix::KLdiv(as.matrix(cbind(omega1[,m],omega2[,n])));
-        kl.out[m,n] <- 0.5* (KLdiv.mat[1,2]+ KLdiv.mat[2,1]);
-      }
+        for(n in 1:dim(omega2)[2])
+        {
+            KLdiv.mat <- KLdiv(as.matrix(cbind(omega1[,m],omega2[,n])));
+            kl.out[m,n] <- 0.5* (KLdiv.mat[1,2]+ KLdiv.mat[2,1]);
+        }
     }
 
     kl.order_model2_topics <- apply(kl.out, 1, function(x) which.min(x))
-    kl.information_content <- exp(-(mean(apply(kl.out, 1, min))/ mean(kl.out)));
+    kl.information_content <- exp(-(mean(apply(kl.out, 1, min))/ mean(kl.out)))
 
     cor.order_model2_topics <- apply(cor.out, 1, function(x) which.min(x))
-    cor.information_content <- exp(-(mean(apply(cor.out, 1, min))/ mean(cor.out)));
+    cor.information_content <- exp(-(mean(apply(cor.out, 1, min))/mean(cor.out)))
 
     ll <- list("kl.dist"=kl.out,
                "kl.order_model2_topics" = kl.order_model2_topics,

@@ -9,7 +9,7 @@ handleNA(data, thresh_prop = 0)
 \arguments{
 \item{data}{count data in a sample by feature matrix.}
 
-\item{thresh_prop}{threshold proportion of NAs for removal of feature 
+\item{thresh_prop}{threshold proportion of NAs for removal of feature
 or replacing the NA values.}
 }
 \value{
@@ -19,12 +19,12 @@ Returns a list with
      \item{na_sub_cols}{The columns in the data with NAs that were substituted}
 }
 \description{
-This function handles the NA values in the count data. 
-             If for a feature, the proportion of NAs is greater than 
-             threshold proportion, then we remove the feature, otherwise 
-             we use MAR substitution scheme using the distribution of 
-             the non NA values for the feature. If threshold proportion 
-             is 0, it implies removal of all features with NA values. 
+This function handles the NA values in the count data.
+             If for a feature, the proportion of NAs is greater than
+             threshold proportion, then we remove the feature, otherwise
+             we use MAR substitution scheme using the distribution of
+             the non NA values for the feature. If threshold proportion
+             is 0, it implies removal of all features with NA values.
              Default value of threshold proportion is 0.
 }
 \details{

@@ -27,9 +27,9 @@ Saves the GoM model fit output for each cluster in vector K at the
 }
 \description{
 Fits a grade of membership model to count data. Default input
-               includes a sample-by-feature matrix, the number of clusters (topics)
-               to fit (K). The function is a wrapper of the topics() function
-               implemented in Matt Taddy's maptpx pacakge.
+               includes a sample-by-feature matrix, the number of clusters
+               (topics) to fit (K). The function is a wrapper of the topics()
+               function implemented in Matt Taddy's maptpx pacakge.
 }
 \examples{
 

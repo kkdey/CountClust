@@ -2,28 +2,30 @@
 #'
 #' Make the traditional Structure histogram plot of GoM model using ggplot2
 #'
-#' @param omega Cluster membership probabilities of each sample. Usually a sample by
-#'              cluster matrix in the Topic model output. The cluster weights sum to 1
-#'              for each sample.
-#' @param annotation A data.frame of two columns: sample_id and tissue_label. sample_id
-#'                  is the unique identifying number of each sample (alphanumeric).
-#'                  tissue_lable is a factor of tissue labels, with levels of the factor
-#'                  arranged in the order of the tissues in the Structure (left to right).
-#' @param palette A vector of colors assigned to the clusters. First color in the vector
-#'                is assigned to the cluster labeled as 1, and second color in the vector
-#'                is assigned to the cluster labeled as 2, etc. The number of colors must be
-#'                the same or greater than the number of clusters. The clusters not assigned
-#'                a color are filled with white in the figure. In addition, the recommended
-#'                choice of color palette here is RColorBrewer,
-#'                for instance RColorBrewer::brewer.pal(8, "Accent") or
-#'                RColorBrewwer::brewer.pal(9, "Set1").
+#' @param omega Cluster membership probabilities of each sample. Usually a
+#' sample by cluster matrix in the Topic model output. The cluster weights
+#' sum to 1 for each sample.
+#' @param annotation A data.frame of two columns: sample_id and tissue_label.
+#' sample_id is the unique identifying number of each sample (alphanumeric).
+#' tissue_lable is a factor of tissue labels, with levels of the factor
+#' arranged in the order of the tissues in the Structure (left to right).
+#' @param palette A vector of colors assigned to the clusters. First color in
+#' the vector is assigned to the cluster labeled as 1, and second color in the
+#' vector is assigned to the cluster labeled as 2, etc. The number of colors
+#' must be the same or greater than the number of clusters. The clusters not
+#' assigned a color are filled with white in the figure. In addition, the
+#' recommended choice of color palette here is RColorBrewer, for instance
+#' RColorBrewer::brewer.pal(8, "Accent") or RColorBrewwer::brewer.pal(9, "Set1").
 #' @param figure_title Title of the plot.
 #' @param yaxis_label Axis label for the samples.
-#' @param order_sample if TRUE, we order samples in each annotation batch sorted by membership
-#'                     of most representative cluster. If FALSE, we keep the order in the data.
-#' @param sample_order_decreasing if order_sample TRUE, then this input determines if the ordering
-#'                                due to main cluster is in ascending or descending order.
-#' @param split_line Control parameters for line splitting the batches in the plot.
+#' @param order_sample if TRUE, we order samples in each annotation batch
+#' sorted by membership of most representative cluster. If FALSE, we keep
+#' the order in the data.
+#' @param sample_order_decreasing if order_sample TRUE, then this input
+#' determines if the ordering due to main cluster is in ascending or descending
+#' order.
+#' @param split_line Control parameters for line splitting the batches in the
+#' plot.
 #' @param axis_tick Control parameters for x-axis and y-axis tick sizes.
 #'
 #' @return Plots the Structure plot visualization of the GoM model
@@ -87,7 +89,8 @@ StructureGGplot <- function(omega, annotation,
         stop("omega rownames are not unique!")
     }
     # check the annotation data.frame
-    if (!is.data.frame(annotation)) stop("annotation must be a data.framer object")
+    if (!is.data.frame(annotation))
+        stop("annotation must be a data.framer object")
     if (!all.equal(colnames(annotation), c("sample_id", "tissue_label")) ) {
         stop("annotation data.frame column names must be sample_id and tissue_label")
     }
@@ -107,7 +110,7 @@ StructureGGplot <- function(omega, annotation,
                           sample_order <- as.numeric(attr(table(each_sample_order), "name")[1])
 
                           if (order_sample == TRUE) {
-                          # reorder the matrix
+                              # reorder the matrix
                               temp_df_ord <- temp_df[order(temp_df[ , sample_order],
                                                            decreasing = sample_order_decreasing), ]
                           } else {
@@ -125,9 +128,9 @@ StructureGGplot <- function(omega, annotation,
     # set blank background
     ggplot2::theme_set(ggplot2::theme_bw(base_size = 12)) +
         ggplot2::theme_update( panel.grid.minor.x = ggplot2::element_blank(),
-                      panel.grid.minor.y = ggplot2::element_blank(),
-                      panel.grid.major.x = ggplot2::element_blank(),
-                      panel.grid.major.y = ggplot2::element_blank() )
+                               panel.grid.minor.y = ggplot2::element_blank(),
+                               panel.grid.major.x = ggplot2::element_blank(),
+                               panel.grid.major.y = ggplot2::element_blank() )
 
     # inflat nubmers to avoid rounding errors
     value_ifl <- 10000
@@ -146,26 +149,28 @@ StructureGGplot <- function(omega, annotation,
 
     # make ggplot
     a <- ggplot2::ggplot(df_mlt,
-                ggplot2::aes(x = df_mlt$document, y = df_mlt$value*10000, fill = factor(df_mlt$topic)) ) +
+                         ggplot2::aes(x = df_mlt$document,
+                                      y = df_mlt$value*10000,
+                                      fill = factor(df_mlt$topic)) ) +
         ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
         ggplot2::scale_fill_manual(values = palette) +
         ggplot2::theme(legend.position = "right",
-              legend.key.size = ggplot2::unit(.2, "cm"),
-              legend.text = ggplot2::element_text(size = 5),
-##<-- TBD: center legend title
-#              legend.title = element_text(hjust = 1),
-              axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
-                                       face = axis_tick$axis_label_face),
-              axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
-              axis.ticks.x = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_x),
-              axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
-              title = ggplot2::element_text(size = 6) ) +
+                       legend.key.size = ggplot2::unit(.2, "cm"),
+                       legend.text = ggplot2::element_text(size = 5),
+                       ##<-- TBD: center legend title
+                       #              legend.title = element_text(hjust = 1),
+                       axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
+                                                         face = axis_tick$axis_label_face),
+                       axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
+                       axis.ticks.x = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_x),
+                       axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
+                       title = ggplot2::element_text(size = 6) ) +
         ggplot2::ggtitle(figure_title) +
         ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
-                            labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
+                                     labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         # Add tissue axis labels
         ggplot2::scale_x_discrete(breaks = levels(df_mlt$document)[tissue_breaks],
-                         labels = names(tissue_breaks)) +
+                                  labels = names(tissue_breaks)) +
         # Add legend title
         ggplot2::labs(fill = "Clusters") +
         ggplot2::coord_flip()
@@ -174,8 +179,8 @@ StructureGGplot <- function(omega, annotation,
     # width = 1: increase bar width and in turn remove space
     # between bars
     b <- a + ggplot2::geom_bar(stat = "identity",
-                      position = "stack",
-                      width = 1)
+                               position = "stack",
+                               width = 1)
     b <- b + cowplot::panel_border(remove = TRUE)
     # Add demarcation (TBI)
     b <- b + ggplot2::geom_vline(
@@ -186,9 +191,5 @@ StructureGGplot <- function(omega, annotation,
     b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
     b
     # tidy up the figure output using cowplot::plot_grid (optoinal)
-#    cowplot::plot_grid(b)
+    #    cowplot::plot_grid(b)
 }
-
-
-
-

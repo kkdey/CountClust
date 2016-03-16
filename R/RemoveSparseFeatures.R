@@ -24,20 +24,19 @@
 #'
 RemoveSparseFeatures <- function(data, filter_prop=0.9)
 {
-  zero_prop_cols <- apply(data,2,function(x) length(which(x==0))/length(x));
+    zero_prop_cols <- apply(data,2,function(x) length(which(x==0))/length(x));
 
-  if(max(zero_prop_cols)<filter_prop){
-    message('no features filtered due to sparsity',
-            domain = NULL, appendLF = TRUE)
-    ll <- list("data" = data,
-               "sparse_features" = as.numeric())
-    return(ll)
-  } else{
-    features_to_remove <- as.numeric(which(zero_prop_cols > filter_prop));
-    data_filtered <- as.matrix(data[,-features_to_remove]);
-    ll <- list("data" = data_filtered,
-               "sparse_features" = colnames(data)[features_to_remove])
-    return(ll)
-  }
+    if(max(zero_prop_cols)<filter_prop){
+        message('no features filtered due to sparsity',
+                domain = NULL, appendLF = TRUE)
+        ll <- list("data" = data,
+                   "sparse_features" = as.numeric())
+        return(ll)
+    } else{
+        features_to_remove <- as.numeric(which(zero_prop_cols > filter_prop));
+        data_filtered <- as.matrix(data[,-features_to_remove]);
+        ll <- list("data" = data_filtered,
+                   "sparse_features" = colnames(data)[features_to_remove])
+        return(ll)
+    }
 }
-

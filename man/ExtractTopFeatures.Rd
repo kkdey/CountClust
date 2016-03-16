@@ -8,29 +8,29 @@ ExtractTopFeatures(theta, top_features = 10, method = c("poisson",
   "bernoulli"), options = c("min", "max"))
 }
 \arguments{
-\item{theta}{The cluster probability distribution/theta matrix obtained 
-from the GoM model fitting (it is a G x K matrix where G is 
+\item{theta}{The cluster probability distribution/theta matrix obtained
+from the GoM model fitting (it is a G x K matrix where G is
 number of features, K number of topics).}
 
-\item{top_features}{The number of top features per cluster that drives 
+\item{top_features}{The number of top features per cluster that drives
 away that cluster from others. Default value is 10.}
 
-\item{method}{The underlying model assumed for KL divergence measurement. 
+\item{method}{The underlying model assumed for KL divergence measurement.
 Two choices considered are "bernoulli" and "poisson".}
 
-\item{options}{if "min", for each cluster k, we select features that 
-maximize the minimum KL divergence of cluster k against 
-all other clusters for each feature. If "max", we select 
-features  that maximize the maximum KL divergence of cluster 
+\item{options}{if "min", for each cluster k, we select features that
+maximize the minimum KL divergence of cluster k against
+all other clusters for each feature. If "max", we select
+features  that maximize the maximum KL divergence of cluster
 k against all other clusters for each feature.}
 }
 \value{
-A matrix (K x top_features) which tabulates in k-th row the 
+A matrix (K x top_features) which tabulates in k-th row the
        top feature indices driving the cluster k.
 }
 \description{
-This function uses relative gene expression profile of the GoM 
-       clusters and applies a KL-divergence based method to 
+This function uses relative gene expression profile of the GoM
+       clusters and applies a KL-divergence based method to
        obtain a list of top features that drive each of the clusters.
 }
 \examples{
