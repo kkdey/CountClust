@@ -97,15 +97,36 @@ We install data packages as \begin{verb} expressionSet \end{verb} objects for bu
 
 %The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
-\begin{verb} GTExV6Brain \end{verb} The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
-
 <<data_install_deng, eval=TRUE>>=
 library(devtools)
-install_github('kkdey/singleCellRNASeqMouseDeng2014')
+
+read.data1 = function() {
+  x = tempfile()
+  download.file('https://cdn.rawgit.com/kkdey/singleCellRNASeqMouseDeng2014/master/data/Deng2014MouseEsc.rda', destfile=x, quiet=TRUE)
+  z = get(load((x)))
+  return(z)
+}
+
+Deng2014MouseESC <- read.data1()
+
+## Alternatively
+# install_github('kkdey/singleCellRNASeqMouseDeng2014')
 @ %def
 
+\begin{verb} GTExV6Brain \end{verb} The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
+
 <<data_install_gtex, eval=FALSE>>=
-install_github('kkdey/GTExV6Brain')
+read.data2 = function() {
+  x = tempfile()
+  download.file('https://cdn.rawgit.com/kkdey/GTExV6Brain/master/data/GTExV6Brain.rda', destfile = x, quiet=TRUE)
+  z = get(load((x)))
+  return(z)
+}
+
+GTExV6Brain <- read.data2()
+
+## Alternatively
+# install_github('kkdey/GTExV6Brain')
 @ %def
 
 \subsubsection{Deng et al 2014}
@@ -113,9 +134,8 @@ install_github('kkdey/GTExV6Brain')
 Load the scRNA-seq data due to Deng \textit{et al} 2014.
 
 <<data_load_deng, eval=TRUE>>=
-library(singleCellRNASeqMouseDeng2014)
-deng.counts <- exprs(Deng2014MouseESC)
-deng.meta_data <- pData(Deng2014MouseESC)
+deng.counts <- Biobase::exprs(Deng2014MouseESC)
+deng.meta_data <- Biobase::pData(Deng2014MouseESC)
 deng.gene_names <- rownames(deng.counts)
 @ %def
 
@@ -124,9 +144,8 @@ deng.gene_names <- rownames(deng.counts)
 Load the bulk-RNA seq data from GTEx V6 brain data.
 
 <<data_load_gtex, eval=FALSE>>=
-library(GTExV6Brain)
-gtex.counts <- exprs(GTExV6Brain)
-gtex.meta_data <- pData(GTExV6Brain)
+gtex.counts <- Biobase::exprs(GTExV6Brain)
+gtex.meta_data <- Biobase::pData(GTExV6Brain)
 gtex.gene_names <- rownames(gtex.counts)
 @ %def
 
@@ -373,13 +392,23 @@ As an additional analysis, we apply the \CountClust{} tools on another single-ce
 We first install and load the data.
 
 <<data_install_jaitin, echo=TRUE, eval=TRUE>>=
-devtools::install_github('jhsiao999/singleCellRNASeqMouseJaitinSpleen')
+
+read.data3 = function() {
+  x = tempfile()
+  download.file('https://cdn.rawgit.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen/master/data/MouseJaitinSpleen.rda', destfile = x, quiet=TRUE)
+  z = get(load((x)))
+  return(z)
+}
+
+MouseJaitinSpleen <- read.data3()
+
+## Alternatively
+# devtools::install_github('jhsiao999/singleCellRNASeqMouseJaitinSpleen')
 @ %def
 
 <<data_load_jaitin, echo=TRUE, eval=TRUE>>=
-library(singleCellRNASeqMouseJaitinSpleen)
-jaitin.counts <- exprs(MouseJaitinSpleen)
-jaitin.meta_data <- pData(MouseJaitinSpleen)
+jaitin.counts <- Biobase::exprs(MouseJaitinSpleen)
+jaitin.meta_data <- Biobase::pData(MouseJaitinSpleen)
 jaitin.gene_names <- rownames(jaitin.counts)
 @ %def
 

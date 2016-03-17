@@ -9,7 +9,8 @@ A R package for Grade of Membership (GoM) model fit and Visualization of counts 
 `CountClust` requires the following CRAN-R packages: `maptpx`, `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`.
 
 ```
-install.packages("CountClust")
+source("http://bioconductor.org/biocLite.R")
+biocLite("CountClust")
 ```
 
 For installing the working version of this package and loading the data required for this vignette, we use CRAN-R package `devtools`.
