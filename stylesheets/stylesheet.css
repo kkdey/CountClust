@@ -34,6 +34,7 @@ a {
   background-color: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.3); }
 
+<<<<<<< HEAD
 .btnDownload {
   display: inline-block;
   margin-bottom: 1rem;
@@ -57,11 +58,23 @@ a {
 
 @media screen and (min-width: 42em) and (max-width: 64em) {
   .btn, .btnDownload {
+=======
+@media screen and (min-width: 64em) {
+  .btn {
+    padding: 0.75rem 1rem; } }
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+  .btn {
+>>>>>>> 9839349f2b67148b6b6922bb5baa670ea76bdb01
     padding: 0.6rem 0.9rem;
     font-size: 0.9rem; } }
 
 @media screen and (max-width: 42em) {
+<<<<<<< HEAD
   .btn, .btnDownload {
+=======
+  .btn {
+>>>>>>> 9839349f2b67148b6b6922bb5baa670ea76bdb01
     display: block;
     width: 100%;
     padding: 0.75rem;
@@ -109,11 +122,14 @@ a {
   font-weight: normal;
   opacity: 0.7; }
 
+<<<<<<< HEAD
 .project-tagline a {
     color: #fff;
     text-decoration: underline; 
 }
 
+=======
+>>>>>>> 9839349f2b67148b6b6922bb5baa670ea76bdb01
 @media screen and (min-width: 64em) {
   .project-tagline {
     font-size: 1.25rem; } }

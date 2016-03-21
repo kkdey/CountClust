@@ -1,69 +1,155 @@
----
-layout: default
----
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Countclust by kkdey</title>
 
-<h1>
-<a id="scde" class="anchor" href="#scde" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview of SCDE</h1>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Countclust</h1>
+        <p>A R package for counts clustering</p>
 
-<p>The <code>scde</code> package implements a set of statistical methods for analyzing single-cell RNA-seq data. <code>scde</code> fits individual error models for single-cell RNA-seq measurements. These models can then be used for assessment of differential expression between groups of cells, as well as other types of analysis. The <code>scde</code> package also contains the <code>pagoda</code> framework which applies pathway and gene set overdispersion analysis to identify aspects of transcriptional heterogeneity among single cells. </p>
+        <p class="view"><a href="https://github.com/kkdey/CountClust">View the Project on GitHub <small>kkdey/CountClust</small></a></p>
 
-<p>The overall approach to the differential expression analysis is detailed in the following publication:<br>
-<a href="http://www.nature.com/nmeth/journal/v11/n7/abs/nmeth.2967.html">"Bayesian approach to single-cell differential expression analysis" (Kharchenko PV, Silberstein L, Scadden DT, Nature Methods, doi:10.1038/nmeth.2967)</a></p>
 
-<p>The overall approach to pathways and gene set overdispersion analysis is detailed in the following publication:
-<a href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3734.html">"Characterizing transcriptional heterogeneity through pathway and gene set overdispersion analysis" (Fan J, Salathia N, Liu R, Kaeser G, Yung Y, Herman J, Kaper F, Fan JB, Zhang K, Chun J, and Kharchenko PV, Nature Methods, doi:10.1038/nmeth.3734)</a></p>
+        <ul>
+          <li><a href="https://github.com/kkdey/CountClust/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/kkdey/CountClust/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/kkdey/CountClust">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="countclust" class="anchor" href="#countclust" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CountClust</h1>
 
-<h1>
-<a id="sample-analyses-and-images" class="anchor" href="#sample-analyses-and-images" aria-hidden="true"><span class="octicon octicon-link"></span></a>Sample analyses and images</h1>
+<p>A R package for Grade of Membership (GoM) model fit and Visualization of counts data-</p>
 
-<h2>
-<a id="single-cell-error-modeling" class="anchor" href="#single-cell-error-modeling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Single cell error modeling</h2>
-
-<table>
-  <tr>
-    <td width="400px">
-      <img src="https://github.com/hms-dbmi/scde/raw/master/vignettes/figures/pagoda-cell.model.fits-0.png" width="400px">
-    </td>
-    <td>
-      <code>scde</code> fits individual error models for single cells using counts derived from single-cell RNA-seq data to estimate drop-out and amplification biases on gene expression magnitude.
-    </td>
-  </tr>
-</table>
-
-<h2>
-<a id="differential-expression-analysis" class="anchor" href="#differential-expression-analysis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Differential expression analysis</h2>
-
-<table>
-  <tr>
-    <td width="250px">
-      <img src="https://github.com/hms-dbmi/scde/raw/master/vignettes/figures/scde-diffexp3-1.png" width="250px">
-    </td>
-    <td>
-      <pre>
-             lb   mle     ub    ce     Z    cZ
-Dppa5a    8.075 9.965 11.541 8.075 7.160 5.968
-Pou5f1    5.357 7.208  9.178 5.357 7.160 5.968
-Gm13242   5.672 7.681  9.768 5.672 7.159 5.968
-Tdh       5.829 8.075 10.281 5.829 7.159 5.968
-Ift46     5.435 7.366  9.217 5.435 7.150 5.968</pre>
-      <br>
-      <code>scde</code> compares groups of single cells and tests for differential expression, taking into account variability in the single cell RNA-seq data due to drop-out and amplification biases in order to identify more robustly differentially expressed genes. 
-    </td>
-  </tr>
-</table>
+<p><a href="http://kkdey.github.io/">Kushal K Dey</a>, <a href="http://cbcb.umd.edu/%7Echsiao/">Chiaowen Joyce Hsiao</a>, <a href="http://stephenslab.uchicago.edu/">Matthew Stephens</a></p>
 
 <h2>
-<a id="pathway-and-gene-set-overdispersion-analysis" class="anchor" href="#pathway-and-gene-set-overdispersion-analysis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pathway and gene set overdispersion analysis</h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
-<table>
-  <tr>
-    <td width="400px">
-      <img src="https://github.com/hms-dbmi/scde/raw/master/vignettes/figures/PAGODA.gif" width="400px"> 
-    </td>
-    <td>
-      <code>scde</code> contains <code>pagoda</code> routines that characterize aspects of transcriptional heterogeneity in populations of single cells using pre-defined gene sets as well as 'de novo' gene sets derived from the data. Significant aspects are used to cluster cells into subpopulations. <a href="http://pklab.med.harvard.edu/scde/pagoda.links.html">A graphical user interface can be deployed to interactively explore results</a>. 
-    </td>
-  </tr>
-</table>
-    
+<p><code>CountClust</code> requires the following CRAN-R packages: <code>maptpx</code>, <code>slam</code>, <code>ggplot2</code>, <code>cowplot</code>, <code>parallel</code> along with the Bioconductor package: <code>limma</code>.</p>
 
+<pre><code>install.packages("CountClust")
+</code></pre>
+
+<p>For installing the working version of this package and loading the data required for this vignette, we use CRAN-R package <code>devtools</code>.</p>
+
+<pre><code>library(devtools)
+install_github('kkdey/CountClust')
+</code></pre>
+
+<p>Then load the package with:</p>
+
+<pre><code>library(CountClust)
+</code></pre>
+
+<h2>
+<a id="application-of-countclust" class="anchor" href="#application-of-countclust" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Application of CountClust</h2>
+
+<p>We load the single cell RNA-seq data due to <a href="http://www.ncbi.nlm.nih.gov/pubmed/24408435">Deng et al 2014</a>. The data contains RNA-seq read counts for single cells at different stages of mouse embryo development (from zygote to blastocyst). </p>
+
+<pre><code>library(singleCellRNASeqMouseDeng2014)
+deng.counts &lt;- exprs(Deng2014MouseESC)
+deng.meta_data &lt;- pData(Deng2014MouseESC)
+deng.gene_names &lt;- rownames(deng.counts)
+</code></pre>
+
+<h3>
+<a id="gom-model-fit" class="anchor" href="#gom-model-fit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>GoM Model fit</h3>
+
+<p>We apply the <code>StructureObj</code> function (which is a wrapper of the <code>topics</code> function in the maptpx package) for a vector of number of clusters, ranging from 2 to 7. </p>
+
+<pre><code>FitGoM(t(deng.counts),
+            K=c(3,6), tol=0.1,
+            path_rda="data/MouseDeng2014.FitGoM.rda")
+</code></pre>
+
+<p>This function will output a list, each element representing a GoM model fit output for a particular cluster number. </p>
+
+<h3>
+<a id="cluster-visualization" class="anchor" href="#cluster-visualization" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cluster Visualization</h3>
+
+<p>One can plot the <code>omega</code> from the <code>StructureObj</code> fit using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. </p>
+
+<pre><code>data("MouseDeng2014.FitGoM")
+names(MouseDeng2014.FitGoM)
+omega &lt;- MouseDeng2014.FitGoM$clust_6$omega
+
+
+annotation &lt;- data.frame(
+  sample_id = paste0("X", c(1:NROW(omega))),
+  tissue_label = factor(rownames(omega),
+                        levels = rev( c("zy", "early2cell",
+                                        "mid2cell", "late2cell",
+                                        "4cell", "8cell", "16cell",
+                                        "earlyblast","midblast",
+                                         "lateblast") ) ) )
+
+rownames(omega) &lt;- annotation$sample_id;
+
+StructureGGplot(omega = omega,
+                annotation = annotation,
+                palette = RColorBrewer::brewer.pal(8, "Accent"),
+                yaxis_label = "Amplification batch",
+                order_sample = TRUE,
+                axis_tick = list(axis_ticks_length = .1,
+                                 axis_ticks_lwd_y = .1,
+                                 axis_ticks_lwd_x = .1,
+                                 axis_label_size = 7,
+                                 axis_label_face = "bold"))
+
+</code></pre>
+
+<p><img src="vignettes/structure_plot.png" alt="Structure Plot" height="700" width="400"></p>
+
+<h3>
+<a id="cluster-annotations" class="anchor" href="#cluster-annotations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cluster annotations</h3>
+
+<p>We can extract the features that drive the clusters for K=6 as follows </p>
+
+<pre><code>theta_mat &lt;- MouseDeng2014.topicFit$clust_6$theta;
+top_features &lt;- ExtractTopFeatures(theta_mat, top_features=100,
+                                   method="poisson", options="min");
+gene_list &lt;- do.call(rbind, lapply(1:dim(top_features)[1],
+                        function(x) deng.gene_names[top_features[x,]]))
+</code></pre>
+
+<p>It will provide you with a list of top 100 variables/features per cluster that are relatively most highly expressed in that cluster compared to the other clusters, or in other words, plays the most important role in driving or separating out that cluster from the rest. </p>
+
+<h2>
+<a id="licenses" class="anchor" href="#licenses" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Licenses</h2>
+
+<p>The CountClust package is distributed under [GPL - General Public License (&gt;= 2)]</p>
+
+<h2>
+<a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h2>
+
+<p>For any queries, contact <a href="kkdey@uchicago.edu">kkdey@uchicago.edu</a></p>
+
+<h2>
+<a id="acknowledgements" class="anchor" href="#acknowledgements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Acknowledgements</h2>
+
+<ul>
+<li>Raman Shah</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/kkdey">kkdey</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+
+  </body>
+</html>
