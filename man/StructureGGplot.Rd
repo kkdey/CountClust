@@ -53,6 +53,7 @@ Plots the Structure plot visualization of the GoM model
 Make the traditional Structure histogram plot of GoM model using ggplot2
 }
 \examples{
+# Example 1
 data("MouseDeng2014.FitGoM")
 
 # extract the omega matrix: membership weights of each cell
@@ -72,6 +73,52 @@ rownames(omega) <- annotation$sample_id;
 StructureGGplot(omega = omega,
                  annotation = annotation,
                  palette = RColorBrewer::brewer.pal(8, "Accent"),
+                 yaxis_label = "development phase",
+                 order_sample = TRUE,
+                 axis_tick = list(axis_ticks_length = .1,
+                                  axis_ticks_lwd_y = .1,
+                                  axis_ticks_lwd_x = .1,
+                                  axis_label_size = 7,
+                                  axis_label_face = "bold"))
+
+# Example 2
+Import Deng et al data
+
+# function to read Deng data from GitHub
+read.data <- function() {
+  x <- tempfile()
+  download.file(paste0("https://cdn.rawgit.com/kkdey/",
+                         "singleCellRNASeqMouseDeng2014",
+                         "/master/data/Deng2014MouseEsc.rda"),
+                destfile = x, quiet = TRUE)
+  z <- get(load((x)))
+  return(z)
+  }
+Deng2014MouseESC <-read.data()
+
+deng.counts <- Biobase::exprs(Deng2014MouseESC)
+deng.meta_data <- Biobase::pData(Deng2014MouseESC)
+deng.gene_names <- rownames(deng.counts)
+
+samples_subvector <- which(!duplicated(deng.meta_data$cell_type))[1:3]
+
+# Fit GoM on 3 samples with K = 3
+fit_k3 <- FitGoM( t(deng.counts[,samples_subvector]),
+                  K = 3, tol=0.1)
+
+names(fit_k3$clust_3)
+omega <- fit_k3$clust_3$omega
+
+# make annotation matrix
+annotation <- data.frame(
+     sample_id = paste0("X", c(1:NROW(omega))),
+     tissue_label = factor( as.character(deng.meta_data$cell_type[samples_subvector]),
+             levels = rev( as.character(deng.meta_data$cell_type[samples_subvector])  ) )
+     )
+rownames(omega) <- annotation$sample_id
+StructureGGplot(omega = omega,
+                 annotation = annotation,
+                 palette = RColorBrewer::brewer.pal(3, "Accent"),
                  yaxis_label = "development phase",
                  order_sample = TRUE,
                  axis_tick = list(axis_ticks_length = .1,
