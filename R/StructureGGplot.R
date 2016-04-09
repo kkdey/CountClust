@@ -151,13 +151,14 @@ StructureGGplot <- function(omega, annotation,
                           temp_label <- levels(annotation$tissue_label)[ii]
                           temp_df <- omega[which(annotation$tissue_label == temp_label), ]
 
-                          is_single_sample <- length(temp_df) == nlevels(annotation$tissue_label)
+                          is_single_sample <- 
+                                  ( length(temp_df) == nlevels(annotation$tissue_label)|
+                                           is.null(dim(temp_df)) )
                           # find the dominant cluster in each sample
-                          if ( !is.null(dim(temp_df)) & !is_single_sample ) {
-                              each_sample_order <- apply(temp_df, 1, which.max)
-                          }
                           if ( is_single_sample ) {
                               each_sample_order <- which.max(temp_df)
+                          } else {
+                              each_sample_order <- apply(temp_df, 1, which.max)
                           }
 
                           # find the dominant cluster across samples
@@ -235,7 +236,7 @@ StructureGGplot <- function(omega, annotation,
         ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         # Add tissue axis labels
-        ggplot2::scale_x_discrete(breaks = levels(df_mlt$document)[tissue_breaks],
+        ggplot2::scale_x_discrete(breaks = as.character(as.numeric(levels(df_mlt$document)[tissue_breaks])),
                                   labels = names(tissue_breaks)) +
         # Add legend title
         ggplot2::labs(fill = "Clusters") +
@@ -248,10 +249,10 @@ StructureGGplot <- function(omega, annotation,
                                position = "stack",
                                width = 1)
     b <- b + cowplot::panel_border(remove = TRUE)
-    # Add demarcation (TBI)
+    # Add demarcation 
     b <- b + ggplot2::geom_vline(
         xintercept = cumsum(table(droplevels(annotation$tissue_label)))[
-            -length(table(droplevels(annotation$tissue_label)))],
+            -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
         size = split_line$split_lwd)
     b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
