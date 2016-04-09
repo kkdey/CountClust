@@ -2,15 +2,16 @@
 % Please edit documentation in R/ExtractTopFeatures.R
 \name{ExtractTopFeatures}
 \alias{ExtractTopFeatures}
-\title{Extracting top driving genes driving GoM clusters}
+\title{Extracting top driving genes of GoM clusters}
 \usage{
 ExtractTopFeatures(theta, top_features = 10, method = c("poisson",
   "bernoulli"), options = c("min", "max"))
 }
 \arguments{
-\item{theta}{The cluster probability distribution/theta matrix obtained
-from the GoM model fitting (it is a G x K matrix where G is
-number of features, K number of topics).}
+\item{theta}{\eqn{\theta} matrix the relative gene expression profile of the GoM clusters
+(cluster probability distributions) 
+from the GoM model fitting (a \eqn{G x K} matrix where G is
+number of features, \eqn{K} number of topics).}
 
 \item{top_features}{The number of top features per cluster that drives
 away that cluster from others. Default value is 10.}
