@@ -1,12 +1,13 @@
-#' @title Extracting top driving genes driving GoM clusters
+#' @title Extracting top driving genes of GoM clusters
 #'
 #' @description This function uses relative gene expression profile of the GoM
 #'        clusters and applies a KL-divergence based method to
 #'        obtain a list of top features that drive each of the clusters.
 #'
-#' @param theta The cluster probability distribution/theta matrix obtained
-#'                from the GoM model fitting (it is a G x K matrix where G is
-#'                number of features, K number of topics).
+#' @param theta \eqn{\theta} matrix the relative gene expression profile of the GoM clusters
+#'                (cluster probability distributions) 
+#'                from the GoM model fitting (a \eqn{G x K} matrix where G is
+#'                number of features, \eqn{K} number of topics).
 #' @param top_features  The number of top features per cluster that drives
 #'                        away that cluster from others. Default value is 10.
 #' @param method  The underlying model assumed for KL divergence measurement.
@@ -34,6 +35,10 @@ ExtractTopFeatures <- function(theta,
                                method = c("poisson","bernoulli"),
                                options=c("min", "max"))
 {
+    if (!is.null(method)) {
+        warning("method is not specified! Default method is Poisson distribution.")        
+        method <- "poisson"
+    }
     if(method=="poisson") {
         KL_score <- lapply(1:dim(theta)[2], function(n) {
             out <- t(apply(theta, 1, function(x){
