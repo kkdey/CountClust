@@ -236,7 +236,7 @@ StructureGGplot <- function(omega, annotation,
         ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         # Add tissue axis labels
-        ggplot2::scale_x_discrete(breaks = levels(df_mlt$document)[tissue_breaks],
+        ggplot2::scale_x_discrete(breaks = as.character(as.numeric(levels(df_mlt$document)[tissue_breaks])),
                                   labels = names(tissue_breaks)) +
         # Add legend title
         ggplot2::labs(fill = "Clusters") +
@@ -249,10 +249,10 @@ StructureGGplot <- function(omega, annotation,
                                position = "stack",
                                width = 1)
     b <- b + cowplot::panel_border(remove = TRUE)
-    # Add demarcation (TBI)
+    # Add demarcation 
     b <- b + ggplot2::geom_vline(
         xintercept = cumsum(table(droplevels(annotation$tissue_label)))[
-            -length(table(droplevels(annotation$tissue_label)))],
+            -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
         size = split_line$split_lwd)
     b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
