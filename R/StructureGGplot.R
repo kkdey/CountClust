@@ -153,11 +153,10 @@ StructureGGplot <- function(omega, annotation,
 
                           is_single_sample <- length(temp_df) == nlevels(annotation$tissue_label)
                           # find the dominant cluster in each sample
-                          if ( !is.null(dim(temp_df)) & !is_single_sample ) {
-                              each_sample_order <- apply(temp_df, 1, which.max)
-                          }
                           if ( is_single_sample ) {
                               each_sample_order <- which.max(temp_df)
+                          } else {
+                              each_sample_order <- apply(temp_df, 1, which.max)
                           }
 
                           # find the dominant cluster across samples
