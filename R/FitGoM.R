@@ -48,7 +48,7 @@ FitGoM <- function(data,
 {
     ## dealing with blank rows: we first remove them
 
-    control.default <- list(shape=NULL, initopics=NULL, bf=FALSE,
+    control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
                             kill=2, ord=TRUE, verb=1)
 
     namc=names(control)

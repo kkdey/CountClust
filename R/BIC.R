@@ -5,7 +5,7 @@
 #'
 #' @param model_output \code{FitGoM} output (a \code{list}).
 #'
-#' @return logLik_vec a vector of GoM model log likelihoods.
+#' @return BIC_models a vector of GoM model BICs.
 #'
 #' @keywords GoM, model fit
 #'
