@@ -151,7 +151,7 @@ StructureGGplot <- function(omega, annotation,
                           temp_label <- levels(annotation$tissue_label)[ii]
                           temp_df <- omega[which(annotation$tissue_label == temp_label), ]
 
-                          is_single_sample <- 
+                          is_single_sample <-
                                   ( length(temp_df) == nlevels(annotation$tissue_label)|
                                            is.null(dim(temp_df)) )
                           # find the dominant cluster in each sample
@@ -249,7 +249,7 @@ StructureGGplot <- function(omega, annotation,
                                position = "stack",
                                width = 1)
     b <- b + cowplot::panel_border(remove = TRUE)
-    # Add demarcation 
+    # Add demarcation
     b <- b + ggplot2::geom_vline(
         xintercept = cumsum(table(droplevels(annotation$tissue_label)))[
             -length(table(droplevels(annotation$tissue_label)))] + .5,
