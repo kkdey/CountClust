@@ -45,17 +45,17 @@ model_logLik <- function(data, model_output)
     # Compute logLik for each GoM
     loglik_models <- sapply(1:num_models, function(i) {
 
+        theta <- model_output[[i]]$theta
+        omega <- model_output[[i]]$omega
+        probs <- theta %*% t(omega)
+
         if (!all.equal(dim(data), dim(probs))) {
             stop("Observed data dimension does not match \n
                  the model fit results dimension")
         }
 
-        theta <- model_output[[i]]$theta
-        omega <- model_output[[i]]$omega
-        probs <- theta %*% t(omega)
-
-        loglik <- Reduce(sum, sapply(1:NCOL(data), function(i) {
-            dmultinom(x = data[,i], prob = probs[,i], log = TRUE)
+        loglik <- Reduce(sum, sapply(1:NCOL(data), function(j) {
+            dmultinom(x = data[,j], prob = probs[,j], log = TRUE)
         }) )
 
         return(loglik)
