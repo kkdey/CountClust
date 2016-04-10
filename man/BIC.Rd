@@ -10,7 +10,7 @@ BIC(data, model_output)
 \item{model_output}{\code{FitGoM} output (a \code{list}).}
 }
 \value{
-logLik_vec a vector of GoM model log likelihoods.
+BIC_models a vector of GoM model BICs.
 }
 \description{
 This function takes the \code{FitGoM} output model fits
