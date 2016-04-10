@@ -57,7 +57,7 @@ BIC <- function(data, model_output)
         loglik <- Reduce(sum, sapply(1:NCOL(data), function(j) {
             dmultinom(x = data[,j], prob = probs[,j], log = TRUE)
         }) )
-        BIC <- -2*loglik + NCOL(theta)*log(NCOL(data))
+        BIC <- -2*loglik + NCOL(theta)*log(NROW(data))
 
         return(BIC)
     })
