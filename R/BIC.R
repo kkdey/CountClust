@@ -1,4 +1,4 @@
-#' @title log likelihood of the GoM model fits
+#' @title BIC (Bayesian information criterion) of the GoM model fits
 #'
 #' @description This function takes the \code{FitGoM} output model fits
 #'              and compute log likelihood for the GoM models.
@@ -33,17 +33,17 @@
 #' data("MouseDeng2014.FitGoM")
 #' names(MouseDeng2014.FitGoM)
 #'
-#' model_logLik(data = deng.counts,
-#'              model_output = MouseDeng2014.FitGoM)
+#' BIC(data = deng.counts,
+#'            model_output = MouseDeng2014.FitGoM)
 #' @export
 
-model_logLik <- function(data, model_output)
+BIC <- function(data, model_output)
 {
     # Get the numer GoM models
     num_models <- length(model_output)
 
     # Compute logLik for each GoM
-    loglik_models <- sapply(1:num_models, function(i) {
+    BIC_models <- sapply(1:num_models, function(i) {
 
         theta <- model_output[[i]]$theta
         omega <- model_output[[i]]$omega
@@ -57,10 +57,11 @@ model_logLik <- function(data, model_output)
         loglik <- Reduce(sum, sapply(1:NCOL(data), function(j) {
             dmultinom(x = data[,j], prob = probs[,j], log = TRUE)
         }) )
+        BIC <- -2*loglik + NCOL(theta)*log(NCOL(data))
 
-        return(loglik)
+        return(BIC)
     })
-    names(loglik_models) <- names(model_output)
+    names(BIC_models) <- names(model_output)
 
-    return(loglik_models)
+    return(BIC_models)
 }
