@@ -37,17 +37,19 @@
 #' # extract the omega matrix: membership weights of each cell
 #' names(MouseDeng2014.FitGoM$clust_6)
 #' omega <- MouseDeng2014.FitGoM$clust_6$omega
-#'
+#' 
 #' # make annotation matrix
 #' annotation <- data.frame(
-#' sample_id = paste0("X", c(1:NROW(omega))),
-#' tissue_label = factor(rownames(omega),
+#'   sample_id = paste0("X", c(1:NROW(omega))),
+#'   tissue_label = factor(rownames(omega),
 #'                      levels = rev( c("zy", "early2cell",
 #'                                      "mid2cell", "late2cell",
 #'                                      "4cell", "8cell", "16cell",
 #'                                      "earlyblast","midblast",
 #'                                      "lateblast") ) ) )
-#' rownames(omega) <- annotation$sample_id;
+#' head(annotation)                                     
+#' rownames(omega) <- annotation$sample_id
+#' 
 #' StructureGGplot(omega = omega,
 #'                  annotation = annotation,
 #'                  palette = RColorBrewer::brewer.pal(8, "Accent"),
@@ -119,6 +121,7 @@ StructureGGplot <- function(omega, annotation,
                             sample_order_decreasing = TRUE,
                             split_line = list(split_lwd = 1,
                                               split_col = "white"),
+                            plot_labels = TRUE,
                             axis_tick = list(axis_ticks_length = .1,
                                              axis_ticks_lwd_y = .1,
                                              axis_ticks_lwd_x = .1,
@@ -151,7 +154,7 @@ StructureGGplot <- function(omega, annotation,
                           temp_label <- levels(annotation$tissue_label)[ii]
                           temp_df <- omega[which(annotation$tissue_label == temp_label), ]
 
-                          is_single_sample <- 
+                          is_single_sample <-
                                   ( length(temp_df) == nlevels(annotation$tissue_label)|
                                            is.null(dim(temp_df)) )
                           # find the dominant cluster in each sample
@@ -236,7 +239,9 @@ StructureGGplot <- function(omega, annotation,
         ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         # Add tissue axis labels
-        ggplot2::scale_x_discrete(breaks = as.character(as.numeric(levels(df_mlt$document)[tissue_breaks])),
+        # ggplot2::scale_x_discrete(breaks = as.character(as.numeric(levels(df_mlt$document)[round(tissue_breaks)])),
+        #                           labels = names(tissue_breaks)) +
+        ggplot2::scale_x_discrete(breaks = as.character((levels(df_mlt$document)[round(tissue_breaks)])),
                                   labels = names(tissue_breaks)) +
         # Add legend title
         ggplot2::labs(fill = "Clusters") +
@@ -249,14 +254,17 @@ StructureGGplot <- function(omega, annotation,
                                position = "stack",
                                width = 1)
     b <- b + cowplot::panel_border(remove = TRUE)
-    # Add demarcation 
+    # Add demarcation
     b <- b + ggplot2::geom_vline(
         xintercept = cumsum(table(droplevels(annotation$tissue_label)))[
             -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
         size = split_line$split_lwd)
-    b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
-    b
-    # tidy up the figure output using cowplot::plot_grid (optoinal)
-    #    cowplot::plot_grid(b)
+    
+    if (!plot_labels) {
+        b
+    } else {
+        b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
+        b
+    }
 }

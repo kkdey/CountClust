@@ -8,16 +8,17 @@ ExtractTopFeatures(theta, top_features = 10, method = c("poisson",
   "bernoulli"), options = c("min", "max"))
 }
 \arguments{
-\item{theta}{\eqn{\theta} matrix the relative gene expression profile of the GoM clusters
+\item{theta}{\eqn{\boldsymbol{theta}} matrix, the relative gene expression profile of the GoM clusters
 (cluster probability distributions) 
-from the GoM model fitting (a \eqn{G x K} matrix where G is
+from the GoM model fitting (a \eqn{G x K} matrix where \eqn{G} is
 number of features, \eqn{K} number of topics).}
 
-\item{top_features}{The number of top features per cluster that drives
-away that cluster from others. Default value is 10.}
+\item{top_features}{The top features in each cluster \eqn{k} that are selected based on the feature's
+ability to distinguish cluster \eqn{k} from cluster \eqn{1, \dots, K} 
+for all cluster \eqn{k \ne l}. Default: \eqn{10}.}
 
 \item{method}{The underlying model assumed for KL divergence measurement.
-Two choices considered are "bernoulli" and "poisson".}
+Two choices considered are "bernoulli" and "poisson". Default: poisson.}
 
 \item{options}{if "min", for each cluster k, we select features that
 maximize the minimum KL divergence of cluster k against
