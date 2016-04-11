@@ -7,7 +7,7 @@
 StructureGGplot(omega, annotation, palette = RColorBrewer::brewer.pal(8,
   "Accent"), figure_title = "", yaxis_label = "Tissue type",
   order_sample = TRUE, sample_order_decreasing = TRUE,
-  split_line = list(split_lwd = 1, split_col = "white"),
+  split_line = list(split_lwd = 1, split_col = "white"), plot_labels = TRUE,
   axis_tick = list(axis_ticks_length = 0.1, axis_ticks_lwd_y = 0.1,
   axis_ticks_lwd_x = 0.1, axis_label_size = 3, axis_label_face = "bold"))
 }
@@ -62,14 +62,16 @@ omega <- MouseDeng2014.FitGoM$clust_6$omega
 
 # make annotation matrix
 annotation <- data.frame(
-sample_id = paste0("X", c(1:NROW(omega))),
-tissue_label = factor(rownames(omega),
+  sample_id = paste0("X", c(1:NROW(omega))),
+  tissue_label = factor(rownames(omega),
                      levels = rev( c("zy", "early2cell",
                                      "mid2cell", "late2cell",
                                      "4cell", "8cell", "16cell",
                                      "earlyblast","midblast",
                                      "lateblast") ) ) )
-rownames(omega) <- annotation$sample_id;
+head(annotation)                                     
+rownames(omega) <- annotation$sample_id
+
 StructureGGplot(omega = omega,
                  annotation = annotation,
                  palette = RColorBrewer::brewer.pal(8, "Accent"),
