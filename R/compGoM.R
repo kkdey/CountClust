@@ -1,11 +1,11 @@
-#' @title BIC (Bayesian information criterion) of the GoM model fits
+#' @title compGoM: compare GoM model fits through log-likelihood, BIC and null loglikelihood
 #'
 #' @description This function takes the \code{FitGoM} output model fits
-#'              and compute log likelihood for the GoM models.
+#'              and compute log likelihood, BIC and null model loglikelihood for the GoM models.
 #'
 #' @param model_output \code{FitGoM} output (a \code{list}).
 #'
-#' @return BIC_models a vector of GoM model BICs.
+#' @return compGoM_models a vector of GoM model fit BIC, loglikelihood and null model loglikelihood for each model in FiGoM model input.
 #'
 #' @keywords GoM, model fit
 #'
@@ -33,25 +33,28 @@
 #' data("MouseDeng2014.FitGoM")
 #' names(MouseDeng2014.FitGoM)
 #'
-#' BIC(data = deng.counts,
+#' compGoM(data = deng.counts,
 #'            model_output = MouseDeng2014.FitGoM)
+#' @importFrom slam col_sums row_sums as.simple_triplet_matrix
 #' @export
 
-BIC <- function(data, model_output)
+compGoM <- function(data, model_output)
 {
     # Get the numer GoM models
     num_models <- length(model_output)
 
     X <- CheckCounts(data);
+    p <- ncol(X)
+    n <- nrow(X)
 
     ## Null model log probability
     sx <- sum(X)
-    qnull <- col_sums(X)/sx
-    null <- sum( X$v*log(qnull[X$j]) ) - 0.5*(n+p)*(log(sx) - log(2*pi))
+    qnull <- slam::col_sums(X)/sx
+    null_loglik <- sum( X$v*log(qnull[X$j]) ) - 0.5*(n+p)*(log(sx) - log(2*pi))
 
 
     # Compute logLik for each GoM
-    BIC_models <- sapply(1:num_models, function(i) {
+    compGoM_models <- sapply(1:num_models, function(i) {
 
         theta <- model_output[[i]]$theta
         omega <- model_output[[i]]$omega
@@ -67,13 +70,13 @@ BIC <- function(data, model_output)
         }) )
         BIC <- -2*loglik + NCOL(theta)*log(NROW(data))
 
-        ll <- list("BIC"=BIC, "loglik"=loglik, "null_loglik"=)
+        ll <- list("BIC"=BIC, "loglik"=loglik, "null_loglik"=null_loglik);
 
-        return("BIC"=BIC, "loglik"=loglik, "")
+        return(ll)
     })
-    names(BIC_models) <- names(model_output)
+    names(compGoM_models) <- names(model_output)
 
-    return(BIC_models)
+    return(compGoM_models)
 }
 
 CheckCounts <- function(fcounts){
