@@ -58,15 +58,15 @@ compGoM <- function(data, model_output)
 
         theta <- model_output[[i]]$theta
         omega <- model_output[[i]]$omega
-        probs <- theta %*% t(omega)
+        probs <- omega %*% t(theta)
 
         if (!all.equal(dim(data), dim(probs))) {
             stop("Observed data dimension does not match \n
                  the model fit results dimension")
         }
 
-        loglik <- Reduce(sum, sapply(1:NCOL(data), function(j) {
-            dmultinom(x = data[,j], prob = probs[,j], log = TRUE)
+        loglik <- Reduce(sum, sapply(1:NROW(data), function(i) {
+            dmultinom(x = data[i,], prob = probs[i,], log = TRUE)
         }) )
         BIC <- -2*loglik + NCOL(theta)*log(NROW(data))
 
