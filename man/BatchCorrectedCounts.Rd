@@ -56,25 +56,9 @@ for(n in 1:N){
                                                       + beta_true[Label.Batch[n],g]));
    }
 }
-K <- 4
-barplot(t(omega_true),col=2:(K+1),axisnames=F,space=0,border=NA,main=paste("No. of clusters=",3),las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
-topic_clus <- maptpx::topics(read_counts, K=4, tol=0.1)
-barplot(t(topic_clus$omega),col=2:(K+1),axisnames=F,space=0,border=NA,main=paste("No. of clusters=",3),las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
 
-batchcorrect_counts <- BatchCorrectedCounts(read_counts, Label.Batch, use_parallel=TRUE)
-topic_clus <- maptpx::topics(batchcorrect_counts, K=4, tol=0.1)
-library(permute);
-library("BioPhysConnectoR");
-perm_set=rbind(1:K,allPerms(1:K));
-diff=array(0,dim(perm_set)[1]);
-for (p in 1:dim(perm_set)[1])
-{
-    temp=topic_clus$omega[,perm_set[p,]];
-    diff[p]=fnorm(temp,omega_true);
-}
-p_star=which(diff==min(diff));
-docweights=topic_clus$omega[,perm_set[p_star,]];
-barplot(t(docweights),col=2:(K+1),axisnames=F,space=0,border=NA,main=paste("No. of clusters=",3),las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
+batchcorrect_counts <- BatchCorrectedCounts(read_counts, Label.Batch,
+                                     use_parallel=FALSE)
 
 }
 \keyword{batch}

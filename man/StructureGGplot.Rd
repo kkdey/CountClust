@@ -44,6 +44,8 @@ order.}
 \item{split_line}{Control parameters for line splitting the batches in the
 plot.}
 
+\item{plot_labels}{A logical parameter, if TRUE the function plots the axis labels.}
+
 \item{axis_tick}{Control parameters for x-axis and y-axis tick sizes.}
 }
 \value{
@@ -69,7 +71,7 @@ annotation <- data.frame(
                                      "4cell", "8cell", "16cell",
                                      "earlyblast","midblast",
                                      "lateblast") ) ) )
-head(annotation)                                     
+head(annotation)
 rownames(omega) <- annotation$sample_id
 
 StructureGGplot(omega = omega,
@@ -84,7 +86,7 @@ StructureGGplot(omega = omega,
                                   axis_label_face = "bold"))
 
 # Example 2
-Import Deng et al data
+# Import Deng et al data
 
 # function to read Deng data from GitHub
 read.data <- function() {

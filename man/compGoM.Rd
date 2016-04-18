@@ -7,6 +7,8 @@
 compGoM(data, model_output)
 }
 \arguments{
+\item{data}{matrix on which GoM model is fitted (samples along rows, genes along columns)}
+
 \item{model_output}{\code{FitGoM} output (a \code{list}).}
 }
 \value{
@@ -18,10 +20,6 @@ This function takes the \code{FitGoM} output model fits
 }
 \examples{
 
-# We need both the observed count matrix and
-# the GoM model fit output
-
-# Import Deng et al data
 read.data <- function() {
   x <- tempfile()
   download.file(paste0("https://cdn.rawgit.com/kkdey/",
@@ -40,7 +38,7 @@ deng.counts <- Biobase::exprs(Deng2014MouseESC)
 data("MouseDeng2014.FitGoM")
 names(MouseDeng2014.FitGoM)
 
-compGoM(data = deng.counts,
+compGoM(data = t(deng.counts),
            model_output = MouseDeng2014.FitGoM)
 }
 \keyword{GoM,}

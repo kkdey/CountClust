@@ -27,6 +27,7 @@
 #' @param split_line Control parameters for line splitting the batches in the
 #' plot.
 #' @param axis_tick Control parameters for x-axis and y-axis tick sizes.
+#' @param plot_labels A logical parameter, if TRUE the function plots the axis labels.
 #'
 #' @return Plots the Structure plot visualization of the GoM model
 #'
@@ -37,7 +38,7 @@
 #' # extract the omega matrix: membership weights of each cell
 #' names(MouseDeng2014.FitGoM$clust_6)
 #' omega <- MouseDeng2014.FitGoM$clust_6$omega
-#' 
+#'
 #' # make annotation matrix
 #' annotation <- data.frame(
 #'   sample_id = paste0("X", c(1:NROW(omega))),
@@ -47,9 +48,9 @@
 #'                                      "4cell", "8cell", "16cell",
 #'                                      "earlyblast","midblast",
 #'                                      "lateblast") ) ) )
-#' head(annotation)                                     
+#' head(annotation)
 #' rownames(omega) <- annotation$sample_id
-#' 
+#'
 #' StructureGGplot(omega = omega,
 #'                  annotation = annotation,
 #'                  palette = RColorBrewer::brewer.pal(8, "Accent"),
@@ -62,7 +63,7 @@
 #'                                   axis_label_face = "bold"))
 #'
 #' # Example 2
-#' Import Deng et al data
+#' # Import Deng et al data
 #'
 #' # function to read Deng data from GitHub
 #' read.data <- function() {
@@ -260,7 +261,7 @@ StructureGGplot <- function(omega, annotation,
             -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
         size = split_line$split_lwd)
-    
+
     if (!plot_labels) {
         b
     } else {
