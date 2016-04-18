@@ -27,6 +27,7 @@ This function first converts counts data to log CPM data ,
    batch effects.
 }
 \examples{
+
 # Simulation example
 N=500;
 K=4;
@@ -36,28 +37,44 @@ alpha_true=matrix(rnorm((K)*G,0.5,1),nrow=(K));
 library(gtools)
 tt <- 10;
 omega_true = matrix(rbind(rdirichlet(tt*10,c(3,4,2,6)),
-             rdirichlet(tt*10,c(1,4,6,3)),
-             rdirichlet(tt*10,c(4,1,2,2)),
-             rdirichlet(tt*10,c(2,6,3,2)),
-             rdirichlet(tt*10,c(3,3,5,4))), nrow=N);
+                         rdirichlet(tt*10,c(1,4,6,3)),
+                         rdirichlet(tt*10,c(4,1,2,2)),
+                         rdirichlet(tt*10,c(2,6,3,2)),
+                         rdirichlet(tt*10,c(3,3,5,4))), nrow=N);
 B=max(Label.Batch);
 sigmab_true=2;
 beta_true=matrix(0,B,G);
 for(g in 1:G)
 {
-   beta_true[,g]=rnorm(B,mean=0,sd=sigmab_true);
+    beta_true[,g]=rnorm(B,mean=0,sd=sigmab_true);
 }
 read_counts=matrix(0,N,G);
 for(n in 1:N){
-   for(g in 1:G)
-     {
+    for(g in 1:G)
+    {
         read_counts[n,g]=rpois(1, omega_true[n,]\%*\%exp(alpha_true[,g]
-                                   + beta_true[Label.Batch[n],g]));
-     }
- }
+                                                      + beta_true[Label.Batch[n],g]));
+   }
+}
+K <- 4
+barplot(t(omega_true),col=2:(K+1),axisnames=F,space=0,border=NA,main=paste("No. of clusters=",3),las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
+topic_clus <- maptpx::topics(read_counts, K=4, tol=0.1)
+barplot(t(topic_clus$omega),col=2:(K+1),axisnames=F,space=0,border=NA,main=paste("No. of clusters=",3),las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
 
- batchcorrect.counts <- BatchCorrectedCounts(read_counts,
-                           Label.Batch,  use_parallel=FALSE);
+batchcorrect_counts <- BatchCorrectedCounts(read_counts, Label.Batch, use_parallel=TRUE)
+topic_clus <- maptpx::topics(batchcorrect_counts, K=4, tol=0.1)
+library(permute);
+library("BioPhysConnectoR");
+perm_set=rbind(1:K,allPerms(1:K));
+diff=array(0,dim(perm_set)[1]);
+for (p in 1:dim(perm_set)[1])
+{
+    temp=topic_clus$omega[,perm_set[p,]];
+    diff[p]=fnorm(temp,omega_true);
+}
+p_star=which(diff==min(diff));
+docweights=topic_clus$omega[,perm_set[p_star,]];
+barplot(t(docweights),col=2:(K+1),axisnames=F,space=0,border=NA,main=paste("No. of clusters=",3),las=1,ylim=c(0,1),cex.axis=1.5,cex.main=1.4)
 
 }
 \keyword{batch}
