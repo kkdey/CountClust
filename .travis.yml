@@ -1,10 +1,9 @@
 language: r
 pandoc_version: 1.16
-
+r: bioc-devel
 sudo: FALSE
 cache: packages
 
-r: bioc-devel
 
 env:
   global:
