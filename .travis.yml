@@ -12,6 +12,9 @@ bioc_required: true
 bioc_packages:
   - BiocInstaller
 
+r_packages:
+  - covr
+
 r_github_packages:
   - hadley/devtools
 
