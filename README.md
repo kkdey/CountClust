@@ -1,6 +1,6 @@
 # CountClust
 
-https://travis-ci.org/jhsiao999/CountClust.svg?branch=master
+![alt text](https://travis-ci.org/jhsiao999/CountClust.svg?branch=master)
 
 A R package for Grade of Membership (GoM) model fit and Visualization of counts data-
 
