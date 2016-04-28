@@ -18,9 +18,6 @@ r_packages:
 r_github_packages:
   - hadley/devtools
 
-after_success:
-  - Rscript -e 'covr::codecov()'
-
 after_script:
   - ./travis-tool.sh dump_logs
 
