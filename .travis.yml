@@ -15,9 +15,6 @@ bioc_packages:
 r_packages:
   - covr
 
-r_github_packages:
-  - hadley/devtools
-
 after_script:
   - ./travis-tool.sh dump_logs
 
