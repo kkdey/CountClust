@@ -1,4 +1,7 @@
 # CountClust
+
+[![Build Status](https://travis-ci.org/kkdey/CountClust.svg?branch=master)](https://travis-ci.org/kkdey/CountClust)
+
 A R package for Grade of Membership (GoM) model fit and Visualization of counts data-
 
 [Kushal K Dey](http://kkdey.github.io/), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
