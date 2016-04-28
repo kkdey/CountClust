@@ -1,7 +1,7 @@
 language: r
 pandoc_version: 1.16
 r: bioc-devel
-sudo: FALSE
+sudo: false
 cache: packages
 
 
@@ -17,9 +17,9 @@ r_github_packages:
   - hadley/devtools
 
 after_success:
-  - test $TRAVIS_R_VERSION = "3.2.4" && Rscript -e 'covr::codecov()'
+  - Rscript -e 'covr::codecov()'
 
 after_script:
   - ./travis-tool.sh dump_logs
 
-
+warnings_are_errors: false
