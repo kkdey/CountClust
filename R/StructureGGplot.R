@@ -254,18 +254,28 @@ StructureGGplot <- function(omega, annotation,
     b <- a + ggplot2::geom_bar(stat = "identity",
                                position = "stack",
                                width = 1)
+    # sample labels option
+    if (!plot_labels) {
+        b
+    } else {
+        b <- b + theme(axis.text.x = element_blank())
+    }
+    
+    # remove plot border
     b <- b + cowplot::panel_border(remove = TRUE)
+    
     # Add demarcation
     b <- b + ggplot2::geom_vline(
         xintercept = cumsum(table(droplevels(annotation$tissue_label)))[
             -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
         size = split_line$split_lwd)
-
-    if (!plot_labels) {
-        b
-    } else {
-        b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
-        b
-    }
+    b
+    
+    # if (!plot_labels) {
+    #     b
+    # } else {
+    #     b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
+    #     b
+    # }
 }
