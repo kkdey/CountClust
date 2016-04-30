@@ -255,10 +255,10 @@ StructureGGplot <- function(omega, annotation,
                                position = "stack",
                                width = 1)
     # sample labels option
-    if (!plot_labels) {
+    if (plot_labels == TRUE) {
         b
     } else {
-        b <- b + theme(axis.text.x = element_blank())
+        b <- b + theme(axis.text.y = element_blank())
     }
     
     # remove plot border
