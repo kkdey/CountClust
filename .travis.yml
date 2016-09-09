@@ -19,4 +19,3 @@ after_script:
   - ./travis-tool.sh dump_logs
 
 warnings_are_errors: false
- 

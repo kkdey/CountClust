@@ -1,6 +1,6 @@
 # CountClust
 
-![alt text](https://travis-ci.org/jhsiao999/CountClust.svg?branch=master)
+[![Build Status](https://travis-ci.org/kkdey/CountClust.svg?branch=master)](https://travis-ci.org/kkdey/CountClust)
 
 A R package for Grade of Membership (GoM) model fit and Visualization of counts data-
 
@@ -109,7 +109,7 @@ The CountClust package is distributed under [GPL - General Public License (>= 2)
 
 ## Contact
 
-For any queries, contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
+For any questions or comments, please contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
 
 ## Acknowledgements
 
