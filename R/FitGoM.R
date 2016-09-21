@@ -69,7 +69,7 @@ FitGoM <- function(data,
 
     Topic_clus_list <- lapply(K, function(per_clust) {
 
-        suppressWarnings(out <- topics(
+        suppressWarnings(out <- maptpx::topics(
             as.matrix(data),
             K = per_clust,
             control$shape,
