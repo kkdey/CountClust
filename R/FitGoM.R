@@ -42,7 +42,7 @@
 
 FitGoM <- function(data,
                    K,
-                   tol,
+                   tol=0.1,
                    path_rda = NULL,
                    control=list())
 {
