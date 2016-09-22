@@ -11,7 +11,9 @@
 #'                  tissue_label is a vector consisting of factor type of variable,
 #'                  which indicates the sample phenotype that is to be used in
 #'                  sorting and grouping the samples in the Structre plot; for example,
-#'                  tissue of origin in making Structure plot of the GTEx samples.
+#'                  tissue of origin in making Structure plot of the GTEx samples. 
+#'                  Default is set to "none for when no phenotype information is used to 
+#'                  order the sample vectors.
 #' @param palette Colors assigned to label the clusters. The first color in the palette
 #'                  is assigned to the cluster that is labeled 1 (usually arbitrarily
 #'                  assigned during the clustering process). Note: The number of colors
@@ -125,7 +127,7 @@
 #' @import reshape2
 #' @export
 
-StructureGGplot <- function(omega, annotation,
+StructureGGplot <- function(omega, annotation = "none",
                             palette = RColorBrewer::brewer.pal(8, "Accent"),
                             figure_title = "",
                             yaxis_label = "Tissue type",
@@ -152,15 +154,22 @@ StructureGGplot <- function(omega, annotation,
     }
 
     # check the annotation data.frame
-    if (!is.data.frame(annotation))
-        stop("annotation must be a data.frame")
-    if (!all.equal(colnames(annotation), c("sample_id", "tissue_label")) ) {
-        stop("annotation data.frame column names must be sample_id and tissue_label")
+    if (annotation == "none") null_annotation <- TRUE
+    if (null_annotation) {
+      annotation <- data.frame(
+                        sample_id = paste("X", c(1:NROW(omega))),
+                        tissue_label = rep("NA", NROW(omega)) )
+    } else if (!null_annotation) {      
+      if (!is.data.frame(annotation))
+          stop("annotation must be a data.frame")
+      if (!all.equal(colnames(annotation), c("sample_id", "tissue_label")) ) {
+          stop("annotation data.frame column names must be sample_id and tissue_label")
+      }
+      if ( length(unique(annotation$sample_id)) != NROW(omega)) {
+          stop("sample_id is not unique")
+      }
     }
-    if ( length(unique(annotation$sample_id)) != NROW(omega)) {
-        stop("sample_id is not unique")
-    }
-
+  
     df_ord <- do.call(rbind,
                       lapply(1:nlevels(annotation$tissue_label), function(ii) {
                           temp_label <- levels(annotation$tissue_label)[ii]
@@ -207,12 +216,15 @@ StructureGGplot <- function(omega, annotation,
 
     # number of ticks for the weight axis, including 0 and 1
     ticks_number <- 6
-
+    
     # set axis tick positions
     tissue_count <- table(droplevels(annotation$tissue_label))
     tissue_count_cumsum <- cumsum(table(droplevels(annotation$tissue_label)))
-
     tissue_names <- levels(droplevels(annotation$tissue_label))
+    
+    # if more than 2 levels in the phenotype of interest
+    if (length(tissue_names) > 1) {
+    
     tissue_breaks <- sapply(1:length(tissue_count), function(i) {
         if (i == 1) {
             if (tissue_count[i] == 1) bk <- 1
@@ -228,7 +240,7 @@ StructureGGplot <- function(omega, annotation,
         }
     })
     names(tissue_breaks) <- tissue_names
-
+    
     # make ggplot
     a <- ggplot2::ggplot(df_mlt,
                          ggplot2::aes(x = df_mlt$document,
@@ -282,6 +294,50 @@ StructureGGplot <- function(omega, annotation,
         col = split_line$split_col,
         size = split_line$split_lwd)
     b
+    } else if (null_annotation) {
+      # make ggplot
+      a <- ggplot2::ggplot(df_mlt,
+                           ggplot2::aes(x = df_mlt$document,
+                                        y = df_mlt$value*10000,
+                                        fill = factor(df_mlt$topic)) ) +
+        ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
+        ggplot2::scale_fill_manual(values = palette) +
+        ggplot2::theme(legend.position = "right",
+                       legend.key.size = ggplot2::unit(.2, "cm"),
+                       legend.text = ggplot2::element_text(size = 5),
+                       ##<-- TBD: center legend title
+                       #              legend.title = element_text(hjust = 1),
+                       axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
+                                                         face = axis_tick$axis_label_face),
+                       axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
+                       axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
+                       title = ggplot2::element_text(size = 6) ) +
+        ggplot2::ggtitle(figure_title) +
+        ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
+                                     labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
+        ggplot2::scale_x_discrete(breaks = NULL) +
+        # Add legend title
+        ggplot2::labs(fill = "Clusters") +
+        ggplot2::coord_flip()
+
+      # width = 1: increase bar width and in turn remove space
+      # between bars
+      b <- a + ggplot2::geom_bar(stat = "identity",
+                                 position = "stack",
+                                 width = 1)
+      # sample labels option
+      if (plot_labels == TRUE) {
+        b
+      } else {
+        b <- b + theme(axis.text.y = element_blank())
+      }
+
+      # remove plot border
+      b <- b + cowplot::panel_border(remove = TRUE)
+
+      b
+
+    }
 
     # if (!plot_labels) {
     #     b
