@@ -8,7 +8,7 @@
 #' @param data counts data, with samples along the rows and features
 #'              along the columns.
 #' @param K the vector of clusters or topics to be fitted.
-#' @param tol Tolerance value for GoM model log posterior increase
+#' @param tol Tolerance value for GoM model absolute log posterior increase
 #'            at successive iterations (set to 0.1 as default).
 #' @param path_rda The directory path for saving the GoM model output.
 #'                  If NULL, it will return the output to console.
