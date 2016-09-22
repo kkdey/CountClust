@@ -72,7 +72,7 @@ For the latest updated version of the package \begin{verb} maptpx \end{verb} pac
 
 <<install_github, eval=TRUE>>=
 library(devtools)
-install_github("TaddyLab/maptpx")
+install_github("kkdey/maptpx")
 @ %def
 
 The working version of the \CountClust{} package is available on Github, along with the data packages used as examples in this vignette.

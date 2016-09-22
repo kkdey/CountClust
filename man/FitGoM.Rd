@@ -34,8 +34,7 @@ Fits a grade of membership model to count data. Default input
 \examples{
 
 data("ex.counts")
-out <- FitGoM(ex.counts,
-           K=4, tol=1000, control=list(kill=1))
+out <- FitGoM(ex.counts, K=4, tol=100, control=list(tmax=100))
 
 }
 \references{

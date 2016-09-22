@@ -31,8 +31,7 @@
 #' @examples
 #'
 #' data("ex.counts")
-#' out <- FitGoM(ex.counts,
-#'            K=4, tol=1000, control=list(kill=1))
+#' out <- FitGoM(ex.counts, K=4, tol=100, control=list(tmax=100))
 #'
 #' @importFrom maptpx topics
 #' @import slam
@@ -49,7 +48,7 @@ FitGoM <- function(data,
     ## dealing with blank rows: we first remove them
 
     control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
-                            kill=2, ord=TRUE, verb=1)
+                            kill=2, ord=TRUE, verb=1, tmax=1000)
 
     namc=names(control)
     if (!all(namc %in% names(control.default)))
@@ -72,13 +71,14 @@ FitGoM <- function(data,
         suppressWarnings(out <- maptpx::topics(
             as.matrix(data),
             K = per_clust,
-            control$shape,
-            control$initopics,
-            tol,
-            control$bf,
-            control$ill,
-            control$ord,
-            control$verb))
+            shape=control$shape,
+            initopics=control$initopics,
+            tol=tol,
+            bf=control$bf,
+            kill=control$kill,
+            ord=control$ord,
+            verb=control$verb,
+            tmax=control$tmax))
         return(out)
     })
 
