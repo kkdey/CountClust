@@ -109,7 +109,7 @@ The CountClust package is distributed under [GPL - General Public License (>= 2)
 
 ## Contact
 
-For any queries, contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
+For any questions or comments, please contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
 
 ## Acknowledgements
 
