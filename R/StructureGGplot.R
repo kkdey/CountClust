@@ -11,8 +11,8 @@
 #'                  tissue_label is a vector consisting of factor type of variable,
 #'                  which indicates the sample phenotype that is to be used in
 #'                  sorting and grouping the samples in the Structre plot; for example,
-#'                  tissue of origin in making Structure plot of the GTEx samples. 
-#'                  Default is set to "none for when no phenotype information is used to 
+#'                  tissue of origin in making Structure plot of the GTEx samples.
+#'                  Default is set to NULL for when no phenotype information is used to
 #'                  order the sample vectors.
 #' @param palette Colors assigned to label the clusters. The first color in the palette
 #'                  is assigned to the cluster that is labeled 1 (usually arbitrarily
@@ -127,7 +127,7 @@
 #' @import reshape2
 #' @export
 
-StructureGGplot <- function(omega, annotation = "none",
+StructureGGplot <- function(omega, annotation = NULL,
                             palette = RColorBrewer::brewer.pal(8, "Accent"),
                             figure_title = "",
                             yaxis_label = "Tissue type",
@@ -154,12 +154,14 @@ StructureGGplot <- function(omega, annotation = "none",
     }
 
     # check the annotation data.frame
-    if (annotation == "none") null_annotation <- TRUE
+    if (is.null(annotation)) null_annotation <- TRUE
+    if (!is.null(annotation)) null_annotation <- FALSE
+
     if (null_annotation) {
       annotation <- data.frame(
                         sample_id = paste("X", c(1:NROW(omega))),
                         tissue_label = rep("NA", NROW(omega)) )
-    } else if (!null_annotation) {      
+    } else if (!null_annotation) {
       if (!is.data.frame(annotation))
           stop("annotation must be a data.frame")
       if (!all.equal(colnames(annotation), c("sample_id", "tissue_label")) ) {
@@ -169,7 +171,7 @@ StructureGGplot <- function(omega, annotation = "none",
           stop("sample_id is not unique")
       }
     }
-  
+
     df_ord <- do.call(rbind,
                       lapply(1:nlevels(annotation$tissue_label), function(ii) {
                           temp_label <- levels(annotation$tissue_label)[ii]
@@ -216,15 +218,15 @@ StructureGGplot <- function(omega, annotation = "none",
 
     # number of ticks for the weight axis, including 0 and 1
     ticks_number <- 6
-    
+
     # set axis tick positions
     tissue_count <- table(droplevels(annotation$tissue_label))
     tissue_count_cumsum <- cumsum(table(droplevels(annotation$tissue_label)))
     tissue_names <- levels(droplevels(annotation$tissue_label))
-    
+
     # if more than 2 levels in the phenotype of interest
     if (length(tissue_names) > 1) {
-    
+
     tissue_breaks <- sapply(1:length(tissue_count), function(i) {
         if (i == 1) {
             if (tissue_count[i] == 1) bk <- 1
@@ -240,7 +242,7 @@ StructureGGplot <- function(omega, annotation = "none",
         }
     })
     names(tissue_breaks) <- tissue_names
-    
+
     # make ggplot
     a <- ggplot2::ggplot(df_mlt,
                          ggplot2::aes(x = df_mlt$document,
