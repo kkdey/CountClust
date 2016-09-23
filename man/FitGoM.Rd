@@ -7,12 +7,12 @@
 FitGoM(data, K, tol = 0.1, path_rda = NULL, control = list())
 }
 \arguments{
-\item{data}{counts data, with samples along the rows and features
-along the columns.}
+\item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of samples
+along the rows and \eqn{G}, number of genes along columns.}
 
 \item{K}{the vector of clusters or topics to be fitted.}
 
-\item{tol}{Tolerance value for GoM model log posterior increase
+\item{tol}{Tolerance value for GoM model absolute log posterior increase
 at successive iterations (set to 0.1 as default).}
 
 \item{path_rda}{The directory path for saving the GoM model output.

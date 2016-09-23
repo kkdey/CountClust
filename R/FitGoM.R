@@ -5,8 +5,8 @@
 #'                (topics) to fit (K). The function is a wrapper of the topics()
 #'                function implemented in Matt Taddy's maptpx pacakge.
 #'
-#' @param data counts data, with samples along the rows and features
-#'              along the columns.
+#' @param data counts data \eqn{N x G}, with \eqn{N}, the number of samples
+#'       along the rows and \eqn{G}, number of genes along columns.
 #' @param K the vector of clusters or topics to be fitted.
 #' @param tol Tolerance value for GoM model absolute log posterior increase
 #'            at successive iterations (set to 0.1 as default).
