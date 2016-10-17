@@ -2,7 +2,7 @@ Package: CountClust
 Type: Package
 Title: Clustering and Visualizing RNA-Seq Expression Data using Grade
         of Membership Models
-Version: 1.1.3
+Version: 1.2.0
 Date: 2016-03-13
 Authors@R: c( person("Kushal", "Dey", email = "kkdey@uchicago.edu",
         role = c("aut","cre")), person("Joyce", "Hsiao", email =
