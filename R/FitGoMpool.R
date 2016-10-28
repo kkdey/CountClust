@@ -68,12 +68,12 @@ FitGoMpool <- function(data,
 
   if(!is.null(path_rda)){
     save(Topic_clus, file = path_rda);
-    ll <- c("topic_fit"=Topic_clus,
-            "BIC"=BIC_val[which.min(BIC_val)])
+    ll <- list("topic_fit"=Topic_clus,
+               "BIC"=BIC_val[which.min(BIC_val)])
     return(ll)
   }else{
-      ll <- c("topic_fit"=Topic_clus,
-              "BIC"=BIC_val[which.min(BIC_val)])
+      ll <- list("topic_fit"=Topic_clus,
+                 "BIC"=BIC_val[which.min(BIC_val)])
       return(ll)
   }
 }
