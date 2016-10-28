@@ -5,10 +5,10 @@
 #'                (topics) to fit (K). The function is a wrapper of the topics()
 #'                function implemented in Matt Taddy's maptpx pacakge.
 #'
-#' @param data counts data, with samples along the rows and features
-#'              along the columns.
+#' @param data counts data \eqn{N x G}, with \eqn{N}, the number of samples
+#'       along the rows and \eqn{G}, number of genes along columns.
 #' @param K the vector of clusters or topics to be fitted.
-#' @param tol Tolerance value for GoM model log posterior increase
+#' @param tol Tolerance value for GoM model absolute log posterior increase
 #'            at successive iterations (set to 0.1 as default).
 #' @param path_rda The directory path for saving the GoM model output.
 #'                  If NULL, it will return the output to console.
@@ -31,8 +31,7 @@
 #' @examples
 #'
 #' data("ex.counts")
-#' out <- FitGoM(ex.counts,
-#'            K=4, tol=1000, control=list(kill=1))
+#' out <- FitGoM(ex.counts, K=4, tol=100, control=list(tmax=100))
 #'
 #' @importFrom maptpx topics
 #' @import slam
@@ -42,14 +41,14 @@
 
 FitGoM <- function(data,
                    K,
-                   tol,
+                   tol=0.1,
                    path_rda = NULL,
                    control=list())
 {
     ## dealing with blank rows: we first remove them
 
     control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
-                            kill=2, ord=TRUE, verb=1)
+                            kill=2, ord=TRUE, verb=1, tmax=1000)
 
     namc=names(control)
     if (!all(namc %in% names(control.default)))
@@ -69,16 +68,17 @@ FitGoM <- function(data,
 
     Topic_clus_list <- lapply(K, function(per_clust) {
 
-        suppressWarnings(out <- topics(
+        suppressWarnings(out <- maptpx::topics(
             as.matrix(data),
             K = per_clust,
-            control$shape,
-            control$initopics,
-            tol,
-            control$bf,
-            control$ill,
-            control$ord,
-            control$verb))
+            shape=control$shape,
+            initopics=control$initopics,
+            tol=tol,
+            bf=control$bf,
+            kill=control$kill,
+            ord=control$ord,
+            verb=control$verb,
+            tmax=control$tmax))
         return(out)
     })
 

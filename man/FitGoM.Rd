@@ -4,15 +4,15 @@
 \alias{FitGoM}
 \title{Grade of Membership (GoM) model fit !}
 \usage{
-FitGoM(data, K, tol, path_rda = NULL, control = list())
+FitGoM(data, K, tol = 0.1, path_rda = NULL, control = list())
 }
 \arguments{
-\item{data}{counts data, with samples along the rows and features
-along the columns.}
+\item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of samples
+along the rows and \eqn{G}, number of genes along columns.}
 
 \item{K}{the vector of clusters or topics to be fitted.}
 
-\item{tol}{Tolerance value for GoM model log posterior increase
+\item{tol}{Tolerance value for GoM model absolute log posterior increase
 at successive iterations (set to 0.1 as default).}
 
 \item{path_rda}{The directory path for saving the GoM model output.
@@ -34,8 +34,7 @@ Fits a grade of membership model to count data. Default input
 \examples{
 
 data("ex.counts")
-out <- FitGoM(ex.counts,
-           K=4, tol=1000, control=list(kill=1))
+out <- FitGoM(ex.counts, K=4, tol=100, control=list(tmax=100))
 
 }
 \references{

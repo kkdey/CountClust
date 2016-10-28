@@ -5,7 +5,7 @@
 % To compile this document
 % library('knitr'); rm(list=ls()); knit('CountClust/vignettes/count-clust.Rnw')
 % library('knitr'); rm(list=ls()); knit2pdf('CountClust/vignettes/count-clust.Rnw'); openPDF('count-clust.pdf')
-%
+% !Rnw weave = knitr
 
 \documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[usenames,dvipsnames]{color}
 %% maxwidth is the original width if it is less than linewidth
@@ -85,7 +85,7 @@
 This \R{} package implements tools to visualize the clusters obtained from fitting topic models using a Structure plot \cite{Rosenberg2002} and extract the top features/genes that distinguish the clusters. In presence of known technical or batch effects, the package also allows for correction of these confounding effects.
 
 \vspace{1em}
-\textbf{\CountClust{} version:} 0.99.2 \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
+\textbf{\CountClust{} version:} 0.99.4 \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
 \end{abstract}
 
 
@@ -121,7 +121,7 @@ For the latest updated version of the package \begin{verb} maptpx \end{verb} pac
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
-\hlkwd{install_github}\hlstd{(}\hlstr{"TaddyLab/maptpx"}\hlstd{)}
+\hlkwd{install_github}\hlstd{(}\hlstr{"kkdey/maptpx"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -421,7 +421,7 @@ We tabulate the top $5$ genes for these $6$ clusters.
 \end{alltt}
 \begin{verbatim}
 ## % latex table generated in R 3.3.0 by xtable 1.8-2 package
-## % Wed Mar 16 15:55:48 2016
+## % Thu Sep 22 10:35:41 2016
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rlllll}
@@ -685,7 +685,7 @@ We would like to thank Deng \textit{et al} and the GTEx Consortium for having ma
 \hlkwd{sessionInfo}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## R Under development (unstable) (2016-03-11 r70310)
+## R version 3.3.0 beta (2016-04-14 r70486)
 ## Platform: x86_64-apple-darwin13.4.0 (64-bit)
 ## Running under: OS X 10.10.5 (Yosemite)
 ## 
@@ -696,25 +696,26 @@ We would like to thank Deng \textit{et al} and the GTEx Consortium for having ma
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] CountClust_0.99.2 ggplot2_2.1.0     devtools_1.10.0   knitr_1.12.3     
+## [1] CountClust_0.99.4 ggplot2_2.1.0     devtools_1.12.0   knitr_1.13       
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.3         RColorBrewer_1.1-2  formatR_1.3        
-##  [4] git2r_0.14.0        plyr_1.8.3          highr_0.5.1        
-##  [7] tools_3.3.0         digest_0.6.9        evaluate_0.8.3     
-## [10] memoise_1.0.0       gtable_0.2.0        nlme_3.1-126       
-## [13] lattice_0.20-33     mgcv_1.8-12         Matrix_1.2-4       
-## [16] curl_0.9.6          parallel_3.3.0      httr_1.1.0         
-## [19] stringr_1.0.0       cluster_2.0.3       gtools_3.5.0       
-## [22] stats4_3.3.0        grid_3.3.0          nnet_7.3-12        
-## [25] cowplot_0.6.1       Biobase_2.30.0      R6_2.1.2           
-## [28] maptpx_1.9-2        flexmix_2.3-13      limma_3.26.8       
-## [31] reshape2_1.4.1      magrittr_1.5        BiocGenerics_0.16.1
-## [34] scales_0.4.0        modeltools_0.2-21   MASS_7.3-45        
-## [37] xtable_1.8-2        BiocStyle_1.8.0     picante_1.6-2      
-## [40] permute_0.9-0       colorspace_1.2-6    ape_3.4            
-## [43] labeling_0.3        stringi_1.0-1       munsell_0.4.3      
-## [46] slam_0.1-32         vegan_2.3-4
+##  [1] Rcpp_0.12.7         RColorBrewer_1.1-2  formatR_1.4        
+##  [4] git2r_0.14.0        plyr_1.8.4          highr_0.6          
+##  [7] tools_3.3.0         boot_1.3-18         digest_0.6.9       
+## [10] evaluate_0.9        memoise_1.0.0       gtable_0.2.0       
+## [13] nlme_3.1-126        lattice_0.20-33     mgcv_1.8-12        
+## [16] Matrix_1.2-4        curl_0.9.7          parallel_3.3.0     
+## [19] cluster_2.0.3       withr_1.0.2         httr_1.2.0         
+## [22] stringr_1.0.0       gtools_3.5.0        stats4_3.3.0       
+## [25] grid_3.3.0          nnet_7.3-12         cowplot_0.6.2      
+## [28] Biobase_2.30.0      R6_2.1.2            maptpx_1.9-3       
+## [31] flexmix_2.3-13      limma_3.26.9        reshape2_1.4.1.9000
+## [34] magrittr_1.5        BiocGenerics_0.16.1 MASS_7.3-45        
+## [37] scales_0.4.0        modeltools_0.2-21   xtable_1.8-2       
+## [40] permute_0.9-0       BiocStyle_1.8.0     picante_1.6-2      
+## [43] colorspace_1.2-6    ape_3.5             stringi_1.1.1      
+## [46] munsell_0.4.3       slam_0.1-37         SQUAREM_2016.8-2   
+## [49] vegan_2.3-5
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

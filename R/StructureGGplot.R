@@ -127,7 +127,7 @@
 #' @import reshape2
 #' @export
 
-StructureGGplot <- function(omega, annotation = "none",
+StructureGGplot <- function(omega, annotation = NULL,
                             palette = RColorBrewer::brewer.pal(8, "Accent"),
                             figure_title = "",
                             yaxis_label = "Tissue type",
