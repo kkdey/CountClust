@@ -27,6 +27,7 @@ This function first converts counts data to log CPM data ,
    batch effects.
 }
 \examples{
+
 # Simulation example
 N=500;
 K=4;
@@ -36,28 +37,28 @@ alpha_true=matrix(rnorm((K)*G,0.5,1),nrow=(K));
 library(gtools)
 tt <- 10;
 omega_true = matrix(rbind(rdirichlet(tt*10,c(3,4,2,6)),
-             rdirichlet(tt*10,c(1,4,6,3)),
-             rdirichlet(tt*10,c(4,1,2,2)),
-             rdirichlet(tt*10,c(2,6,3,2)),
-             rdirichlet(tt*10,c(3,3,5,4))), nrow=N);
+                         rdirichlet(tt*10,c(1,4,6,3)),
+                         rdirichlet(tt*10,c(4,1,2,2)),
+                         rdirichlet(tt*10,c(2,6,3,2)),
+                         rdirichlet(tt*10,c(3,3,5,4))), nrow=N);
 B=max(Label.Batch);
 sigmab_true=2;
 beta_true=matrix(0,B,G);
 for(g in 1:G)
 {
-   beta_true[,g]=rnorm(B,mean=0,sd=sigmab_true);
+    beta_true[,g]=rnorm(B,mean=0,sd=sigmab_true);
 }
 read_counts=matrix(0,N,G);
 for(n in 1:N){
-   for(g in 1:G)
-     {
+    for(g in 1:G)
+    {
         read_counts[n,g]=rpois(1, omega_true[n,]\%*\%exp(alpha_true[,g]
-                                   + beta_true[Label.Batch[n],g]));
-     }
- }
+                                                      + beta_true[Label.Batch[n],g]));
+   }
+}
 
- batchcorrect.counts <- BatchCorrectedCounts(read_counts,
-                           Label.Batch,  use_parallel=FALSE);
+batchcorrect_counts <- BatchCorrectedCounts(read_counts, Label.Batch,
+                                     use_parallel=FALSE)
 
 }
 \keyword{batch}

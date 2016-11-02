@@ -5,7 +5,7 @@
 % To compile this document
 % library('knitr'); rm(list=ls()); knit('CountClust/vignettes/count-clust.Rnw')
 % library('knitr'); rm(list=ls()); knit2pdf('CountClust/vignettes/count-clust.Rnw'); openPDF('count-clust.pdf')
-%
+% !Rnw weave = knitr
 
 \documentclass[12pt]{article}
 
@@ -72,7 +72,7 @@ For the latest updated version of the package \begin{verb} maptpx \end{verb} pac
 
 <<install_github, eval=TRUE>>=
 library(devtools)
-install_github("TaddyLab/maptpx")
+install_github("kkdey/maptpx")
 @ %def
 
 The working version of the \CountClust{} package is available on Github, along with the data packages used as examples in this vignette.

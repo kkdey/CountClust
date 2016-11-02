@@ -2,47 +2,60 @@
 % Please edit documentation in R/StructureGGplot.R
 \name{StructureGGplot}
 \alias{StructureGGplot}
-\title{Struture plot with ggplot2 package}
+\title{Struture plot using ggplot2}
 \usage{
-StructureGGplot(omega, annotation, palette = RColorBrewer::brewer.pal(8,
-  "Accent"), figure_title = "", yaxis_label = "Tissue type",
-  order_sample = TRUE, sample_order_decreasing = TRUE,
-  split_line = list(split_lwd = 1, split_col = "white"),
-  axis_tick = list(axis_ticks_length = 0.1, axis_ticks_lwd_y = 0.1,
-  axis_ticks_lwd_x = 0.1, axis_label_size = 3, axis_label_face = "bold"))
+StructureGGplot(omega, annotation = NULL,
+  palette = RColorBrewer::brewer.pal(8, "Accent"), figure_title = "",
+  yaxis_label = "Tissue type", order_sample = TRUE,
+  sample_order_decreasing = TRUE, split_line = list(split_lwd = 1, split_col
+  = "white"), plot_labels = TRUE, axis_tick = list(axis_ticks_length = 0.1,
+  axis_ticks_lwd_y = 0.1, axis_ticks_lwd_x = 0.1, axis_label_size = 3,
+  axis_label_face = "bold"))
 }
 \arguments{
 \item{omega}{Cluster membership probabilities of each sample. Usually a
-sample by cluster matrix in the Topic model output. The cluster weights
-sum to 1 for each sample.}
+sample by cluster matrix in the Topic model output.
+The cluster weights sum to 1 for each sample.}
 
-\item{annotation}{A data.frame of two columns: sample_id and tissue_label.
-sample_id is the unique identifying number of each sample (alphanumeric).
-tissue_lable is a factor of tissue labels, with levels of the factor
-arranged in the order of the tissues in the Structure (left to right).}
+\item{annotation}{data.frame of two columns: sample_id and tissue_label.
+sample_id is a vetor consisting of character type of variable,
+which indicates the unique identifying number of each sample.
+tissue_label is a vector consisting of factor type of variable,
+which indicates the sample phenotype that is to be used in
+sorting and grouping the samples in the Structre plot; for example,
+tissue of origin in making Structure plot of the GTEx samples.
+Default is set to NULL for when no phenotype information is used to
+order the sample vectors.}
 
-\item{palette}{A vector of colors assigned to the clusters. First color in
-the vector is assigned to the cluster labeled as 1, and second color in the
-vector is assigned to the cluster labeled as 2, etc. The number of colors
-must be the same or greater than the number of clusters. The clusters not
-assigned a color are filled with white in the figure. In addition, the
-recommended choice of color palette here is RColorBrewer, for instance
-RColorBrewer::brewer.pal(8, "Accent") or RColorBrewwer::brewer.pal(9, "Set1").}
+\item{palette}{Colors assigned to label the clusters. The first color in the palette
+is assigned to the cluster that is labeled 1 (usually arbitrarily
+assigned during the clustering process). Note: The number of colors
+must be the same or greater than the number of clusters. When
+the number of clusters is greater than the number of colors,
+the clusters that are not assigned a color are filled with white
+in the figure. The recommended choice of color palette is RColorBrewer,
+for instance RColorBrewer::brewer.pal(8, "Accent") or
+RColorBrewwer::brewer.pal(9, "Set1").}
 
 \item{figure_title}{Title of the plot.}
 
-\item{yaxis_label}{Axis label for the samples.}
+\item{yaxis_label}{Axis label for the phenotype used to order the samples,
+for example, tissue type or cell type.}
 
-\item{order_sample}{if TRUE, we order samples in each annotation batch
-sorted by membership of most representative cluster. If FALSE, we keep
+\item{order_sample}{Whether to order the samples that are of the same tissue label
+or phenotype lable, that is, having the same label in the
+tissue_label variable. If TRUE, we order samples that are of
+the same phenotype label and sort the samples by membership
+of most representative cluster. If FALSE, we keep
 the order in the data.}
 
-\item{sample_order_decreasing}{if order_sample TRUE, then this input
-determines if the ordering due to main cluster is in ascending or descending
-order.}
+\item{sample_order_decreasing}{If order_sample=TRUE, then order the sample in
+descending (TRUE) or ascending order.}
 
-\item{split_line}{Control parameters for line splitting the batches in the
-plot.}
+\item{split_line}{Control parameters for the line that separates phenotype
+subgroups in the plot.}
+
+\item{plot_labels}{If TRUE, the plot the axis labels.}
 
 \item{axis_tick}{Control parameters for x-axis and y-axis tick sizes.}
 }
@@ -50,28 +63,80 @@ plot.}
 Plots the Structure plot visualization of the GoM model
 }
 \description{
-Make the traditional Structure histogram plot of GoM model using ggplot2
+Make the traditional Structure plot of GoM model with ggplot2
 }
 \examples{
+# Example 1
 data("MouseDeng2014.FitGoM")
 
 # extract the omega matrix: membership weights of each cell
 names(MouseDeng2014.FitGoM$clust_6)
 omega <- MouseDeng2014.FitGoM$clust_6$omega
+tissue_label <- rownames(omega)
 
 # make annotation matrix
 annotation <- data.frame(
-sample_id = paste0("X", c(1:NROW(omega))),
-tissue_label = factor(rownames(omega),
+  sample_id = paste0("X", c(1:NROW(omega))),
+  tissue_label = factor(rownames(omega),
                      levels = rev( c("zy", "early2cell",
                                      "mid2cell", "late2cell",
                                      "4cell", "8cell", "16cell",
                                      "earlyblast","midblast",
                                      "lateblast") ) ) )
-rownames(omega) <- annotation$sample_id;
+head(annotation)
+
+# setw rownames of omega to be sample ID
+rownames(omega) <- annotation$sample_id
+
 StructureGGplot(omega = omega,
                  annotation = annotation,
                  palette = RColorBrewer::brewer.pal(8, "Accent"),
+                 yaxis_label = "development phase",
+                 order_sample = TRUE,
+                 axis_tick = list(axis_ticks_length = .1,
+                                  axis_ticks_lwd_y = .1,
+                                  axis_ticks_lwd_x = .1,
+                                  axis_label_size = 7,
+                                  axis_label_face = "bold"))
+
+# Example 2
+# Import Deng et al data
+
+# function to read Deng data from GitHub
+read.data <- function() {
+  x <- tempfile()
+  download.file(paste0("https://cdn.rawgit.com/kkdey/",
+                         "singleCellRNASeqMouseDeng2014",
+                         "/master/data/Deng2014MouseEsc.rda"),
+                destfile = x, quiet = TRUE)
+  z <- get(load((x)))
+  return(z)
+  }
+Deng2014MouseESC <-read.data()
+
+deng.counts <- Biobase::exprs(Deng2014MouseESC)
+deng.meta_data <- Biobase::pData(Deng2014MouseESC)
+deng.gene_names <- rownames(deng.counts)
+
+samples_subvector <- which(!duplicated(deng.meta_data$cell_type))[1:3]
+
+# Fit GoM on 3 samples with K = 3
+fit_k3 <- FitGoM( t(deng.counts[,samples_subvector]),
+                  K = 3, tol=0.1)
+
+names(fit_k3$clust_3)
+omega <- fit_k3$clust_3$omega
+
+# make annotation matrix
+annotation <- data.frame(
+     sample_id = paste0("X", c(1:NROW(omega))),
+     tissue_label = factor( as.character(deng.meta_data$cell_type[samples_subvector]),
+             levels = rev( as.character(deng.meta_data$cell_type[samples_subvector])  ) )
+     )
+rownames(omega) <- annotation$sample_id
+StructureGGplot(omega = omega,
+                 annotation = annotation,
+                 palette = RColorBrewer::brewer.pal(3, "Accent"),
                  yaxis_label = "development phase",
                  order_sample = TRUE,
                  axis_tick = list(axis_ticks_length = .1,
