@@ -21,6 +21,7 @@ For installing the working version of this package and loading the data required
 ```
 library(devtools)
 install_github('kkdey/CountClust')
+install_github('kkdey/singleCellRNASeqMouseDeng2014') 
 ```
 
 Then load the package with:
