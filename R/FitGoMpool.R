@@ -13,6 +13,8 @@
 #' @param tol Tolerance value for GoM model absolute log posterior increase
 #'            at successive iterations (set to 0.1 as default).
 #' @param burn_trials The number of trials with different starting points used.
+#' @param options the measure used to choose best fit, either "BF" or "BIC" measures can be used.
+#'        BF is more trustworthy, but BIC can be used for better model comparison.
 #' @param path_rda The directory path for saving the GoM model output.
 #'                  If NULL, it will return the output to console.
 #' @param control Control parameters. Same as topics() function of
@@ -47,6 +49,7 @@ FitGoMpool <- function(data,
                    K,
                    tol=0.1,
                    burn_trials = 10,
+                   options = c("BF", "BIC"),
                    path_rda = NULL,
                    control=list())
 {
@@ -59,22 +62,34 @@ FitGoMpool <- function(data,
     out[[num]] <- FitGoM(data, K=K, tol=tol)
   }
 
-  BIC_val <- array(0, burn_trials)
-  for(n in 1:length(BIC_val)){
-    BIC_val [n] <- compGoM(data, out[[n]])[,1]$BIC
+  if(options=="BIC"){
+        BIC_val <- array(0, burn_trials)
+        for(n in 1:length(BIC_val)){
+            BIC_val [n] <- compGoM(data, out[[n]])[,1]$BIC
+        }
+
+        Topic_clus <- out[[which.min(BIC_val)]][[1]]
+        ll <- list("topic_fit"=Topic_clus,
+                   "BIC"=BIC_val[which.min(BIC_val)])
   }
 
-  Topic_clus <- out[[which.min(BIC_val)]][[1]]
+  if(options=="BF"){
+      BF_val <- array(0, burn_trials);
+      for(n in 1:length(BF_val)){
+          BF_val [n] <- as.numeric(out[[n]][[1]]$BF);
+      }
+
+      Topic_clus <- out[[which.max(BF_val)]][[1]]
+      ll <- list("topic_fit"=Topic_clus,
+                 "BF"=BF_val[which.max(BF_val)])
+  }
+
 
   if(!is.null(path_rda)){
     save(Topic_clus, file = path_rda);
-    ll <- list("topic_fit"=Topic_clus,
-               "BIC"=BIC_val[which.min(BIC_val)])
-    return(ll)
+     return(ll)
   }else{
-      ll <- list("topic_fit"=Topic_clus,
-                 "BIC"=BIC_val[which.min(BIC_val)])
-      return(ll)
+     return(ll)
   }
 }
 

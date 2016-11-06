@@ -4,8 +4,8 @@
 \alias{FitGoMpool}
 \title{Run Grade of Membership (GoM) model with multiple starting points !}
 \usage{
-FitGoMpool(data, K, tol = 0.1, burn_trials = 10, path_rda = NULL,
-  control = list())
+FitGoMpool(data, K, tol = 0.1, burn_trials = 10, options = c("BF", "BIC"),
+  path_rda = NULL, control = list())
 }
 \arguments{
 \item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of samples
@@ -19,6 +19,9 @@ for each K.}
 at successive iterations (set to 0.1 as default).}
 
 \item{burn_trials}{The number of trials with different starting points used.}
+
+\item{options}{the measure used to choose best fit, either "BF" or "BIC" measures can be used.
+BF is more trustworthy, but BIC can be used for better model comparison.}
 
 \item{path_rda}{The directory path for saving the GoM model output.
 If NULL, it will return the output to console.}
