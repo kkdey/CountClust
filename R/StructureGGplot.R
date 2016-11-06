@@ -341,10 +341,4 @@ StructureGGplot <- function(omega, annotation = NULL,
 
     }
 
-    # if (!plot_labels) {
-    #     b
-    # } else {
-    #     b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
-    #     b
-    # }
-}
+}}

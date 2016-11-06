@@ -5,6 +5,7 @@
 % To compile this document
 % library('knitr'); rm(list=ls()); knit('CountClust/vignettes/count-clust.Rnw')
 % library('knitr'); rm(list=ls()); knit2pdf('CountClust/vignettes/count-clust.Rnw'); openPDF('count-clust.pdf')
+%
 % !Rnw weave = knitr
 
 \documentclass[12pt]{article}
