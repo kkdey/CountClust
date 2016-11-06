@@ -341,4 +341,4 @@ StructureGGplot <- function(omega, annotation = NULL,
 
     }
 
-}}
+}
