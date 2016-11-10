@@ -65,7 +65,7 @@ compGoM <- function(data, model_output)
         loglik <- Reduce(sum, sapply(1:NROW(data), function(i) {
             dmultinom(x = data[i,], prob = probs[i,], log = TRUE)
         }) )
-        BIC <- -2*loglik + NCOL(theta)*log(NROW(data))
+        BIC <- -2*loglik + NROW(theta)*(NCOL(theta)-1)*log(NROW(data))
 
         ll <- list("BIC"=BIC, "loglik"=loglik, "null_loglik"=null_loglik);
 
