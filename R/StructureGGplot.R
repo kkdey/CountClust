@@ -122,7 +122,7 @@
 #'                                   axis_label_face = "bold"))
 #'
 #' @import ggplot2
-#' @importFrom cowplot ggdraw panel_border switch_axis_position plot_grid
+#' @importFrom cowplot ggdraw panel_border plot_grid
 #' @import plyr
 #' @import reshape2
 #' @export

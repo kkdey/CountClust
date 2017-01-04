@@ -1,7 +1,7 @@
 Package: CountClust
 Type: Package
 Title: Clustering and Visualizing RNA-Seq Expression Data using Grade of Membership Models
-Version: 0.1.1
+Version: 0.1.2
 Date: 2016-03-13
 Authors@R: c(
     person("Kushal", "Dey", email = "kkdey@uchicago.edu", role = c("aut","cre")),
@@ -16,7 +16,7 @@ URL: https://github.com/kkdey/CountClust
 License: GPL (>= 2)
 LazyData: true
 Encoding: UTF-8
-Imports: maptpx, slam, plyr(>= 1.7.1), cowplot, gtools, flexmix, picante, limma, parallel, reshape2, stats, utils, graphics, grDevices
+Imports: maptpx, SQUAREM, slam, plyr(>= 1.7.1), cowplot, gtools, flexmix, picante, limma, parallel, reshape2, stats, utils, graphics, grDevices
 Suggests:
     knitr, BiocStyle, Biobase, roxygen2, RColorBrewer, devtools, xtable
 VignetteBuilder: knitr
