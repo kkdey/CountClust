@@ -175,11 +175,9 @@ StructureGGplot <- function(omega, annotation = NULL,
     df_ord <- do.call(rbind,
                       lapply(1:nlevels(annotation$tissue_label), function(ii) {
                           temp_label <- levels(annotation$tissue_label)[ii]
-                          temp_df <- omega[which(annotation$tissue_label == temp_label), ]
+                          temp_df <- omega[which(annotation$tissue_label == temp_label), , drop=FALSE]
 
-                          is_single_sample <-
-                                  ( length(temp_df) == nlevels(annotation$tissue_label)|
-                                           is.null(dim(temp_df)) )
+                          is_single_sample <- (nrow(temp_df) == 1)
                           # find the dominant cluster in each sample
                           if ( is_single_sample ) {
                               each_sample_order <- which.max(temp_df)
