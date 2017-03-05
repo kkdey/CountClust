@@ -38,6 +38,7 @@
 #'                  subgroups in the plot.
 #' @param axis_tick Control parameters for x-axis and y-axis tick sizes.
 #' @param plot_labels If TRUE, the plot the axis labels.
+#' @param title_size The size of the title of the plot.
 #'
 #' @return Plots the Structure plot visualization of the GoM model
 #'
@@ -140,7 +141,10 @@ StructureGGplot <- function(omega, annotation = NULL,
                                              axis_ticks_lwd_y = .1,
                                              axis_ticks_lwd_x = .1,
                                              axis_label_size = 3,
-                                             axis_label_face = "bold") ) {
+                                             axis_label_face = "bold"),
+                            legend_title_size = 8,
+                            legend_key_size = 0.4,
+                            legend_text_size = 5) {
 
 
     # check if the number of colors is same as or more than the number of clusters
@@ -249,8 +253,8 @@ StructureGGplot <- function(omega, annotation = NULL,
         ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
         ggplot2::scale_fill_manual(values = palette) +
         ggplot2::theme(legend.position = "right",
-                       legend.key.size = ggplot2::unit(.2, "cm"),
-                       legend.text = ggplot2::element_text(size = 5),
+                       legend.key.size = ggplot2::unit(legend_key_size, "cm"),
+                       legend.text = ggplot2::element_text(size = legend_text_size),
                        ##<-- TBD: center legend title
                        #              legend.title = element_text(hjust = 1),
                        axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
@@ -258,7 +262,7 @@ StructureGGplot <- function(omega, annotation = NULL,
                        axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
                        axis.ticks.x = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_x),
                        axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
-                       title = ggplot2::element_text(size = 6) ) +
+                       title = ggplot2::element_text(size = legend_title_size) ) +
         ggplot2::ggtitle(figure_title) +
         ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
@@ -303,15 +307,15 @@ StructureGGplot <- function(omega, annotation = NULL,
         ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
         ggplot2::scale_fill_manual(values = palette) +
         ggplot2::theme(legend.position = "right",
-                       legend.key.size = ggplot2::unit(.2, "cm"),
-                       legend.text = ggplot2::element_text(size = 5),
+                       legend.key.size = ggplot2::unit(legend_key_size, "cm"),
+                       legend.text = ggplot2::element_text(size = legend_text_size),
                        ##<-- TBD: center legend title
                        #              legend.title = element_text(hjust = 1),
                        axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
                                                          face = axis_tick$axis_label_face),
                        axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
                        axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
-                       title = ggplot2::element_text(size = 6) ) +
+                       title = ggplot2::element_text(size = legend_title_size) ) +
         ggplot2::ggtitle(figure_title) +
         ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
