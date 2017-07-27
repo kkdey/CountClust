@@ -144,11 +144,7 @@ StructureGGplot <- function(omega, annotation = NULL,
                                              axis_label_face = "bold"),
                             legend_title_size = 8,
                             legend_key_size = 0.4,
-                            legend_text_size = 5,
-                            save_structure = FALSE,
-                            output_dir = NULL,
-                            output_width = 400,
-                            output_height = 700) {
+                            legend_text_size = 5) {
 
 
     # check if the number of colors is same as or more than the number of clusters
@@ -190,7 +186,7 @@ StructureGGplot <- function(omega, annotation = NULL,
                           if ( is_single_sample ) {
                               each_sample_order <- which.max(temp_df)
                           } else {
-                              each_sample_order <- apply(temp_df, 1, which.max)
+                              each_sample_order <- apply(temp_df, 1, function(x) return(which.max(x)[1]))
                           }
 
                           # find the dominant cluster across samples
@@ -231,7 +227,7 @@ StructureGGplot <- function(omega, annotation = NULL,
     tissue_names <- levels(droplevels(annotation$tissue_label))
 
     # if more than 2 levels in the phenotype of interest
-    if (length(tissue_names) > 1) {
+    if (length(tissue_names) > 0) {
 
     tissue_breaks <- sapply(1:length(tissue_count), function(i) {
         if (i == 1) {
@@ -301,7 +297,14 @@ StructureGGplot <- function(omega, annotation = NULL,
             -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
         size = split_line$split_lwd)
+
     b
+
+    # filename = paste0(output_dir, "structure.png")
+    # png(paste0(filename), width = output_width, height = output_height)
+    # ggsave(file=paste0(filename))
+    # dev.off()
+
     } else if (null_annotation) {
       # make ggplot
       a <- ggplot2::ggplot(df_mlt,
@@ -343,16 +346,23 @@ StructureGGplot <- function(omega, annotation = NULL,
       # remove plot border
       b <- b + cowplot::panel_border(remove = TRUE)
 
-      if(!save_structure){
-        print(b)
-      }else{
-        filename = paste0(output_dir, "structure.png")
-        png(filename, width = output_width, height = output_height)
-        print(b)
-        dev.off()
-      }
+      b
 
-    }
+      # filename = paste0(output_dir, "structure.png")
+      # png(paste0(filename), width = output_width, height = output_height)
+      # ggsave(file=paste0(filename))
+      # dev.off()
+
+    #   if(!save_structure){
+    #     print(b)
+    #   }else{
+    #     filename = paste0(output_dir, "structure.png")
+    #     png(filename, width = output_width, height = output_height)
+    #     print(b)
+    #     dev.off()
+    #   }
+    #
+     }
 
     # if (!plot_labels) {
     #     b
