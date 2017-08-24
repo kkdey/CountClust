@@ -28,8 +28,9 @@
 #' @examples
 #' data("MouseDeng2014.FitGoM")
 #' theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
-#' top_features <- ExtractTopFeatures(theta_mat, top_features=100,
-#'                                   method="poisson", options="min");
+#' top_features <- ExtractTopFeatures(theta_mat, top_features=100, method="poisson", options="min");
+#' top_features$indices
+#' top_features$scores
 #'
 #' @export
 
@@ -64,6 +65,7 @@ ExtractTopFeatures <- function(theta,
     }
 
     indices_mat=matrix(0,dim(theta)[2],top_features);
+    scores_mat=matrix(0,dim(theta)[2],top_features);
 
     if(dim(theta)[2]==2){
         for(k in 1:dim(theta)[2])
@@ -82,11 +84,13 @@ ExtractTopFeatures <- function(theta,
                 if(!shared){
                 if(which.max(theta[ordered_kl[counter],])==k){
                     indices_mat[k, flag] <- ordered_kl[counter];
+                    scores_mat[k, flag] <- vec[ordered_kl[counter]];
                     flag <- flag + 1;
                     counter <- counter + 1;}
                 else{counter <- counter + 1;}
                 }else{
                     indices_mat[k, flag] <- ordered_kl[counter];
+                    scores_mat[k, flag] <- vec[ordered_kl[counter]];
                     flag <- flag + 1;
                     counter <- counter + 1;
                 }
@@ -110,11 +114,13 @@ ExtractTopFeatures <- function(theta,
             {
                 if(counter > dim(theta)[1]){
                   indices_mat[k,(flag:top_features)]=NA;
+                  scores_mat[k,(flag:top_features)]=NA;
                   break
                 }
                 if(!shared){
                     if(which.max(theta[ordered_kl[counter],])==k){
                         indices_mat[k, flag] <- ordered_kl[counter];
+                        scores_mat[k, flag] <- vec[ordered_kl[counter]];
                         flag <- flag + 1;
                         counter <- counter + 1;
                     } else {
@@ -122,6 +128,7 @@ ExtractTopFeatures <- function(theta,
                     }
                 }else{
                     indices_mat[k, flag] <- ordered_kl[counter];
+                    scores_mat[k, flag] <- vec[ordered_kl[counter]];
                     flag <- flag + 1;
                     counter <- counter + 1;
                 }
@@ -129,5 +136,6 @@ ExtractTopFeatures <- function(theta,
         }
     }
 
-    return(indices_mat);
+    ll <- list("indices" = indices_mat, "scores" = scores_mat)
+    return(ll);
 }

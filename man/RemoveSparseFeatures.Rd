@@ -34,4 +34,3 @@ RemoveSparseFeatures(mat)
 \keyword{data,}
 \keyword{extraction}
 \keyword{feature}
-

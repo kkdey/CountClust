@@ -15,4 +15,3 @@ A list of GoM model output for k=7
 GoM model fit for Jaitin et al 2014 single cell RNA-seq data on mouse
 }
 \keyword{datasets}
-

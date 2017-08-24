@@ -39,4 +39,3 @@ handleNA(mat)
 \keyword{clustering}
 \keyword{counts}
 \keyword{data,}
-

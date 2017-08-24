@@ -15,4 +15,3 @@ A list of GoM model output
 GoM model fit for abundance data
 }
 \keyword{datasets}
-

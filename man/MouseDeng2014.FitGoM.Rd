@@ -15,4 +15,3 @@ A list of GoM model output for 6 clusters (k=2:7)
 GoM model fit for Deng et al 2014 single cell RNA-seq data on mouse
 }
 \keyword{datasets}
-

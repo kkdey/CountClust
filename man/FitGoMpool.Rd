@@ -59,4 +59,3 @@ Matt Taddy. On Estimation and Selection for Topic Models.
 \keyword{counts}
 \keyword{data,}
 \keyword{plot}
-

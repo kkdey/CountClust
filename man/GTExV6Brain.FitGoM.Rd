@@ -15,4 +15,3 @@ A list of GoM model output for k=7
 GoM model fit for GTEx V6 Brain bulk-RNA data
 }
 \keyword{datasets}
-

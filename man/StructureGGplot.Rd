@@ -10,7 +10,8 @@ StructureGGplot(omega, annotation = NULL,
   sample_order_decreasing = TRUE, split_line = list(split_lwd = 1, split_col
   = "white"), plot_labels = TRUE, axis_tick = list(axis_ticks_length = 0.1,
   axis_ticks_lwd_y = 0.1, axis_ticks_lwd_x = 0.1, axis_label_size = 3,
-  axis_label_face = "bold"))
+  axis_label_face = "bold"), legend_title_size = 8, legend_key_size = 0.4,
+  legend_text_size = 5)
 }
 \arguments{
 \item{omega}{Cluster membership probabilities of each sample. Usually a
@@ -58,6 +59,8 @@ subgroups in the plot.}
 \item{plot_labels}{If TRUE, the plot the axis labels.}
 
 \item{axis_tick}{Control parameters for x-axis and y-axis tick sizes.}
+
+\item{title_size}{The size of the title of the plot.}
 }
 \value{
 Plots the Structure plot visualization of the GoM model
@@ -146,4 +149,3 @@ StructureGGplot(omega = omega,
                                   axis_label_face = "bold"))
 
 }
-

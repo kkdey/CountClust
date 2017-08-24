@@ -41,8 +41,8 @@ This function uses relative gene expression profile of the GoM
 \examples{
 data("MouseDeng2014.FitGoM")
 theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
-top_features <- ExtractTopFeatures(theta_mat, top_features=100,
-                                  method="poisson", options="min");
+top_features <- ExtractTopFeatures(theta_mat, top_features=100, method="poisson", options="min");
+top_features$indices
+top_features$scores
 
 }
-
