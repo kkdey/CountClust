@@ -65,4 +65,3 @@ batchcorrect_counts <- BatchCorrectedCounts(read_counts, Label.Batch,
 \keyword{counts}
 \keyword{data,}
 \keyword{effect}
-

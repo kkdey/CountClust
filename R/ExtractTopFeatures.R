@@ -5,11 +5,11 @@
 #'        obtain a list of top features that drive each of the clusters.
 #'
 #' @param theta \eqn{\boldsymbol{theta}} matrix, the relative gene expression profile of the GoM clusters
-#'                (cluster probability distributions) 
+#'                (cluster probability distributions)
 #'                from the GoM model fitting (a \eqn{G x K} matrix where \eqn{G} is
 #'                number of features, \eqn{K} number of topics).
 #' @param top_features  The top features in each cluster \eqn{k} that are selected based on the feature's
-#'                          ability to distinguish cluster \eqn{k} from cluster \eqn{1, \dots, K} 
+#'                          ability to distinguish cluster \eqn{k} from cluster \eqn{1, \dots, K}
 #'                          for all cluster \eqn{k \ne l}. Default: \eqn{10}.
 #' @param method  The underlying model assumed for KL divergence measurement.
 #'                  Two choices considered are "bernoulli" and "poisson". Default: poisson.
@@ -18,6 +18,8 @@
 #'                  all other clusters for each feature. If "max", we select
 #'                  features  that maximize the maximum KL divergence of cluster
 #'                  k against all other clusters for each feature.
+#' @param shared if TRUE, then we report genes that can be highly expressed in more than one cluster. Else, we stick to
+#'               only those genes that are highest expressed only in a specific cluster.
 #'
 #' @return A matrix (K x top_features) which tabulates in k-th row the
 #'        top feature indices driving the cluster k.
@@ -26,18 +28,20 @@
 #' @examples
 #' data("MouseDeng2014.FitGoM")
 #' theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
-#' top_features <- ExtractTopFeatures(theta_mat, top_features=100,
-#'                                   method="poisson", options="min");
+#' top_features <- ExtractTopFeatures(theta_mat, top_features=100, method="poisson", options="min");
+#' top_features$indices
+#' top_features$scores
 #'
 #' @export
 
 ExtractTopFeatures <- function(theta,
                                top_features = 10,
                                method = c("poisson","bernoulli"),
-                               options=c("min", "max"))
+                               options=c("min", "max"),
+                               shared = FALSE)
 {
     if (is.null(method)) {
-        warning("method is not specified! Default method is Poisson distribution.")        
+        warning("method is not specified! Default method is Poisson distribution.")
         method <- "poisson"
     }
     if(method=="poisson") {
@@ -61,6 +65,7 @@ ExtractTopFeatures <- function(theta,
     }
 
     indices_mat=matrix(0,dim(theta)[2],top_features);
+    scores_mat=matrix(0,dim(theta)[2],top_features);
 
     if(dim(theta)[2]==2){
         for(k in 1:dim(theta)[2])
@@ -76,13 +81,20 @@ ExtractTopFeatures <- function(theta,
             flag <- counter
             while(flag <= top_features)
             {
+                if(!shared){
                 if(which.max(theta[ordered_kl[counter],])==k){
                     indices_mat[k, flag] <- ordered_kl[counter];
+                    scores_mat[k, flag] <- vec[ordered_kl[counter]];
                     flag <- flag + 1;
                     counter <- counter + 1;}
-                else{
+                else{counter <- counter + 1;}
+                }else{
+                    indices_mat[k, flag] <- ordered_kl[counter];
+                    scores_mat[k, flag] <- vec[ordered_kl[counter]];
+                    flag <- flag + 1;
                     counter <- counter + 1;
                 }
+
             }
         }
 
@@ -102,19 +114,28 @@ ExtractTopFeatures <- function(theta,
             {
                 if(counter > dim(theta)[1]){
                   indices_mat[k,(flag:top_features)]=NA;
+                  scores_mat[k,(flag:top_features)]=NA;
                   break
                 }
-
-                if(which.max(theta[ordered_kl[counter],])==k){
+                if(!shared){
+                    if(which.max(theta[ordered_kl[counter],])==k){
+                        indices_mat[k, flag] <- ordered_kl[counter];
+                        scores_mat[k, flag] <- vec[ordered_kl[counter]];
+                        flag <- flag + 1;
+                        counter <- counter + 1;
+                    } else {
+                        counter <- counter + 1;
+                    }
+                }else{
                     indices_mat[k, flag] <- ordered_kl[counter];
+                    scores_mat[k, flag] <- vec[ordered_kl[counter]];
                     flag <- flag + 1;
-                    counter <- counter + 1;
-                } else {
                     counter <- counter + 1;
                 }
             }
         }
     }
 
-    return(indices_mat);
+    ll <- list("indices" = indices_mat, "scores" = scores_mat)
+    return(ll);
 }

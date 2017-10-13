@@ -44,4 +44,3 @@ compGoM(data = t(deng.counts),
 \keyword{GoM,}
 \keyword{fit}
 \keyword{model}
-

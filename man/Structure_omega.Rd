@@ -46,4 +46,3 @@ Structure plot.
 
 }
 \keyword{internal}
-

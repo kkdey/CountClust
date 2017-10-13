@@ -33,4 +33,3 @@ data(AbundanceGoM)
 center_gravity <- cg_topics(AbundanceGoM$theta, comp);
 
 }
-

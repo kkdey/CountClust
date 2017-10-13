@@ -53,4 +53,3 @@ omega2=matrix(rbind(gtools::rdirichlet(tt*10,c(1,2,4,6)),
 out <- compare_omega(omega1, omega2)
 
 }
-

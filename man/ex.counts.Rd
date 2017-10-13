@@ -15,4 +15,3 @@ A data frame 1259 by 200 in dimensions
 counts data for GTEx V6 Brain data for 200 genes
 }
 \keyword{datasets}
-
