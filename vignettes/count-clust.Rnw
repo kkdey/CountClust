@@ -287,8 +287,8 @@ We extract the top genes driving each cluster using the \begin{verb} ExtractTopF
 theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
-gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
-                        function(x) deng.gene_names[top_features[x,]]))
+gene_list <- do.call(rbind, lapply(1:dim(top_features$indices)[1],
+                        function(x) deng.gene_names[top_features$indices[x,]]))
 @ %def
 
 We tabulate the top $5$ genes for these $6$ clusters.
@@ -319,8 +319,8 @@ We next perform the same for the topic model fit on the GTEx V6 Brain samples da
 theta_mat <- GTExV6Brain.FitGoM$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
-gene_list <- do.call(rbind, lapply(1:dim(top_features)[1],
-                        function(x) gtex.gene_names[top_features[x,]]))
+gene_list <- do.call(rbind, lapply(1:dim(top_features$indices)[1],
+                        function(x) gtex.gene_names[top_features$indices[x,]]))
 @ %def
 
 The top $3$ genes (ensemble IDs) driving these $4$ clusters.
