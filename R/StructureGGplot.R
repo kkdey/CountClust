@@ -12,7 +12,7 @@
 #'                  which indicates the sample phenotype that is to be used in
 #'                  sorting and grouping the samples in the Structre plot; for example,
 #'                  tissue of origin in making Structure plot of the GTEx samples.
-#'                  Default is set to NULL for when no phenotype information is used to
+#'                  Default is set to "none for when no phenotype information is used to
 #'                  order the sample vectors.
 #' @param palette Colors assigned to label the clusters. The first color in the palette
 #'                  is assigned to the cluster that is labeled 1 (usually arbitrarily
@@ -158,9 +158,8 @@ StructureGGplot <- function(omega, annotation = NULL,
     }
 
     # check the annotation data.frame
-    if (is.null(annotation)) null_annotation <- TRUE
-    if (!is.null(annotation)) null_annotation <- FALSE
-
+    null_annotation <- FALSE
+    if (is.data.frame(annotation) & length(annotation)>1 ) { null_annotation <- TRUE }
     if (null_annotation) {
       annotation <- data.frame(
                         sample_id = paste("X", c(1:NROW(omega))),
