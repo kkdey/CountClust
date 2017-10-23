@@ -15,7 +15,7 @@ author:
   email: mstephens@uchicago.edu
 package: CountClust
 abstract: >
-  Grade of membership or GoM models (also known as admixture models or "Latent Dirichlet Allocation") are a generalization of cluster models that allow each sample to have membership in multiple clusters. It is widely used to model ancestry of individuals in population genetics based on SNP microsatellite data and also in natural language processing for modeling documents (Blei et al., 2003, Pritchard et al., 2000). This R package implements tools to visualize the clusters obtained from fitting topic models using a Structure plot (Rosenberg et al., 2002) and extract the top features/genes that distinguish the clusters. In presence of known technical or batch effects, the package also allows for correction of these confounding effects.
+  Grade of membership or GoM models (also known as admixture models or "Latent Dirichlet Allocation") are a generalization of cluster models that allow each sample to have membership in multiple clusters. It is widely used to model ancestry of individuals in population genetics based on SNP microsatellite data and also in natural language processing for modeling documents [@Blei2013; Pritchard2000]. This R package implements tools to visualize the clusters obtained from fitting topic models using a Structure plot [@Rosenberg2002] and extract the top features/genes that distinguish the clusters. In presence of known technical or batch effects, the package also allows for correction of these confounding effects.
 output: 
   BiocStyle::html_document:
     toc: TRUE
@@ -24,18 +24,20 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8} ---
 date: "`r Sys.Date()`"
+bibliography: countclust.bib
 ---
 
-```{r}
+```{r knitr, echo=FALSE, results="hide"}
 library("knitr")
+library(kableExtra)
 opts_chunk$set(tidy=FALSE,tidy.opts=list(width.cutoff=30),dev="png",fig.show="hide",
                fig.width=4,fig.height=7,
                message=FALSE, warning = FALSE)
 ```
 
 
-```{r}
-BiocStyle::latex()
+```{r style, eval=TRUE, echo=FALSE, results='asis'}
+BiocStyle::markdown()
 ```
 
 
@@ -44,13 +46,13 @@ BiocStyle::latex()
 In the context of RNA-seq expression (bulk or singlecell seq) data, the grade of membership model allows each sample (usually a tissue sample or a single cell) to have some proportion of its RNA-seq reads coming from each cluster. For typical bulk RNA-seq experiments this assumption
 can be argued as follows: each tissue sample is a mixture of different cell types, and so clusters could represent cell types (which are determined by the expression patterns of the genes), and the membership of a sample in each cluster could represent the proportions of each cell type present in that sample.
 
-Many software packages available for document clustering are applicable to modeling RNA-seq data. Here, we use the R package `r CRANpkg("maptpx")` (Taddy, 2012) to fit these models, and add functionality for visualizing the results and annotating clusters by their most distinctive genes to help biological interpretation. We also provide additional functionality to correct for batch effects and also compare the outputs from two different grade of membership model fits to the same set of samples but different in terms of feature description or model assumptions.
+Many software packages available for document clustering are applicable to modeling RNA-seq data. Here, we use the R package `r CRANpkg("maptpx")` [@Taddy2012] to fit these models, and add functionality for visualizing the results and annotating clusters by their most distinctive genes to help biological interpretation. We also provide additional functionality to correct for batch effects and also compare the outputs from two different grade of membership model fits to the same set of samples but different in terms of feature description or model assumptions.
 
-# `r Biocpkg("CountClust")` Installation
+---
 
-```{r, eval = FALSE}
-Biocpkg("CountClust") requires the following CRAN-R packages: CRANpkg("maptpx"), CRANpkg{("ggplot2")}, CRANpkg("cowplot"), CRANpkg("parallel"), CRANpkg("reshape2"), CRANpkg("RColorBrewer"), CRANpkg("flexmix"), CRANpkg("gtools"), CRANpkg("devtools") along with the **Bioconductor** package: Biocpkg("limma").
-```
+# CountClust Installation
+
+`r Biocpkg("CountClust")` requires the following CRAN-R packages: `r CRANpkg("maptpx")`, `r CRANpkg("ggplot2")`, `r CRANpkg("cowplot")`, `r CRANpkg("parallel")`, `r CRANpkg("reshape2")`, `r CRANpkg("RColorBrewer")`, `r CRANpkg("flexmix")`,`r CRANpkg("gtools")`, `r CRANpkg("devtools")` along with the Bioconductor package: `r Biocpkg("limma")`.
 
 ```{r install_countclust_bio, eval=FALSE}
 source("http://bioconductor.org/biocLite.R")
@@ -64,7 +66,7 @@ library(devtools)
 install_github("kkdey/maptpx")
 ```
 
-The working version of the `r Biocpkg("CountClust")` package is available on Github, along with the data packages used as examples in this vignette.
+The development version of the `r Biocpkg("CountClust")` package is available on Github, along with the data packages used in examples for this vignette.
 
 ```{r install_countclust_github, eval=FALSE}
 install_github('kkdey/CountClust')
@@ -72,23 +74,25 @@ install_github('kkdey/CountClust')
 
 Then load the package with:
 
-@ %def
 ```{r load_countclust, cache=FALSE, eval=TRUE,warning=FALSE}
 library(CountClust)
 ```
 
-\section{Data Preparation}
+---
 
-We install data packages as `expressionSet` objects for bulk RNA-seq reads data from Brain tissue samples of human donors under GTEx (Genotype Tissue Expression) V6 Project  cite{GTEX2013} and a singlecell RNA-seq reads data across developmental stages in mouse embryo due to Deng *et al* 2014 (cite Deng).
+# Data Preparation
 
-%The data package due to Deng *et al* is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
+We install data packages as `expressionSet` objects for bulk RNA-seq reads data from Brain tissue samples of human donors under GTEx (Genotype Tissue Expression) V6 Project (GTEx Consortium, 2013) [@GTEX2013 ]and a singlecell RNA-seq reads data across developmental stages in mouse embryo due to Deng *et al* 2014 [@Deng2014].
 
-`r Rpackage("singleCellRNASeqMouseDeng2014")` data package due to Deng *et al* is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719: see \url{http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719}).
+`Deng et al 2014` `r Rpackage("singleCellRNASeqMouseDeng2014")` data package is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719)[http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719].
 
-%The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
+<!-- The data package due to Deng *et al* is a processed version of the data publicly available at Gene Expression Omnibus (GEO:GSE45719)[http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE45719]. 
 
-```{r, eval = FALSE}
-<<data_install_deng, eval=TRUE>>=
+The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the [GTEx Portal](http://www.gtexportal.org/home/) (dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
+-->
+
+
+```{r data_install_deng, eval=TRUE}
 library(devtools)
 
 read.data1 = function() {
@@ -103,11 +107,11 @@ return(z)
 Deng2014MouseESC <- read.data1()
 ## Alternatively,
 # install_github('kkdey/singleCellRNASeqMouseDeng2014')
-@ %def
+```
 
-\begin{verb} GTExV6Brain \end{verb} The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
+`GTExV6Brain` The data package for GTEx V6 Brain sample data is also a processed version of the data publicly available at the [GTEx Portal](http://www.gtexportal.org/home/) (dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
-<<data_install_gtex, eval=FALSE>>=
+```{r data_install_gtex, eval=TRUE}
 read.data2 = function() {
 x = tempfile()
 download.file(
@@ -120,66 +124,67 @@ return(z)
 GTExV6Brain <- read.data2()
 ## Alternatively
 # install_github('kkdey/GTExV6Brain')
-@ %def
+```
 
-\subsubsection{Deng et al 2014}
+## Deng et al 2014
 
-Load the scRNA-seq data due to Deng \textit{et al} 2014.
+Load the scRNA-seq data due to Deng *et al* 2014.
 
-<<data_load_deng, eval=TRUE>>=
+```{r data_load_deng, eval=TRUE}
 deng.counts <- Biobase::exprs(Deng2014MouseESC)
 deng.meta_data <- Biobase::pData(Deng2014MouseESC)
 deng.gene_names <- rownames(deng.counts)
-@ %def
+```
 
-\subsubsection{GTEx V6 Brain}
+## GTEx V6 Brain
 
 Load the bulk-RNA seq data from GTEx V6 brain data.
 
-<<data_load_gtex, eval=FALSE>>=
+```{r data_load_gtex, eval=TRUE}
 gtex.counts <- Biobase::exprs(GTExV6Brain)
 gtex.meta_data <- Biobase::pData(GTExV6Brain)
 gtex.gene_names <- rownames(gtex.counts)
-@ %def
+```
 
+---
 
-\section{Fitting the GoM Model}
+# Fitting the GoM Model
 
-We use a wrapper function of the \textit{topics()} function in the \CRANpkg{maptpx} due to Matt Taddy \cite{Taddy2012}.
+We use a wrapper function of the `topics()` function in the `r CRANpkg("maptpx")` due to Matt Taddy [@Taddy2012].
 
-As an example, we fit the topic model for \Robject{k}=4 on the GTEx V6 Brain data and save the GoM model output file to user-defined directory.
+As an example, we fit the topic model for `k=4` on the GTEx V6 Brain data and save the GoM model output file to user-defined directory.
 
-<<topic_fit_gtex, eval=FALSE>>=
+```{r topic_fit_gtex, eval=FALSE}
 FitGoM(t(gtex.counts),
             K=4, tol=0.1,
             path_rda="../data/GTExV6Brain.FitGoM.rda")
-@ %def
+```
 
-One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} as we do for a list of cluster numbers from $2$ to $7$ for Deng \textit{et al} 2014 data.
+One can also input a vector of clusters under `nclus_vec` as we do for a list of cluster numbers from $2$ to $7$ for Deng *et al* 2014 data.
 
-<<topic_fit_deng, eval=FALSE>>=
+```{r topic_fit_deng, eval=FALSE}
 FitGoM(t(deng.counts),
             K=2:7, tol=0.1,
             path_rda="../data/MouseDeng2014.FitGoM.rda")
-@ %def
+```
 
+---
 
+# Structure plot visualization
 
-\section{Structure plot visualization}
+Now we perform the visualization for `k=6` for the Deng *et al* 2014 data.
 
-Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al} 2014 data.
+We load the GoM fit for `k=6`.
 
-We load the GoM fit for \Robject{k}=6.
-
-<<prepare_deng_gom,eval=TRUE, warning=FALSE>>=
+```{r prepare_deng_gom,eval=TRUE, warning=FALSE}
 data("MouseDeng2014.FitGoM")
 names(MouseDeng2014.FitGoM$clust_6)
 omega <- MouseDeng2014.FitGoM$clust_6$omega
-@ %def
+```
 
 We prepare the annotations for the visualization.
 
-<<plot_topic_deng_annot, eval=TRUE, warning=FALSE>>=
+```{r plot_topic_deng_annot, eval=TRUE, warning=FALSE}
 annotation <- data.frame(
   sample_id = paste0("X", c(1:NROW(omega))),
   tissue_label = factor(rownames(omega),
@@ -190,13 +195,11 @@ annotation <- data.frame(
                                          "lateblast") ) ) )
 
 rownames(omega) <- annotation$sample_id;
-@ %def
+```
 
 Now we perform the visualization.
 
-\begin{figure}[htp]
-\begin{center}
-<<plot_topic_deng,eval=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+```{r plot_topic_deng,eval=TRUE, warning=FALSE, fig.align = "center", fig.show="asis", dpi=144, fig.width=3, fig.height=7}
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(8, "Accent"),
@@ -207,36 +210,25 @@ StructureGGplot(omega = omega,
                                  axis_ticks_lwd_x = .1,
                                  axis_label_size = 7,
                                  axis_label_face = "bold"))
+```
 
+In the above plot, the samples in each batch have been sorted by the proportional memebership of the most representative cluster in that batch. One can also use `order_sample=FALSE` for the un-ordered version, which retains the order as in the data (see Supplementary analysis for example).
 
-@ %def
-\end{center}
-\end{figure}
+Now we perform the Structure plot visualization for `k=4` for GTEx V6 data for Brain samples .
 
-%\begin{figure}[htp]
-%\begin{center}
-%\includegraphics[width=3in,height=7in]{figures/plot_topic_deng-1}
-%\end{center}
-%\end{figure}
+We load the GoM fit for `k=4`.
 
-In the above plot, the samples in each batch have been sorted by the proportional memebership of the most representative cluster in that batch. One can also use \begin{verb} order_sample=FALSE \end{verb} for the un-ordered version, which retains the order as in the data (see Supplementary analysis for example).
-
-Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 data for Brain samples .
-
-We load the GoM fit for \Robject{k}=4.
-
-<<prepare_gtex_gom, eval=TRUE>>=
+```{r prepare_gtex_gom, eval=TRUE}
 data("GTExV6Brain.FitGoM")
 omega <- GTExV6Brain.FitGoM$omega;
 dim(omega)
 colnames(omega) <- c(1:NCOL(omega))
-@ %def
+```
 
-We now prepare the annotations for the visualization.
+We now prepare the annotations for visualization GTEx brain tissue results.
 
-<<annot_gtex, eval=FALSE>>=
+```{r annot_gtex, eval=FALSE}
 tissue_labels <- gtex.meta_data[,3];
-
 
 annotation <- data.frame(
     sample_id = paste0("X", 1:length(tissue_labels)),
@@ -244,11 +236,11 @@ annotation <- data.frame(
                           levels = rev(unique(tissue_labels) ) ) );
 
 cols <- c("blue", "darkgoldenrod1", "cyan", "red")
-@ %def
+```
 
 Now we perform the visualization.
 
-<<plot_topic_gtex,eval=FALSE, warning=FALSE, fig.show="asis", dpi=144, fig.width=5, fig.height=7, out.width="5in", out.height="7in">>=
+```{r plot_topic_gtex, eval=FALSE, warning=FALSE, fig.align="center", fig.show="asis", dpi=144, fig.width=5, fig.height=7, out.width="5in", out.height="7in"}
 StructureGGplot(omega = omega,
                 annotation= annotation,
                 palette = cols,
@@ -261,94 +253,65 @@ StructureGGplot(omega = omega,
                                  axis_ticks_lwd_x = .1,
                                  axis_label_size = 7,
                                  axis_label_face = "bold"))
-@ %def
+```
 
+<img src="figures/gtex_annot-1.png" width="432" height = "756"/>
 
-\begin{figure}[htp]
-\begin{center}
-\includegraphics[width=4in,height=6in]{figures/gtex_annot-1}
-\end{center}
-\end{figure}
+---
 
-\clearpage
+# Cluster Annotations
 
-\section{Cluster Annotations}
+We extract the top genes driving each cluster using the `ExtractTopFeatures` functionality of the `r Biocpkg("CountClust")` package. We first perform the cluster annotations from the GoM model fit with $k=6` on the single cell RNA-seq data due to Deng *et al*.
 
-We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package. We first perform the cluster annotations from the GoM model fit with \Robject{k}=$6$ on the single cell RNA-seq data due to Deng \textit{et al}
-
-<<extract_features_deng, eval=TRUE, warning=FALSE>>=
+```{r extract_features_deng, eval=TRUE, warning=FALSE}
+data("MouseDeng2014.FitGoM")
 theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
 gene_list <- do.call(rbind, lapply(1:dim(top_features$indices)[1],
                         function(x) deng.gene_names[top_features$indices[x,]]))
-@ %def
+```
 
 We tabulate the top $5$ genes for these $6$ clusters.
 
-<<top_genes_clusters_deng, eval=TRUE>>=
-xtable::xtable(gene_list[,1:5])
-@ %def
+```{r top_genes_clusters_deng, eval=TRUE, fig.width=7} 
+tmp <- do.call(rbind, lapply(1:5, function(i) toString(gene_list[,i])))
+rownames(tmp) <- paste("Cluster", c(1:5))
+tmp %>%
+  kable("html") %>%
+  kable_styling()
+```
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlllll}
-  \hline
- & 1 & 2 & 3 & 4 & 5 \\
-  \hline
-1 & Timd2 & Isyna1 & Alppl2 & Pramel5 & Hsp90ab1 \\
-  2 & Upp1 & Tdgf1 & Aqp8 & Fabp5 & Tat \\
-  3 & Actb & Krt18 & Fabp3 & Id2 & Tspan8 \\
-  4 & Rtn2 & Ebna1bp2 & Zfp259 & Nasp & Cenpe \\
-  5 & LOC100502936 & Bcl2l10 & Tcl1 & E330034G19Rik & Oas1d \\
-  6 & Obox3 & Zfp352 & Gm8300 & Usp17l5 & BB287469 \\
-   \hline
-\end{tabular}
-\end{table}
+We next perform the same for the topic model fit on the GTEx V6 Brain samples data with `k=4` clusters.
 
-We next perform the same for the topic model fit on the GTEx V6 Brain samples data with \Robject{k}=$4$ clusters.
-
-<<extract_features_gtex, eval=FALSE, warning=FALSE>>=
+```{r extract_features_gtex, eval=TRUE, warning=FALSE}
+data("GTExV6Brain.FitGoM")
 theta_mat <- GTExV6Brain.FitGoM$theta;
 top_features <- ExtractTopFeatures(theta_mat, top_features=100,
                                    method="poisson", options="min");
 gene_list <- do.call(rbind, lapply(1:dim(top_features$indices)[1],
                         function(x) gtex.gene_names[top_features$indices[x,]]))
-@ %def
+```
 
 The top $3$ genes (ensemble IDs) driving these $4$ clusters.
 
-<<top_genes_clusters_gtex, eval=FALSE>>=
-xtable::xtable(gene_list[,1:3])
-@ %def
+```{r top_genes_clusters_gtex, eval=TRUE}
+tmp <- do.call(rbind, lapply(1:3, function(i) toString(gene_list[,i])))
+rownames(tmp) <- paste("Cluster", c(1:3))
+tmp %>%
+  kable("html") %>%
+  kable_styling()
+```
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlll}
-  \hline
- & 1 & 2 & 3 \\
-  \hline
-  1 & ENSG00000120885.15 & ENSG00000130203.5 & ENSG00000131771.9 \\
-  2 & ENSG00000171617.9 & ENSG00000160014.12 & ENSG00000154146.8 \\
-  3 & ENSG00000112139.10 & ENSG00000139899.6 & ENSG00000008710.13 \\
-  4 & ENSG00000197971.10 & ENSG00000266844.1 & ENSG00000237973.1 \\
-   \hline
-\end{tabular}
-\end{table}
+---
 
+# Supplementary analysis
 
-\bibliography{countclust}
-
-\newpage
-
-\section{Supplementary analysis}
-
-As an additional analysis, we apply the \CountClust{} tools on another single-cell RNA-seq data from mouse spleen due to Jaitin \textit{et al} 2014 \cite{Jaitin2014}. The data had technical effects in the form of \begin{verb} amplification batch \end{verb} which the user may want to correct for.
+As an additional analysis, we apply the `r Biocpkg("CountClust")` tools on another single-cell RNA-seq data from mouse spleen due to Jaitin *et al* 2014 [@Jaitin2014]. The data had technical effects in the form of `amplification batch` which the user may want to correct for.
 
 We first install and load the data.
 
-<<data_install_jaitin, echo=TRUE, eval=TRUE>>=
-
+```{r data_install_jaitin, echo=TRUE, eval=TRUE}
 read.data3 = function() {
 x = tempfile()
 download.file(
@@ -361,17 +324,17 @@ return(z)
 MouseJaitinSpleen <- read.data3()
 ## Alternatively
 # devtools::install_github('jhsiao999/singleCellRNASeqMouseJaitinSpleen')
-@ %def
+```
 
-<<data_load_jaitin, echo=TRUE, eval=TRUE>>=
+```{r data_load_jaitin, echo=TRUE, eval=TRUE}
 jaitin.counts <- Biobase::exprs(MouseJaitinSpleen)
 jaitin.meta_data <- Biobase::pData(MouseJaitinSpleen)
 jaitin.gene_names <- rownames(jaitin.counts)
-@ %def
+```
 
 Extracting the non-ERCC genes satisfying some quality measures.
 
-<<non_ercc, eval=TRUE, echo=TRUE>>=
+```{r non_ercc, eval=TRUE, echo=TRUE}
 ENSG_genes_index <- grep("ERCC", jaitin.gene_names, invert = TRUE)
 jaitin.counts_ensg <- jaitin.counts[ENSG_genes_index, ]
 filter_genes <- c("M34473","abParts","M13680","Tmsb4x",
@@ -385,24 +348,25 @@ filter_sample_index <- which(jaitin.meta_data$number_of_cells == 1 &
                               jaitin.meta_data$group_name == "CD11c+" &
                                  sample_counts > 600)
 fcounts.filtered <- fcounts[,filter_sample_index];
+```
 
-@ %def
+We filter the metadata likewise.
 
-We filter the metadata likewise
-
-<<metadata, eval=TRUE, echo=TRUE>>=
+```{r metadata, eval=TRUE, echo=TRUE}
 jaitin.meta_data_filtered <- jaitin.meta_data[filter_sample_index, ]
-@ %def
+```
 
-We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization to show that the amplification batch indeed drives the clustering patterns.
+We fit the GoM model for `k=7` and plot the Structure plot visualization to show that the amplification batch indeed drives the clustering patterns.
 
-<<topic_fit_jaitin, eval=FALSE, echo=TRUE>>=
+```{r topic_fit_jaitin, eval=FALSE, echo=TRUE}
 StructureObj(t(fcounts),
             nclus_vec=7, tol=0.1,
              path_rda="../data/MouseJaitinSpleen.FitGoM.rda")
-@ %def
+```
 
-<<plot_topic_annot, eval=TRUE, echo=TRUE>>=
+Load results of completed analysis.
+
+```{r plot_topic_annot, eval=TRUE, echo=TRUE}
 data("MouseJaitinSpleen.FitGoM")
 names(MouseJaitinSpleen.FitGoM$clust_7)
 omega <- MouseJaitinSpleen.FitGoM$clust_7$omega
@@ -412,11 +376,11 @@ annotation <- data.frame(
     sample_id = paste0("X", c(1:NROW(omega)) ),
     tissue_label = factor(amp_batch,
                           levels = rev(sort(unique(amp_batch))) ) )
-@ %def
+```
 
-\begin{figure}[htp]
-\begin{center}
-<<plot_topic, eval=TRUE, echo=TRUE, warning=FALSE, fig.show="asis", dpi=144, fig.width=3, fig.height=7, out.width="3in", out.height="7in">>=
+Visualize the sample expression profile.
+
+```{r plot_topic, eval=TRUE, echo=TRUE, warning=FALSE, fig.align="center", fig.show="asis", dpi=144, fig.width=3, fig.height=7}
 StructureGGplot(omega = omega,
                 annotation = annotation,
                 palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -427,27 +391,23 @@ StructureGGplot(omega = omega,
                                  axis_ticks_lwd_x = .1,
                                  axis_label_size = 7,
                                  axis_label_face = "bold"))
+```
 
-@ %def
-\end{center}
-\end{figure}
+It seems from the above Structure plot that `amplification batch` drives the clusters. To remove the effect of amplification batch, one can use. For this, we use the `BatchCorrectedCounts()` functionality of the package.
 
-It seems from the above Structure plot that \begin{verb} amplification batch \end{verb} drives the clusters. To remove the effect of amplification batch, one can use. For this, we use the \begin{verb} BatchCorrectedCounts() \end{verb} functionality of the package.
-
-\clearpage
-
-<<batch_correct, eval=FALSE, echo=TRUE>>=
+```{r batch_correct, eval=FALSE, echo=TRUE}
 batchcorrect.fcounts <- BatchCorrectedCounts(t(fcounts.filtered),
                                           amp_batch, use_parallel = FALSE);
 dim(batchcorrect.fcounts)
-@ %def
-
 ```
 
+---
 
 # Acknowledgements
 
 We would like to thank Deng *et al* and the GTEx Consortium for having making the data publicly available. We would like to thank Matt Taddy, Amos Tanay, Po Yuan Tung and Raman Shah for helpful discussions related to the project and the package.
+
+---
 
 # Session Info
 
@@ -455,4 +415,8 @@ We would like to thank Deng *et al* and the GTEx Consortium for having making th
 sessionInfo()
 ```
 
-\end{document}
+---
+
+# References
+
+
