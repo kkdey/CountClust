@@ -1,9 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.3.15)  22 OCT 2017 19:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.3.15)  22 OCT 2017 19:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**\nonstopmode \input ./count-clust.tex
+**count-clust.tex
 (./count-clust.tex
+LaTeX2e <2016/02/01>
+Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/size10.clo
@@ -922,12 +924,12 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 667.
  ) 
 Here is how much of TeX's memory you used:
  11029 strings out of 493033
- 166051 string characters out of 6134139
+ 166049 string characters out of 6134139
  277302 words of memory out of 5000000
  14303 multiletter control sequences out of 15000+600000
  79778 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,14n,45p,1098b,458s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,14n,45p,1076b,458s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/t
 exlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2015/te
 xmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</usr/local/texlive/2015/texmf-dist/font
@@ -945,7 +947,7 @@ onts/type1/public/lm/lmsso9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1
 lvetic/uhvbo8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/helvetic
 /uhvr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/helvetic/uhvro8
 a.pfb>
-Output written on count-clust.pdf (15 pages, 289137 bytes).
+Output written on count-clust.pdf (15 pages, 289126 bytes).
 PDF statistics:
  257 PDF objects out of 1000 (max. 8388607)
  205 compressed objects within 3 object streams

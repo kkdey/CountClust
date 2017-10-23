@@ -1,6 +1,6 @@
 %\VignetteIndexEntry{CountClust for visualizing expression}
 %\VignettePackage{CountClust}
-%\VignetteEngine{utils::Sweave}
+%\VignetteEngine{knitr::knitr}
 
 % To compile this document
 % library('knitr'); rm(list=ls()); knit('CountClust/vignettes/count-clust.Rnw')
