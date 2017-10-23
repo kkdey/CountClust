@@ -20,5 +20,3 @@ after_script:
 
 warnings_are_errors: false
 
-before_install:
-  sudo apt-get install textinfo
