@@ -1,46 +1,44 @@
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Grade of Membership Clustering and Visualization using CountClust}
+%\VignetteIndexEntry{CountClust for visualizing expression}
 %\VignettePackage{CountClust}
+%\VignetteEngine{utils::Sweave}
 
 % To compile this document
 % library('knitr'); rm(list=ls()); knit('CountClust/vignettes/count-clust.Rnw')
 % library('knitr'); rm(list=ls()); knit2pdf('CountClust/vignettes/count-clust.Rnw'); openPDF('count-clust.pdf')
 % !Rnw weave = knitr
 
-\documentclass[12pt]{article}
+\documentclass{article}
 
 \newcommand{\CountClust}{\textit{CountClust}}
-\usepackage{dsfont}
-\usepackage{cite}
 
 
 <<knitr, echo=FALSE, results="hide">>=
 library("knitr")
 opts_chunk$set(tidy=FALSE,tidy.opts=list(width.cutoff=30),dev="png",fig.show="hide",
                fig.width=4,fig.height=7,
-               message=FALSE)
+               message=FALSE, warning = FALSE)
 @
 
-<<style, eval=TRUE, echo=FALSE, results="asis">>=
+
+<<style-knitr, eval=TRUE, echo=FALSE, results='asis'>>=
 BiocStyle::latex()
 @
 
-\author{Kushal K Dey, Chiaowen Joyce Hsiao \& Matthew Stephens \\[1em] \small{\textit{Stephens Lab}, The University of Chicago} \mbox{ }\\ \small{\texttt{$^*$Correspondending Email: mstephens@uchicago.edu}}}
+\author{Kushal K Dey\thanks{\email{kkdey@uchicago.edu}}, Chiaowen Joyce Hsiao\thanks{\email{joycehsiao@uchicago.edu}} \& Matthew Stephens\thanks{\email{mstephens@uchicago.edu}} \\ \small{\textit{Stephens Lab}, The University of Chicago} \mbox{ }\\ \small{\texttt{$^*$Correspondending Email: mstephens@uchicago.edu}}}
 
-\bioctitle[Grade of Membership Clustering and Visualization using \CountClust{}]{Grade of Membership Model and Visualization for RNA-seq data using \CountClust{}}
+\bioctitle[\CountClust{} visualizing expression data]{\CountClust{}: Visualizing the structure of RNA-seq expression data using Grade of Membership Models}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-  \vspace{1em}
- Grade of membership or GoM models (also known as admixture models or Latent Dirichlet Allocation") are a generalization of cluster models that allow each sample to have membership in multiple clusters. It is widely used to model ancestry of individuals in population genetics based on SNP/ microsatellite data and also in natural language processing for modeling documents \cite{Pritchard2000, Blei2003}.
+Grade of membership or GoM models (also known as admixture models or Latent Dirichlet Allocation") are a generalization of cluster models that allow each sample to have membership in multiple clusters. It is widely used to model ancestry of individuals in population genetics based on SNP/ microsatellite data and also in natural language processing for modeling documents \cite{Pritchard2000, Blei2003}.
 
 This \R{} package implements tools to visualize the clusters obtained from fitting topic models using a Structure plot \cite{Rosenberg2002} and extract the top features/genes that distinguish the clusters. In presence of known technical or batch effects, the package also allows for correction of these confounding effects.
 
-\vspace{1em}
-\textbf{\CountClust{} version:} \Sexpr{packageDescription("CountClust")$Version} \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
+\packageVersion{\Sexpr{BiocStyle::pkg_ver("CountClust")}}
+
 \end{abstract}
 
 <<options, results="hide", echo=FALSE>>=
@@ -101,15 +99,16 @@ We install data packages as \begin{verb} expressionSet \end{verb} objects for bu
 library(devtools)
 
 read.data1 = function() {
-  x = tempfile()
-  download.file('https://cdn.rawgit.com/kkdey/singleCellRNASeqMouseDeng2014/master/data/Deng2014MouseEsc.rda', destfile=x, quiet=TRUE)
-  z = get(load((x)))
-  return(z)
+x = tempfile()
+download.file(
+'https://cdn.rawgit.com/kkdey/singleCellRNASeqMouseDeng2014/master/data/Deng2014MouseEsc.rda',
+destfile=x, quiet=TRUE)
+z = get(load((x)))
+return(z)
 }
 
 Deng2014MouseESC <- read.data1()
-
-## Alternatively
+## Alternatively,
 # install_github('kkdey/singleCellRNASeqMouseDeng2014')
 @ %def
 
@@ -117,14 +116,15 @@ Deng2014MouseESC <- read.data1()
 
 <<data_install_gtex, eval=FALSE>>=
 read.data2 = function() {
-  x = tempfile()
-  download.file('https://cdn.rawgit.com/kkdey/GTExV6Brain/master/data/GTExV6Brain.rda', destfile = x, quiet=TRUE)
-  z = get(load((x)))
-  return(z)
+x = tempfile()
+download.file(
+'https://cdn.rawgit.com/kkdey/GTExV6Brain/master/data/GTExV6Brain.rda',
+destfile = x, quiet=TRUE)
+z = get(load((x)))
+return(z)
 }
 
 GTExV6Brain <- read.data2()
-
 ## Alternatively
 # install_github('kkdey/GTExV6Brain')
 @ %def
@@ -344,46 +344,9 @@ xtable::xtable(gene_list[,1:3])
 \end{table}
 
 
-\begin{thebibliography}{1}
+\bibliography{countclust}
 
-\bibitem{Pritchard2000}
-Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.
-\newblock Inference of population structure using multilocus genotype data.
-\newblock {\textit{Genetics}}. 155.2,  945-959, 200.
-
-\bibitem{Rosenberg2002}
-Rosenberg NA, Pritchard JK,  Weber JL, Cann HM,  Kidd KK,  Zhivotovsky LA,  Feldman MW.
-\newblock The genetic structure of human populations.
-\newblock {\textit{Science}}. 298,  2381-2385, 2002.
-
-\bibitem{Blei2003}
-Blei DM,  Ng AY, Jordan MI.
-\newblock Latent Dirichlet Allocation.
-\newblock {\textit{J. Mach. Learn. Res.}}. 3, 993-1022, 2003.
-
-\bibitem{Taddy2012}
-Matt Taddy.
-\newblock On Estimation and Selection for Topic Models.
-\newblock \textit{AISTATS 2012, JMLR W\&CP 22}.(maptpx R package), 2012.
-
-\bibitem{Jaitin2014}
-Jaitin DA,  Kenigsberg E et al.
-\newblock Massively Parallel Single-Cell RNA-Seq for Marker-Free Decomposition of Tissues into Cell Types.
-\newblock {\textit{Science}}. 343 (6172) 776-779, 2014.
-
-\bibitem{Deng2014}
-Deng Q,  Ramskold D,  Reinius B,  Sandberg R.
-\newblock Single-Cell RNA-Seq Reveals Dynamic, Random Monoallelic Gene Expression in Mammalian Cells.
-\newblock {\textit{Science}}.  343 (6167) 193-196, 2014.
-
-\bibitem{GTEX2013}
-The GTEx Consortium.
-\newblock The Genotype-Tissue Expression (GTEx) project.
-\newblock {\textit{Nature genetics}}. 45(6): 580-585. doi:10.1038/ng.2653, 2013.
-
-\end{thebibliography}
-
-% \bibliography{CountClust/REFERENCES}
+\newpage
 
 \section{Supplementary analysis}
 
@@ -394,14 +357,15 @@ We first install and load the data.
 <<data_install_jaitin, echo=TRUE, eval=TRUE>>=
 
 read.data3 = function() {
-  x = tempfile()
-  download.file('https://cdn.rawgit.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen/master/data/MouseJaitinSpleen.rda', destfile = x, quiet=TRUE)
-  z = get(load((x)))
-  return(z)
+x = tempfile()
+download.file(
+'https://cdn.rawgit.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen/master/data/MouseJaitinSpleen.rda',
+destfile = x, quiet=TRUE)
+z = get(load((x)))
+return(z)
 }
 
 MouseJaitinSpleen <- read.data3()
-
 ## Alternatively
 # devtools::install_github('jhsiao999/singleCellRNASeqMouseJaitinSpleen')
 @ %def

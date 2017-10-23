@@ -1,13 +1,13 @@
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Grade of Membership Clustering and Visualization using CountClust}
+%\VignetteIndexEntry{CountClust for visualizing expression}
 %\VignettePackage{CountClust}
+%\VignetteEngine{utils::Sweave}
 
 % To compile this document
 % library('knitr'); rm(list=ls()); knit('CountClust/vignettes/count-clust.Rnw')
 % library('knitr'); rm(list=ls()); knit2pdf('CountClust/vignettes/count-clust.Rnw'); openPDF('count-clust.pdf')
 % !Rnw weave = knitr
 
-\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[usenames,dvipsnames]{color}
+\documentclass{article}\usepackage[]{graphicx}\usepackage[usenames,dvipsnames]{color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -20,73 +20,46 @@
 }
 \makeatother
 
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\definecolor{fgcolor}{rgb}{0.251, 0.251, 0.251}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.816,0.125,0.439}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.251,0.627,0.251}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.502,0.502,0.502}{\textit{#1}}}%
 \newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.251,0.251,0.251}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.125,0.125,0.941}{#1}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.251,0.251,0.251}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.878,0.439,0.125}{#1}}%
 \let\hlipl\hlkwb
 
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
 \usepackage{alltt}
 
 \newcommand{\CountClust}{\textit{CountClust}}
-\usepackage{dsfont}
-\usepackage{cite}
 
 
 
 
-\RequirePackage{/Library/Frameworks/R.framework/Versions/3.3/Resources/library/BiocStyle/resources/tex/Bioconductor}
 
-\AtBeginDocument{\bibliographystyle{/Library/Frameworks/R.framework/Versions/3.3/Resources/library/BiocStyle/resources/tex/unsrturl}}
+\RequirePackage[]{/Library/Frameworks/R.framework/Versions/3.4/Resources/library/BiocStyle/resources/tex/Bioconductor2}
+\AtBeginDocument{\bibliographystyle{/Library/Frameworks/R.framework/Versions/3.4/Resources/library/BiocStyle/resources/tex/unsrturl}}
 
 
-\author{Kushal K Dey, Chiaowen Joyce Hsiao \& Matthew Stephens \\[1em] \small{\textit{Stephens Lab}, The University of Chicago} \mbox{ }\\ \small{\texttt{$^*$Correspondending Email: mstephens@uchicago.edu}}}
+\author{Kushal K Dey\thanks{\email{kkdey@uchicago.edu}}, Chiaowen Joyce Hsiao\thanks{\email{joycehsiao@uchicago.edu}} \& Matthew Stephens\thanks{\email{mstephens@uchicago.edu}} \\ \small{\textit{Stephens Lab}, The University of Chicago} \mbox{ }\\ \small{\texttt{$^*$Correspondending Email: mstephens@uchicago.edu}}}
 
-\bioctitle[Grade of Membership Clustering and Visualization using \CountClust{}]{Grade of Membership Model and Visualization for RNA-seq data using \CountClust{}}
+\bioctitle[\CountClust{} visualizing expression data]{\CountClust{}: Visualizing the structure of RNA-seq expression data using Grade of Membership Models}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-  \vspace{1em}
- Grade of membership or GoM models (also known as admixture models or Latent Dirichlet Allocation") are a generalization of cluster models that allow each sample to have membership in multiple clusters. It is widely used to model ancestry of individuals in population genetics based on SNP/ microsatellite data and also in natural language processing for modeling documents \cite{Pritchard2000, Blei2003}.
+Grade of membership or GoM models (also known as admixture models or Latent Dirichlet Allocation") are a generalization of cluster models that allow each sample to have membership in multiple clusters. It is widely used to model ancestry of individuals in population genetics based on SNP/ microsatellite data and also in natural language processing for modeling documents \cite{Pritchard2000, Blei2003}.
 
 This \R{} package implements tools to visualize the clusters obtained from fitting topic models using a Structure plot \cite{Rosenberg2002} and extract the top features/genes that distinguish the clusters. In presence of known technical or batch effects, the package also allows for correction of these confounding effects.
 
-\vspace{1em}
-\textbf{\CountClust{} version:} 0.1.2 \footnote{This document used the vignette from \Bioconductor{} package \Biocpkg{DESeq2, cellTree} as \CRANpkg{knitr} template}
+\packageVersion{CountClust 1.3.1}
+
 \end{abstract}
 
 
@@ -108,7 +81,7 @@ Many software packages available for document clustering are applicable to model
 \CountClust{} requires the following CRAN-R packages: \CRANpkg{maptpx}, \CRANpkg{ggplot2}, \CRANpkg{cowplot}, \CRANpkg{parallel}, \CRANpkg{reshape2}, \CRANpkg{RColorBrewer}, \CRANpkg{flexmix}, \CRANpkg{gtools}, \CRANpkg{devtools} along with the \Bioconductor{} package: \Biocpkg{limma}.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{source}\hlstd{(}\hlstr{"http://bioconductor.org/biocLite.R"}\hlstd{)}
 \hlkwd{biocLite}\hlstd{(}\hlstr{"CountClust"}\hlstd{)}
@@ -119,7 +92,7 @@ Many software packages available for document clustering are applicable to model
 For the latest updated version of the package \begin{verb} maptpx \end{verb} package (with some bug fixes from the CRAN version), we recommend the user to install the Github version.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
 \hlkwd{install_github}\hlstd{(}\hlstr{"kkdey/maptpx"}\hlstd{)}
@@ -130,7 +103,7 @@ For the latest updated version of the package \begin{verb} maptpx \end{verb} pac
 The working version of the \CountClust{} package is available on Github, along with the data packages used as examples in this vignette.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{install_github}\hlstd{(}\hlstr{'kkdey/CountClust'}\hlstd{)}
 \end{alltt}
@@ -140,7 +113,7 @@ The working version of the \CountClust{} package is available on Github, along w
 Then load the package with:
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(CountClust)}
 \end{alltt}
@@ -158,20 +131,21 @@ We install data packages as \begin{verb} expressionSet \end{verb} objects for bu
 %The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(devtools)}
 
 \hlstd{read.data1} \hlkwb{=} \hlkwa{function}\hlstd{() \{}
-  \hlstd{x} \hlkwb{=} \hlkwd{tempfile}\hlstd{()}
-  \hlkwd{download.file}\hlstd{(}\hlstr{'https://cdn.rawgit.com/kkdey/singleCellRNASeqMouseDeng2014/master/data/Deng2014MouseEsc.rda'}\hlstd{,} \hlkwc{destfile}\hlstd{=x,} \hlkwc{quiet}\hlstd{=}\hlnum{TRUE}\hlstd{)}
-  \hlstd{z} \hlkwb{=} \hlkwd{get}\hlstd{(}\hlkwd{load}\hlstd{((x)))}
-  \hlkwd{return}\hlstd{(z)}
+\hlstd{x} \hlkwb{=} \hlkwd{tempfile}\hlstd{()}
+\hlkwd{download.file}\hlstd{(}
+\hlstr{'https://cdn.rawgit.com/kkdey/singleCellRNASeqMouseDeng2014/master/data/Deng2014MouseEsc.rda'}\hlstd{,}
+\hlkwc{destfile}\hlstd{=x,} \hlkwc{quiet}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlstd{z} \hlkwb{=} \hlkwd{get}\hlstd{(}\hlkwd{load}\hlstd{((x)))}
+\hlkwd{return}\hlstd{(z)}
 \hlstd{\}}
 
 \hlstd{Deng2014MouseESC} \hlkwb{<-} \hlkwd{read.data1}\hlstd{()}
-
-\hlcom{## Alternatively}
+\hlcom{## Alternatively,}
 \hlcom{# install_github('kkdey/singleCellRNASeqMouseDeng2014')}
 \end{alltt}
 \end{kframe}
@@ -180,17 +154,18 @@ We install data packages as \begin{verb} expressionSet \end{verb} objects for bu
 \begin{verb} GTExV6Brain \end{verb} The data package for GTEx V6 Brain sample data is again a processed version of the data publicly available at the GTEx Portal (\url{http://www.gtexportal.org/home/}, dbGaP accession phs000424.v6.p1, release date: Oct 19, 2015).
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{read.data2} \hlkwb{=} \hlkwa{function}\hlstd{() \{}
-  \hlstd{x} \hlkwb{=} \hlkwd{tempfile}\hlstd{()}
-  \hlkwd{download.file}\hlstd{(}\hlstr{'https://cdn.rawgit.com/kkdey/GTExV6Brain/master/data/GTExV6Brain.rda'}\hlstd{,} \hlkwc{destfile} \hlstd{= x,} \hlkwc{quiet}\hlstd{=}\hlnum{TRUE}\hlstd{)}
-  \hlstd{z} \hlkwb{=} \hlkwd{get}\hlstd{(}\hlkwd{load}\hlstd{((x)))}
-  \hlkwd{return}\hlstd{(z)}
+\hlstd{x} \hlkwb{=} \hlkwd{tempfile}\hlstd{()}
+\hlkwd{download.file}\hlstd{(}
+\hlstr{'https://cdn.rawgit.com/kkdey/GTExV6Brain/master/data/GTExV6Brain.rda'}\hlstd{,}
+\hlkwc{destfile} \hlstd{= x,} \hlkwc{quiet}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlstd{z} \hlkwb{=} \hlkwd{get}\hlstd{(}\hlkwd{load}\hlstd{((x)))}
+\hlkwd{return}\hlstd{(z)}
 \hlstd{\}}
 
 \hlstd{GTExV6Brain} \hlkwb{<-} \hlkwd{read.data2}\hlstd{()}
-
 \hlcom{## Alternatively}
 \hlcom{# install_github('kkdey/GTExV6Brain')}
 \end{alltt}
@@ -202,7 +177,7 @@ We install data packages as \begin{verb} expressionSet \end{verb} objects for bu
 Load the scRNA-seq data due to Deng \textit{et al} 2014.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{deng.counts} \hlkwb{<-} \hlstd{Biobase}\hlopt{::}\hlkwd{exprs}\hlstd{(Deng2014MouseESC)}
 \hlstd{deng.meta_data} \hlkwb{<-} \hlstd{Biobase}\hlopt{::}\hlkwd{pData}\hlstd{(Deng2014MouseESC)}
@@ -216,7 +191,7 @@ Load the scRNA-seq data due to Deng \textit{et al} 2014.
 Load the bulk-RNA seq data from GTEx V6 brain data.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{gtex.counts} \hlkwb{<-} \hlstd{Biobase}\hlopt{::}\hlkwd{exprs}\hlstd{(GTExV6Brain)}
 \hlstd{gtex.meta_data} \hlkwb{<-} \hlstd{Biobase}\hlopt{::}\hlkwd{pData}\hlstd{(GTExV6Brain)}
@@ -233,7 +208,7 @@ We use a wrapper function of the \textit{topics()} function in the \CRANpkg{mapt
 As an example, we fit the topic model for \Robject{k}=4 on the GTEx V6 Brain data and save the GoM model output file to user-defined directory.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{FitGoM}\hlstd{(}\hlkwd{t}\hlstd{(gtex.counts),}
             \hlkwc{K}\hlstd{=}\hlnum{4}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
@@ -245,7 +220,7 @@ As an example, we fit the topic model for \Robject{k}=4 on the GTEx V6 Brain dat
 One can also input a vector of clusters under \begin{verb} nclus_vec \end{verb} as we do for a list of cluster numbers from $2$ to $7$ for Deng \textit{et al} 2014 data.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{FitGoM}\hlstd{(}\hlkwd{t}\hlstd{(deng.counts),}
             \hlkwc{K}\hlstd{=}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
@@ -263,7 +238,7 @@ Now we perform the visualization for \Robject{k}=$6$ for the Deng \textit{et al}
 We load the GoM fit for \Robject{k}=6.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{data}\hlstd{(}\hlstr{"MouseDeng2014.FitGoM"}\hlstd{)}
 \hlkwd{names}\hlstd{(MouseDeng2014.FitGoM}\hlopt{$}\hlstd{clust_6)}
@@ -280,7 +255,7 @@ We load the GoM fit for \Robject{k}=6.
 We prepare the annotations for the visualization.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{annotation} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
   \hlkwc{sample_id} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"X"}\hlstd{,} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{NROW}\hlstd{(omega))),}
@@ -301,7 +276,7 @@ Now we perform the visualization.
 \begin{figure}[htp]
 \begin{center}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
                 \hlkwc{annotation} \hlstd{= annotation,}
@@ -314,9 +289,8 @@ Now we perform the visualization.
                                  \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
                                  \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1} 
-
+\end{kframe}\begin{adjustwidth}{\fltoffset}{0mm}
+\includegraphics[width=3in,height=7in]{figure/plot_topic_deng-1} \end{adjustwidth}
 \end{knitrout}
 \end{center}
 \end{figure}
@@ -334,7 +308,7 @@ Now we perform the Structure plot visualization for \Robject{k}=$4$ for GTEx V6 
 We load the GoM fit for \Robject{k}=4.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{data}\hlstd{(}\hlstr{"GTExV6Brain.FitGoM"}\hlstd{)}
 \hlstd{omega} \hlkwb{<-} \hlstd{GTExV6Brain.FitGoM}\hlopt{$}\hlstd{omega;}
@@ -352,7 +326,7 @@ We load the GoM fit for \Robject{k}=4.
 We now prepare the annotations for the visualization.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{tissue_labels} \hlkwb{<-} \hlstd{gtex.meta_data[,}\hlnum{3}\hlstd{];}
 
@@ -370,7 +344,7 @@ We now prepare the annotations for the visualization.
 Now we perform the visualization.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
                 \hlkwc{annotation}\hlstd{= annotation,}
@@ -402,7 +376,7 @@ Now we perform the visualization.
 We extract the top genes driving each cluster using the \begin{verb} ExtractTopFeatures() \end{verb} functionality of the \CountClust{} package. We first perform the cluster annotations from the GoM model fit with \Robject{k}=$6$ on the single cell RNA-seq data due to Deng \textit{et al}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{theta_mat} \hlkwb{<-} \hlstd{MouseDeng2014.FitGoM}\hlopt{$}\hlstd{clust_6}\hlopt{$}\hlstd{theta;}
 \hlstd{top_features} \hlkwb{<-} \hlkwd{ExtractTopFeatures}\hlstd{(theta_mat,} \hlkwc{top_features}\hlstd{=}\hlnum{100}\hlstd{,}
@@ -416,13 +390,13 @@ We extract the top genes driving each cluster using the \begin{verb} ExtractTopF
 We tabulate the top $5$ genes for these $6$ clusters.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{xtable}\hlopt{::}\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{])}
 \end{alltt}
 \begin{verbatim}
-## % latex table generated in R 3.3.3 by xtable 1.8-2 package
-## % Fri Oct 13 12:14:25 2017
+## % latex table generated in R 3.4.1 by xtable 1.8-2 package
+## % Sun Oct 22 19:01:13 2017
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rlllll}
@@ -461,7 +435,7 @@ We tabulate the top $5$ genes for these $6$ clusters.
 We next perform the same for the topic model fit on the GTEx V6 Brain samples data with \Robject{k}=$4$ clusters.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{theta_mat} \hlkwb{<-} \hlstd{GTExV6Brain.FitGoM}\hlopt{$}\hlstd{theta;}
 \hlstd{top_features} \hlkwb{<-} \hlkwd{ExtractTopFeatures}\hlstd{(theta_mat,} \hlkwc{top_features}\hlstd{=}\hlnum{100}\hlstd{,}
@@ -475,7 +449,7 @@ We next perform the same for the topic model fit on the GTEx V6 Brain samples da
 The top $3$ genes (ensemble IDs) driving these $4$ clusters.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{xtable}\hlopt{::}\hlkwd{xtable}\hlstd{(gene_list[,}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{])}
 \end{alltt}
@@ -497,46 +471,9 @@ The top $3$ genes (ensemble IDs) driving these $4$ clusters.
 \end{table}
 
 
-\begin{thebibliography}{1}
+\bibliography{countclust}
 
-\bibitem{Pritchard2000}
-Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.
-\newblock Inference of population structure using multilocus genotype data.
-\newblock {\textit{Genetics}}. 155.2,  945-959, 200.
-
-\bibitem{Rosenberg2002}
-Rosenberg NA, Pritchard JK,  Weber JL, Cann HM,  Kidd KK,  Zhivotovsky LA,  Feldman MW.
-\newblock The genetic structure of human populations.
-\newblock {\textit{Science}}. 298,  2381-2385, 2002.
-
-\bibitem{Blei2003}
-Blei DM,  Ng AY, Jordan MI.
-\newblock Latent Dirichlet Allocation.
-\newblock {\textit{J. Mach. Learn. Res.}}. 3, 993-1022, 2003.
-
-\bibitem{Taddy2012}
-Matt Taddy.
-\newblock On Estimation and Selection for Topic Models.
-\newblock \textit{AISTATS 2012, JMLR W\&CP 22}.(maptpx R package), 2012.
-
-\bibitem{Jaitin2014}
-Jaitin DA,  Kenigsberg E et al.
-\newblock Massively Parallel Single-Cell RNA-Seq for Marker-Free Decomposition of Tissues into Cell Types.
-\newblock {\textit{Science}}. 343 (6172) 776-779, 2014.
-
-\bibitem{Deng2014}
-Deng Q,  Ramskold D,  Reinius B,  Sandberg R.
-\newblock Single-Cell RNA-Seq Reveals Dynamic, Random Monoallelic Gene Expression in Mammalian Cells.
-\newblock {\textit{Science}}.  343 (6167) 193-196, 2014.
-
-\bibitem{GTEX2013}
-The GTEx Consortium.
-\newblock The Genotype-Tissue Expression (GTEx) project.
-\newblock {\textit{Nature genetics}}. 45(6): 580-585. doi:10.1038/ng.2653, 2013.
-
-\end{thebibliography}
-
-% \bibliography{CountClust/REFERENCES}
+\newpage
 
 \section{Supplementary analysis}
 
@@ -545,17 +482,18 @@ As an additional analysis, we apply the \CountClust{} tools on another single-ce
 We first install and load the data.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{read.data3} \hlkwb{=} \hlkwa{function}\hlstd{() \{}
-  \hlstd{x} \hlkwb{=} \hlkwd{tempfile}\hlstd{()}
-  \hlkwd{download.file}\hlstd{(}\hlstr{'https://cdn.rawgit.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen/master/data/MouseJaitinSpleen.rda'}\hlstd{,} \hlkwc{destfile} \hlstd{= x,} \hlkwc{quiet}\hlstd{=}\hlnum{TRUE}\hlstd{)}
-  \hlstd{z} \hlkwb{=} \hlkwd{get}\hlstd{(}\hlkwd{load}\hlstd{((x)))}
-  \hlkwd{return}\hlstd{(z)}
+\hlstd{x} \hlkwb{=} \hlkwd{tempfile}\hlstd{()}
+\hlkwd{download.file}\hlstd{(}
+\hlstr{'https://cdn.rawgit.com/jhsiao999/singleCellRNASeqMouseJaitinSpleen/master/data/MouseJaitinSpleen.rda'}\hlstd{,}
+\hlkwc{destfile} \hlstd{= x,} \hlkwc{quiet}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlstd{z} \hlkwb{=} \hlkwd{get}\hlstd{(}\hlkwd{load}\hlstd{((x)))}
+\hlkwd{return}\hlstd{(z)}
 \hlstd{\}}
 
 \hlstd{MouseJaitinSpleen} \hlkwb{<-} \hlkwd{read.data3}\hlstd{()}
-
 \hlcom{## Alternatively}
 \hlcom{# devtools::install_github('jhsiao999/singleCellRNASeqMouseJaitinSpleen')}
 \end{alltt}
@@ -563,7 +501,7 @@ We first install and load the data.
 \end{knitrout}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{jaitin.counts} \hlkwb{<-} \hlstd{Biobase}\hlopt{::}\hlkwd{exprs}\hlstd{(MouseJaitinSpleen)}
 \hlstd{jaitin.meta_data} \hlkwb{<-} \hlstd{Biobase}\hlopt{::}\hlkwd{pData}\hlstd{(MouseJaitinSpleen)}
@@ -575,7 +513,7 @@ We first install and load the data.
 Extracting the non-ERCC genes satisfying some quality measures.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{ENSG_genes_index} \hlkwb{<-} \hlkwd{grep}\hlstd{(}\hlstr{"ERCC"}\hlstd{, jaitin.gene_names,} \hlkwc{invert} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlstd{jaitin.counts_ensg} \hlkwb{<-} \hlstd{jaitin.counts[ENSG_genes_index, ]}
@@ -597,7 +535,7 @@ Extracting the non-ERCC genes satisfying some quality measures.
 We filter the metadata likewise
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{jaitin.meta_data_filtered} \hlkwb{<-} \hlstd{jaitin.meta_data[filter_sample_index, ]}
 \end{alltt}
@@ -607,7 +545,7 @@ We filter the metadata likewise
 We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization to show that the amplification batch indeed drives the clustering patterns.
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{StructureObj}\hlstd{(}\hlkwd{t}\hlstd{(fcounts),}
             \hlkwc{nclus_vec}\hlstd{=}\hlnum{7}\hlstd{,} \hlkwc{tol}\hlstd{=}\hlnum{0.1}\hlstd{,}
@@ -617,7 +555,7 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
 \end{knitrout}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{data}\hlstd{(}\hlstr{"MouseJaitinSpleen.FitGoM"}\hlstd{)}
 \hlkwd{names}\hlstd{(MouseJaitinSpleen.FitGoM}\hlopt{$}\hlstd{clust_7)}
@@ -640,7 +578,7 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
 \begin{figure}[htp]
 \begin{center}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{StructureGGplot}\hlstd{(}\hlkwc{omega} \hlstd{= omega,}
                 \hlkwc{annotation} \hlstd{= annotation,}
@@ -653,9 +591,8 @@ We fit the GoM model for \Robject{k}=7 and plot the Structure plot visualization
                                  \hlkwc{axis_label_size} \hlstd{=} \hlnum{7}\hlstd{,}
                                  \hlkwc{axis_label_face} \hlstd{=} \hlstr{"bold"}\hlstd{))}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=3in,height=7in]{figure/plot_topic-1} 
-
+\end{kframe}\begin{adjustwidth}{\fltoffset}{0mm}
+\includegraphics[width=3in,height=7in]{figure/plot_topic-1} \end{adjustwidth}
 \end{knitrout}
 \end{center}
 \end{figure}
@@ -665,7 +602,7 @@ It seems from the above Structure plot that \begin{verb} amplification batch \en
 \clearpage
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{batchcorrect.fcounts} \hlkwb{<-} \hlkwd{BatchCorrectedCounts}\hlstd{(}\hlkwd{t}\hlstd{(fcounts.filtered),}
                                           \hlstd{amp_batch,} \hlkwc{use_parallel} \hlstd{=} \hlnum{FALSE}\hlstd{);}
@@ -681,14 +618,18 @@ We would like to thank Deng \textit{et al} and the GTEx Consortium for having ma
 \section{Session Info}
 
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.941, 0.941, 0.941}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{sessionInfo}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## R version 3.3.3 (2017-03-06)
-## Platform: x86_64-apple-darwin13.4.0 (64-bit)
-## Running under: macOS Sierra 10.12.5
+## R version 3.4.1 (2017-06-30)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS High Sierra 10.13
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -697,26 +638,28 @@ We would like to thank Deng \textit{et al} and the GTEx Consortium for having ma
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] CountClust_0.1.2 ggplot2_2.2.1    devtools_1.13.3  knitr_1.16      
+## [1] CountClust_1.3.1 ggplot2_2.2.1    knitr_1.17       devtools_1.13.3 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.12        RColorBrewer_1.1-2  git2r_0.18.0       
-##  [4] plyr_1.8.4          highr_0.6           tools_3.3.3        
-##  [7] boot_1.3-18         digest_0.6.12       nlme_3.1-131       
-## [10] evaluate_0.10       memoise_1.1.0       tibble_1.3.4       
-## [13] gtable_0.2.0        lattice_0.20-34     mgcv_1.8-17        
-## [16] rlang_0.1.1.9000    Matrix_1.2-10       curl_2.6           
-## [19] parallel_3.3.3      cluster_2.0.5       withr_1.0.2        
-## [22] httr_1.2.1          stringr_1.2.0       gtools_3.5.0       
-## [25] stats4_3.3.3        grid_3.3.3          nnet_7.3-12        
-## [28] cowplot_0.8.0       Biobase_2.34.0      R6_2.2.2           
-## [31] maptpx_1.9-3        flexmix_2.3-14      limma_3.30.13      
-## [34] reshape2_1.4.2.9000 magrittr_1.5        BiocGenerics_0.20.0
-## [37] MASS_7.3-45         scales_0.4.1        modeltools_0.2-21  
-## [40] xtable_1.8-2        permute_0.9-4       ape_4.1            
-## [43] BiocStyle_2.2.1     picante_1.6-2       colorspace_1.3-2   
-## [46] stringi_1.1.5       lazyeval_0.2.0      munsell_0.4.3      
-## [49] slam_0.1-40         SQUAREM_2017.10-1   vegan_2.4-3
+##  [1] Rcpp_0.12.13        RColorBrewer_1.1-2  compiler_3.4.1     
+##  [4] git2r_0.19.0        plyr_1.8.4          highr_0.6          
+##  [7] tools_3.4.1         boot_1.3-20         digest_0.6.12      
+## [10] nlme_3.1-131        evaluate_0.10.1     memoise_1.1.0      
+## [13] tibble_1.3.4        gtable_0.2.0        lattice_0.20-35    
+## [16] mgcv_1.8-22         rlang_0.1.2         Matrix_1.2-11      
+## [19] parallel_3.4.1      curl_3.0            yaml_2.1.14        
+## [22] cluster_2.0.6       withr_2.0.0         httr_1.3.1         
+## [25] stringr_1.2.0       gtools_3.5.0        nnet_7.3-12        
+## [28] stats4_3.4.1        rprojroot_1.2       grid_3.4.1         
+## [31] cowplot_0.8.0       Biobase_2.37.2      R6_2.2.2           
+## [34] maptpx_1.9-3        flexmix_2.3-13      rmarkdown_1.6      
+## [37] limma_3.33.14       reshape2_1.4.2      magrittr_1.5       
+## [40] BiocGenerics_0.23.4 MASS_7.3-47         backports_1.1.1    
+## [43] scales_0.5.0        htmltools_0.3.6     modeltools_0.2-21  
+## [46] xtable_1.8-2        permute_0.9-4       ape_4.1            
+## [49] picante_1.6-2       BiocStyle_2.5.41    colorspace_1.3-2   
+## [52] stringi_1.1.5       lazyeval_0.2.0      munsell_0.4.3      
+## [55] SQUAREM_2017.10-1   slam_0.1-40         vegan_2.4-4
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

@@ -6,6 +6,7 @@
 \contentsline {section}{\numberline {4}Fitting the GoM Model}{4}{section.4}
 \contentsline {section}{\numberline {5}Structure plot visualization}{5}{section.5}
 \contentsline {section}{\numberline {6}Cluster Annotations}{9}{section.6}
-\contentsline {section}{\numberline {7}Supplementary analysis}{10}{section.7}
+\contentsline {section}{\numberline {7}Supplementary analysis}{11}{section.7}
 \contentsline {section}{\numberline {8}Acknowledgements}{14}{section.8}
 \contentsline {section}{\numberline {9}Session Info}{14}{section.9}
+\contentsfinish 
