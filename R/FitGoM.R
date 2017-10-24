@@ -63,7 +63,8 @@ FitGoM <- function(data,
         data <- as.matrix(data[-indices_blank,]);
     }
 
-    message('Fitting the topic model (due to Matt Taddy)',
+    message('Fitting a Grade of Membership model
+            (Taddy 2012, http://proceedings.mlr.press/v22/taddy12/taddy12.pdf)',
             domain = NULL, appendLF = TRUE)
 
     Topic_clus_list <- lapply(K, function(per_clust) {
