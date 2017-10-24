@@ -6,7 +6,7 @@ A R package for Grade of Membership (GoM) model fit and Visualization of counts 
 
 [Kushal K Dey](http://kkdey.github.io/), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
 
-## Citation
+## How to cite
 
 If you are find CountClust useful, please cite our paper:
 
