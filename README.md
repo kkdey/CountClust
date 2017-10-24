@@ -14,7 +14,7 @@ Dey K, Hsiao C, and Stephens M (2017). Visualizing the structure of
 RNA-seq expression data using grade of membership models. *PLoS
 Genetics*  **13**: e1006599
 
-Taddy M (2012). On Estimation and Selection for Topic Models. *AISTATS, JMLR* W\&CP 22.
+Taddy M (2012). On Estimation and Selection for Topic Models. *AISTATS, JMLR* 22.
 
 
 ## Installation
