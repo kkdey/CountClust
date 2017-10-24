@@ -6,6 +6,14 @@ A R package for Grade of Membership (GoM) model fit and Visualization of counts 
 
 [Kushal K Dey](http://kkdey.github.io/), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
 
+## Citation
+
+If you are find CountClust useful, please cite our paper:
+
+Dey K, Hsiao C, and Stephens M (2017). Visualizing the structure of
+RNA-seq expression data using grade of membership models. *PLoS
+Genetics*  **13**: e1006599
+
 
 ## Installation
 
