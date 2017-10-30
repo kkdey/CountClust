@@ -158,8 +158,8 @@ StructureGGplot <- function(omega, annotation = NULL,
     }
 
     # check the annotation data.frame
-    null_annotation <- FALSE
-    if (is.data.frame(annotation) & length(annotation)>1 ) { null_annotation <- TRUE }
+    null_annotation <- TRUE
+    if (is.data.frame(annotation) & length(annotation)>1 ) { null_annotation <- FALSE }
     if (null_annotation) {
       annotation <- data.frame(
                         sample_id = paste("X", c(1:NROW(omega))),
