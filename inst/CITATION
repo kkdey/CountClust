@@ -1,0 +1,24 @@
+citHeader("Please cite the paper below for CountClust.  Please also try to cite the appropriate methodology articles
+used by CountClust, reported below")
+
+citEntry(entry="Article",
+         title = "Visualizing the structure of RNA-seq expression data using grade of membership models",
+	 author = c(person(c("Kushal", "K"), "Dey"),
+		    person(c("Chiaowen","J"), "Hsiao"),
+		    person("Matthew", "Stephens")),
+	journal = "PLoS Genetics",
+        year = 2017,
+	volume  = 13,
+	number = 5,
+	
+	textVersion =	"Dey, K.K. and Hsiao, C.J. and Stephens, M. 2017. Visualizing the  structure of RNA-seq expression data using grade of membership models. PLOS Genetics. 13(5)."
+)
+
+citEntry(entry="Article",
+         title = "On Estimation and Selection for Topic Models.",
+	 author = c(person("Matt", "Taddy")),
+	 year = 2012,
+	 journal = "AISTATS",
+	 textVersion ="Taddy, M. On Estimation and Selection for Topic Models. AISTATS 2012, JMLR 22"
+)
+						      
