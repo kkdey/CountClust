@@ -63,7 +63,7 @@ FitGoM <- function(data,
         data <- as.matrix(data[-indices_blank,]);
     }
 
-    message('Fitting a Grade of Membership model
+   message('Fitting a Grade of Membership model
             (Taddy M., AISTATS 2012, JMLR 22,
             http://proceedings.mlr.press/v22/taddy12/taddy12.pdf)',
             domain = NULL, appendLF = TRUE)

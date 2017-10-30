@@ -25,7 +25,7 @@ tissue_label is a vector consisting of factor type of variable,
 which indicates the sample phenotype that is to be used in
 sorting and grouping the samples in the Structre plot; for example,
 tissue of origin in making Structure plot of the GTEx samples.
-Default is set to NULL for when no phenotype information is used to
+Default is set to "none for when no phenotype information is used to
 order the sample vectors.}
 
 \item{palette}{Colors assigned to label the clusters. The first color in the palette
@@ -60,7 +60,12 @@ subgroups in the plot.}
 
 \item{axis_tick}{Control parameters for x-axis and y-axis tick sizes.}
 
-\item{title_size}{The size of the title of the plot.}
+\item{legend_title_size}{The size of the title of the Structure Plot
+representation.}
+
+\item{legend_key_size}{The size of the legend key in Structure plot.}
+
+\item{legend_text_size}{the size specification of the legend text.}
 }
 \value{
 Plots the Structure plot visualization of the GoM model

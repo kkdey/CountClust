@@ -6,6 +6,7 @@ A R package for Grade of Membership (GoM) model fit and Visualization of counts 
 
 [Kushal K Dey](http://kkdey.github.io/), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
 
+<<<<<<< HEAD
 ## How to cite
 
 If you are find CountClust useful, please cite:
@@ -16,6 +17,8 @@ Genetics*  **13**: e1006599
 
 Taddy M (2012). On Estimation and Selection for Topic Models. *AISTATS, JMLR* 22.
 
+=======
+>>>>>>> 1b9aa8645e9a481577c005790d3a84c8efda4aa4
 
 ## Installation
 
@@ -31,7 +34,10 @@ For installing the working version of this package and loading the data required
 ```
 library(devtools)
 install_github('kkdey/CountClust')
+<<<<<<< HEAD
 install_github('kkdey/singleCellRNASeqMouseDeng2014') 
+=======
+>>>>>>> 1b9aa8645e9a481577c005790d3a84c8efda4aa4
 ```
 
 Then load the package with:
@@ -120,12 +126,19 @@ The CountClust package is distributed under [GPL - General Public License (>= 2)
 
 ## Contact
 
+<<<<<<< HEAD
 For any questions or comments, please contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
+=======
+For any queries, contact [kkdey@uchicago.edu](kkdey@uchicago.edu)
+>>>>>>> 1b9aa8645e9a481577c005790d3a84c8efda4aa4
 
 ## Acknowledgements
 
 - Raman Shah
+<<<<<<< HEAD
 - Peter Carbonetto
 
+=======
+>>>>>>> 1b9aa8645e9a481577c005790d3a84c8efda4aa4
 
 
