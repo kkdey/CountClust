@@ -66,7 +66,6 @@ ExtractTopFeatures <- function(theta,
 
     indices_mat=matrix(0,dim(theta)[2],top_features);
     scores_mat=matrix(0,dim(theta)[2],top_features);
-
     if(dim(theta)[2]==2){
         for(k in 1:dim(theta)[2])
         {
@@ -94,7 +93,6 @@ ExtractTopFeatures <- function(theta,
                     flag <- flag + 1;
                     counter <- counter + 1;
                 }
-
             }
         }
 

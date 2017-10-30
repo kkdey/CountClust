@@ -1,2 +1,22 @@
-version 1.1.0
+
+version 0.99.0
 	+ Release
+
+
+version 1.2.1
+	+ Release
+
+We have added a new function `ExtractHighCorFeatures.R` to track the top correlated features with expression data per topic.
+
+We added an option for making StructureGGplot without phenotype information.
+
+For the FitGoM function that fits the Grade of Membership model, added a maximum number of iterations input, set to 10,000 as default but flexible to user change.
+
+
+
+version 1.5.1
+	+ Release
+
+We have added a FitGoMpool() function that automatically performs GoM model with multiple starting points
+and outputs the one run with the most optimal BIC. Besides, removed switch_axis_position() as a dependency from cowplot as the function has been deprecated.
+r

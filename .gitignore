@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .DS_Store
 .Rproj.user
 .Rhistory
@@ -9,3 +10,9 @@ vignettes/count-clust.synctex.gz
 vignettes/count-clust.toc
 vignettes/count-clust.out
 vignettes/count-clust.log
+=======
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+>>>>>>> 1b9aa8645e9a481577c005790d3a84c8efda4aa4

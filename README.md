@@ -127,5 +127,3 @@ For any questions or comments, please contact [kkdey@uchicago.edu](kkdey@uchicag
 - Raman Shah
 - Peter Carbonetto
 
-
-

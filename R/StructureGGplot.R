@@ -38,7 +38,10 @@
 #'                  subgroups in the plot.
 #' @param axis_tick Control parameters for x-axis and y-axis tick sizes.
 #' @param plot_labels If TRUE, the plot the axis labels.
-#' @param title_size The size of the title of the plot.
+#' @param legend_title_size The size of the title of the Structure Plot
+#'                           representation.
+#' @param legend_key_size The size of the legend key in Structure plot.
+#' @param legend_text_size the size specification of the legend text.
 #'
 #' @return Plots the Structure plot visualization of the GoM model
 #'
@@ -146,7 +149,6 @@ StructureGGplot <- function(omega, annotation = NULL,
                             legend_key_size = 0.4,
                             legend_text_size = 5) {
 
-
     # check if the number of colors is same as or more than the number of clusters
     if (dim(omega)[2] > length(palette)) {
         stop("Color choices is smaller than the number of clusters!")
@@ -181,6 +183,7 @@ StructureGGplot <- function(omega, annotation = NULL,
                           temp_df <- omega[which(annotation$tissue_label == temp_label), , drop=FALSE]
 
                           is_single_sample <- (nrow(temp_df) == 1)
+
                           # find the dominant cluster in each sample
                           if ( is_single_sample ) {
                               each_sample_order <- which.max(temp_df)
@@ -296,14 +299,12 @@ StructureGGplot <- function(omega, annotation = NULL,
             -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
         size = split_line$split_lwd)
-
     b
 
     # filename = paste0(output_dir, "structure.png")
     # png(paste0(filename), width = output_width, height = output_height)
     # ggsave(file=paste0(filename))
     # dev.off()
-
     } else if (null_annotation) {
       # make ggplot
       a <- ggplot2::ggplot(df_mlt,
