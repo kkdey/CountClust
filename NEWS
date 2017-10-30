@@ -3,7 +3,7 @@ version 0.99.0
 	+ Release
 
 
-version 1.1.3
+version 1.2.1
 	+ Release
 
 We have added a new function `ExtractHighCorFeatures.R` to track the top correlated features with expression data per topic.
@@ -14,7 +14,7 @@ For the FitGoM function that fits the Grade of Membership model, added a maximum
 
 
 
-version 1.1.4
+version 1.5.1
 	+ Release
 
 We have added a FitGoMpool() function that automatically performs GoM model with multiple starting points
