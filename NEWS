@@ -1,4 +1,4 @@
-
+q
 version 0.99.0
 	+ Release
 
@@ -20,3 +20,7 @@ version 1.1.4
 We have added a FitGoMpool() function that automatically performs GoM model with multiple starting points
 and outputs the one run with the most optimal BIC. Besides, removed switch_axis_position() as a dependency from cowplot as the function has been deprecated.
 r
+
+version 1.4.1
+	+ Release
+Fixed a bug in StructureGGplot.R for creating the Structure plot and also added citations to the CountClust paper. Updated the README.
