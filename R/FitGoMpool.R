@@ -49,10 +49,14 @@ FitGoMpool <- function(data,
                    K,
                    tol=0.1,
                    burn_trials = 10,
-                   options = c("BF", "BIC"),
+                   options,
                    path_rda = NULL,
                    control=list())
 {
+  if(missing(options)){
+      warning("options not specified: switching to default BIC, other choice is BF for Bayes factor")
+      options <- "BIC"
+  }
   if(length(K) > 1)
     stop("For FitGoMpool, K must be an integer, run for separate K")
 

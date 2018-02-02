@@ -4,8 +4,8 @@
 \alias{FitGoMpool}
 \title{Run Grade of Membership (GoM) model with multiple starting points !}
 \usage{
-FitGoMpool(data, K, tol = 0.1, burn_trials = 10, options = c("BF", "BIC"),
-  path_rda = NULL, control = list())
+FitGoMpool(data, K, tol = 0.1, burn_trials = 10, options, path_rda = NULL,
+  control = list())
 }
 \arguments{
 \item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of samples
