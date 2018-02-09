@@ -34,6 +34,9 @@
 #'                      the order in the data.
 #' @param sample_order_decreasing If order_sample=TRUE, then order the sample in
 #'                  descending (TRUE) or ascending order.
+#' @param sample_order_opts Orders by different choices of clusters in a batch.
+#'                          Can take the values 1, 2, 3 or 4 corresponding
+#'                          to 4 ordering options. Default equal to 1.
 #' @param split_line Control parameters for the line that separates phenotype
 #'                  subgroups in the plot.
 #' @param axis_tick Control parameters for x-axis and y-axis tick sizes.
@@ -137,6 +140,7 @@ StructureGGplot <- function(omega, annotation = NULL,
                             yaxis_label = "Tissue type",
                             order_sample = TRUE,
                             sample_order_decreasing = TRUE,
+                            sample_order_opts = 1,
                             split_line = list(split_lwd = 1,
                                               split_col = "white"),
                             plot_labels = TRUE,
@@ -192,7 +196,17 @@ StructureGGplot <- function(omega, annotation = NULL,
                           }
 
                           # find the dominant cluster across samples
-                          sample_order <- as.numeric(attr(table(each_sample_order), "name")[1])
+                          tab_samp_order <- table(each_sample_order)
+
+                          if(sample_order_opts == 1)
+                              sample_order <- as.numeric(attr(tab_samp_order, "name")[1])
+                          if(sample_order_opts == 2)
+                           sample_order <- as.numeric(attr(tab_samp_order, "name")[which.max(tab_samp_order)])
+                          if(sample_order_opts == 3)
+                              sample_order <- as.numeric(attr(tab_samp_order, "name")[length(tab_samp_order)])
+                          if(sample_order_opts == 4)
+                              sample_order <- as.numeric(attr(tab_samp_order, "name")[which.min(tab_samp_order)])
+
 
                           if (order_sample == TRUE & !is_single_sample) {
                               # reorder the matrix

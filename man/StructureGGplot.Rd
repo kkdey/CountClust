@@ -7,11 +7,11 @@
 StructureGGplot(omega, annotation = NULL,
   palette = RColorBrewer::brewer.pal(8, "Accent"), figure_title = "",
   yaxis_label = "Tissue type", order_sample = TRUE,
-  sample_order_decreasing = TRUE, split_line = list(split_lwd = 1, split_col
-  = "white"), plot_labels = TRUE, axis_tick = list(axis_ticks_length = 0.1,
-  axis_ticks_lwd_y = 0.1, axis_ticks_lwd_x = 0.1, axis_label_size = 3,
-  axis_label_face = "bold"), legend_title_size = 8, legend_key_size = 0.4,
-  legend_text_size = 5)
+  sample_order_decreasing = TRUE, sample_order_opts = 1,
+  split_line = list(split_lwd = 1, split_col = "white"), plot_labels = TRUE,
+  axis_tick = list(axis_ticks_length = 0.1, axis_ticks_lwd_y = 0.1,
+  axis_ticks_lwd_x = 0.1, axis_label_size = 3, axis_label_face = "bold"),
+  legend_title_size = 8, legend_key_size = 0.4, legend_text_size = 5)
 }
 \arguments{
 \item{omega}{Cluster membership probabilities of each sample. Usually a
@@ -52,6 +52,10 @@ the order in the data.}
 
 \item{sample_order_decreasing}{If order_sample=TRUE, then order the sample in
 descending (TRUE) or ascending order.}
+
+\item{sample_order_opts}{Orders by different choices of clusters in a batch.
+Can take the values 1, 2, 3 or 4 corresponding
+to 4 ordering options. Default equal to 1.}
 
 \item{split_line}{Control parameters for the line that separates phenotype
 subgroups in the plot.}
