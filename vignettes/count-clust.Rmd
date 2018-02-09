@@ -54,19 +54,21 @@ Many software packages available for document clustering are applicable to model
 
 `r Biocpkg("CountClust")` requires the following CRAN-R packages: `r CRANpkg("maptpx")`, `r CRANpkg("ggplot2")`, `r CRANpkg("cowplot")`, `r CRANpkg("parallel")`, `r CRANpkg("reshape2")`, `r CRANpkg("RColorBrewer")`, `r CRANpkg("flexmix")`,`r CRANpkg("gtools")`, `r CRANpkg("devtools")` along with the Bioconductor package: `r Biocpkg("limma")`.
 
+Before installing \Countclust{}, pelase install the latest version of the `r CRANpkg("maptpx")` package on Github. 
+
+```{r install_github, eval=TRUE}
+library(devtools)
+install_github("TaddyLab/maptpx")
+```
+
+Then one can install the \CountClust{} package from Bioc as follows 
+
 ```{r install_countclust_bio, eval=FALSE}
 source("http://bioconductor.org/biocLite.R")
 biocLite("CountClust")
 ```
 
-For the latest updated version of the `r CRANpkg("maptpx")` package (with some bug fixes from the CRAN version), we recommend the user to install the Github version.
-
-```{r install_github, eval=TRUE}
-library(devtools)
-install_github("kkdey/maptpx")
-```
-
-The development version of the `r Biocpkg("CountClust")` package is available on Github, along with the data packages used in examples for this vignette.
+The development version of the `r Biocpkg("CountClust")` package is available on Github, along with some data packages used in examples for this vignette.
 
 ```{r install_countclust_github, eval=FALSE}
 install_github('kkdey/CountClust')

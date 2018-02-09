@@ -1,7 +1,5 @@
 # CountClust
 
-[![Build Status](https://travis-ci.org/kkdey/CountClust.svg?branch=master)](https://travis-ci.org/kkdey/CountClust)
-
 A R package for Grade of Membership (GoM) model fit and Visualization of counts data-
 
 [Kushal K Dey](http://kkdey.github.io/), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
@@ -19,22 +17,33 @@ Taddy M (2012). On Estimation and Selection for Topic Models. *AISTATS, JMLR* 22
 
 ## Installation
 
-`CountClust` requires the following CRAN-R packages: `maptpx`, `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`.
+`CountClust` requires the following CRAN-R packages:  `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`. Also the user needs to install the latest `maptpx` package from Github.
+
+```
+library(devtools)
+install_github('TaddyLab/maptpx')
+```
+
+Then one can install `CountClust` from Bioc as follows 
 
 ```
 source("http://bioconductor.org/biocLite.R")
 biocLite("CountClust")
 ```
 
-For installing the working version of this package and loading the data required for this vignette, we use CRAN-R package `devtools`.
+For installing the working version of this package from Github please run
 
 ```
-library(devtools)
 install_github('kkdey/CountClust')
+```
+
+To replicate the data example in this README, please install the following data package.
+
+```
 install_github('kkdey/singleCellRNASeqMouseDeng2014') 
 ```
 
-Then load the package with:
+Then load the `CountClust` package in R:
 
 ```
 library(CountClust)
