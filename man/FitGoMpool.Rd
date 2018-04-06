@@ -26,7 +26,7 @@ BF is more trustworthy, but BIC can be used for better model comparison.}
 \item{path_rda}{The directory path for saving the GoM model output.
 If NULL, it will return the output to console.}
 
-\item{control}{Control parameters. Same as topics() function of
+\item{control}{Control parameters for the GoM model fits. Same as topics() function of
 maptpx package.}
 }
 \value{
@@ -42,7 +42,7 @@ Fits grade of membership model \code{FitGoM()} to count data
 \examples{
 
 data("ex.counts")
-out <- FitGoMpool(ex.counts, K=2, tol=100, burn_trials=3,
+out <- FitGoMpool(ex.counts, K=2, tol=100, burn_trials=5,
                    control=list(tmax=100))
 
 }

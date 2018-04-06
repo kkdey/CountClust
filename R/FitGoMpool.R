@@ -17,7 +17,7 @@
 #'        BF is more trustworthy, but BIC can be used for better model comparison.
 #' @param path_rda The directory path for saving the GoM model output.
 #'                  If NULL, it will return the output to console.
-#' @param control Control parameters. Same as topics() function of
+#' @param control Control parameters for the GoM model fits. Same as topics() function of
 #'                 maptpx package.
 #'
 #' @return Outputs the best GoM model fit output for cluster K and saves it
@@ -36,7 +36,7 @@
 #' @examples
 #'
 #' data("ex.counts")
-#' out <- FitGoMpool(ex.counts, K=2, tol=100, burn_trials=3,
+#' out <- FitGoMpool(ex.counts, K=2, tol=100, burn_trials=5,
 #'                    control=list(tmax=100))
 #'
 #' @importFrom maptpx topics
@@ -54,7 +54,7 @@ FitGoMpool <- function(data,
                    control=list())
 {
   if(missing(options)){
-      warning("options not specified: switching to default BIC, other choice is BF for Bayes factor")
+      message("options not specified: switching to default BIC, other choice is BF for Bayes factor")
       options <- "BIC"
   }
   if(length(K) > 1)
@@ -62,8 +62,30 @@ FitGoMpool <- function(data,
 
   out <- list()
 
+  control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
+                          kill=2, ord=TRUE, verb=1, admix=TRUE,
+                          nbundles=1,
+                          use_squarem=FALSE,
+                          init.adapt=FALSE,
+                          type="full",
+                          ind_model_indices = NULL,
+                          signatures=NULL,
+                          light=1,
+                          method_admix=1,
+                          sample_init=TRUE,tmax=1000)
+  namc=names(control)
+  if (!all(namc %in% names(control.default)))
+      stop("unknown names in control: ",
+           namc[!(namc %in% names(control.default))])
+  control <- modifyList(control.default, control)
+
+
   for(num in 1:burn_trials){
-    out[[num]] <- FitGoM(data, K=K, tol=tol)
+    out[[num]] <- do.call(FitGoM, list(data = as.matrix(data),
+                                       K=K,
+                                       tol=tol,
+                                       path_rda = NULL,
+                                       control = control))
   }
 
   if(options=="BIC"){
