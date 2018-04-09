@@ -18,7 +18,7 @@ LazyData: true
 Encoding: UTF-8
 Imports: SQUAREM, slam, plyr(>= 1.7.1), cowplot, gtools, flexmix, picante, limma, parallel, reshape2, stats, utils, graphics, grDevices
 Suggests:
-    knitr, kableExtra, maptpx, BiocStyle, Biobase, roxygen2, RColorBrewer, devtools, xtable
+    knitr, kableExtra, BiocStyle, Biobase, roxygen2, RColorBrewer, devtools, xtable
 VignetteBuilder: knitr
 biocViews: RNASeq, GeneExpression, Clustering, Sequencing, StatisticalMethod,
     Software, Visualization
