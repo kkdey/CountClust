@@ -50,15 +50,19 @@
 
 compare_omega <- function(omega1, omega2)
 {
-    omega1[omega1==0] <- 1e-20;
-    omega2[omega2==0] <- 1e-20;
+    if(nrow(omega1) != nrow(omega2)) stop("The number of rows of the two omega matrices must be same")
+    if(ncol(omega1) != ncol(omega2)) warning("The number of columns in two omega matrices are not equal")
+    min_val <- min(min(omega1), min(omega2))
+    omega1[omega1==0] <- min_val/(1e15)
+    omega2[omega2==0] <- min_val/(1e15)
+
     cor.out <- 1 - cor(omega1, omega2)
     kl.out <- matrix(0,dim(omega1)[2],dim(omega2)[2]);
     for(m in 1:dim(omega1)[2])
     {
         for(n in 1:dim(omega2)[2])
         {
-            KLdiv.mat <- KLdiv(as.matrix(cbind(omega1[,m],omega2[,n])));
+            KLdiv.mat <- flexmix::KLdiv(as.matrix(cbind(omega1[,m],omega2[,n])));
             kl.out[m,n] <- 0.5* (KLdiv.mat[1,2]+ KLdiv.mat[2,1]);
         }
     }

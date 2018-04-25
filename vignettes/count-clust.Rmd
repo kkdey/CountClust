@@ -158,7 +158,7 @@ As an example, we fit the topic model for `k=4` on the GTEx V6 Brain data and sa
 
 ```{r topic_fit_gtex, eval=FALSE}
 FitGoM(t(gtex.counts),
-            K=4, tol=0.1,
+            K=4, tol=1,
             path_rda="../data/GTExV6Brain.FitGoM.rda")
 ```
 

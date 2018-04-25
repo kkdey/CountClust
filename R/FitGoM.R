@@ -1,22 +1,27 @@
-#' @title Grade of Membership (GoM) model fit !
+#' @title Run Grade of Membership (GoM) model with multiple starting points !
 #'
-#' @description Fits a grade of membership model to count data. Default input
-#'                includes a sample-by-feature matrix, the number of clusters
-#'                (topics) to fit (K). The function is a wrapper of the topics()
-#'                function implemented in Matt Taddy's maptpx pacakge.
+#' @description Fits grade of membership model \code{FitGoM()} to count data
+#'        with multiple starting points and choose the best fit using BIC (Bayesian
+#'        Information Criterion). the multiple starting points ensure that
+#'        the output is more reliable.
 #'
 #' @param data counts data \eqn{N x G}, with \eqn{N}, the number of samples
 #'       along the rows and \eqn{G}, number of genes along columns.
-#' @param K the vector of clusters or topics to be fitted.
+#' @param K the vector of clusters or topics to be fitted. Must be an integer,
+#'       unlike in ]\code{FitGom()}. So you need to apply this function separately
+#'       for each K.
 #' @param tol Tolerance value for GoM model absolute log posterior increase
 #'            at successive iterations (set to 0.1 as default).
+#' @param num_trials The number of trials with different starting points used.
+#' @param options the measure used to choose best fit, either "BF" or "BIC" measures can be used.
+#'        BF is more trustworthy, but BIC can be used for better model comparison.
 #' @param path_rda The directory path for saving the GoM model output.
 #'                  If NULL, it will return the output to console.
-#' @param control Control parameters. Same as topics() function of
+#' @param control Control parameters for the GoM model fits. Same as topics() function of
 #'                 maptpx package.
 #'
-#' @return Saves the GoM model fit output for each cluster in vector K at the
-#'                directory path in path_rda.
+#' @return Outputs the best GoM model fit output for cluster K and saves it
+#'         at the directory path in path_rda if the latter is provided.
 #'
 #' @references Matt Taddy. On Estimation and Selection for Topic Models.
 #'                AISTATS 2012, JMLR W\&CP 22.
@@ -31,15 +36,92 @@
 #' @examples
 #'
 #' data("ex.counts")
-#' out <- FitGoM(ex.counts, K=4, tol=100, control=list(tmax=100))
+#' out <- FitGoM(ex.counts, K=2, tol=100, num_trials=5,
+#'                    control=list(tmax=100))
 #'
 #' @importFrom maptpx topics
 #' @import slam
 #' @importFrom utils modifyList
 #' @export
-
+#'
 
 FitGoM <- function(data,
+                   K,
+                   tol=0.1,
+                   num_trials = 1,
+                   options,
+                   path_rda = NULL,
+                   control=list())
+{
+  if(missing(options)){
+      message("options not specified: switching to default BIC, other choice is BF for Bayes factor")
+      options <- "BIC"
+  }
+  if(length(K) > 1)
+    stop("For FitGoMpool, K must be an integer, run for separate K")
+
+  out <- list()
+
+  control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
+                          kill=2, ord=TRUE, verb=1, admix=TRUE,
+                          nbundles=1,
+                          use_squarem=FALSE,
+                          init.adapt=TRUE,
+                          type="full",
+                          ind_model_indices = NULL,
+                          signatures=NULL,
+                          light=1,
+                          method_admix=1,
+                          sample_init=TRUE,tmax=1000)
+  namc=names(control)
+  if (!all(namc %in% names(control.default)))
+      stop("unknown names in control: ",
+           namc[!(namc %in% names(control.default))])
+  control <- modifyList(control.default, control)
+
+
+  for(num in 1:num_trials){
+    out[[num]] <- do.call(FitGoM_skeleton, list(data = as.matrix(data),
+                                       K=K,
+                                       tol=tol,
+                                       path_rda = NULL,
+                                       control = control))
+  }
+
+  if(options=="BIC"){
+        BIC_val <- array(0, num_trials)
+        for(n in 1:length(BIC_val)){
+            BIC_val [n] <- compGoM(data, out[[n]])[[1]]$BIC
+        }
+
+        Topic_clus <- out[[which.min(BIC_val)]][[1]]
+        ll <- list("topic_fit"=Topic_clus,
+                   "BIC"=BIC_val[which.min(BIC_val)])
+  }
+
+  if(options=="BF"){
+      BF_val <- array(0, num_trials);
+      for(n in 1:length(BF_val)){
+          BF_val [n] <- as.numeric(out[[n]][[1]]$BF);
+      }
+
+      Topic_clus <- out[[which.max(BF_val)]][[1]]
+      ll <- list("topic_fit"=Topic_clus,
+                 "BF"=BF_val[which.max(BF_val)])
+  }
+
+
+  if(!is.null(path_rda)){
+    save(Topic_clus, file = path_rda);
+     return(ll)
+  }else{
+     return(ll)
+  }
+}
+
+
+
+FitGoM_skeleton <- function(data,
                    K,
                    tol=0.1,
                    path_rda = NULL,
@@ -72,7 +154,7 @@ FitGoM <- function(data,
         data <- as.matrix(data[-indices_blank,]);
     }
 
-   message('Fitting a Grade of Membership model
+    message('Fitting a Grade of Membership model
             (Taddy M., AISTATS 2012, JMLR 22,
             http://proceedings.mlr.press/v22/taddy12/taddy12.pdf)',
             domain = NULL, appendLF = TRUE)
@@ -90,14 +172,4 @@ FitGoM <- function(data,
     }else{
         return(Topic_clus_list)
     }
-    #  if(plot) {
-    #  message('Creating the Structure plots', domain = NULL, appendLF = TRUE)
-    #  for(num in 1:length(nclus_vec))
-    #  {
-    #       StructureObj_omega(Topic_clus_list[[num]]$omega,samp_metadata,
-    #                          batch_lab, path_struct,
-    #                          partition=partition,
-    #                          control=control)
-    #  }}
-
 }
