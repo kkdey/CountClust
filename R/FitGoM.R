@@ -42,6 +42,7 @@
 #' @importFrom maptpx topics
 #' @import slam
 #' @importFrom utils modifyList
+#' @import SQUAREM
 #' @export
 #'
 

@@ -84,6 +84,7 @@
 #' @import ggplot2
 #' @importFrom cowplot ggdraw panel_border plot_grid
 #' @import plyr
+#' @import grDevices
 #' @import reshape2
 #' @export
 
