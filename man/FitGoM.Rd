@@ -4,7 +4,7 @@
 \alias{FitGoM}
 \title{Run Grade of Membership (GoM) model with multiple starting points !}
 \usage{
-FitGoM(data, K, tol = 0.1, num_trials = 10, options, path_rda = NULL,
+FitGoM(data, K, tol = 0.1, num_trials = 1, options, path_rda = NULL,
   control = list())
 }
 \arguments{

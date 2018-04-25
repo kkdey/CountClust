@@ -84,7 +84,6 @@ FitGoM <- function(data,
     out[[num]] <- do.call(FitGoM_skeleton, list(data = as.matrix(data),
                                        K=K,
                                        tol=tol,
-                                       path_rda = NULL,
                                        control = control))
   }
 
@@ -95,7 +94,7 @@ FitGoM <- function(data,
         }
 
         Topic_clus <- out[[which.min(BIC_val)]][[1]]
-        ll <- list("topic_fit"=Topic_clus,
+        ll <- list("fit"=Topic_clus,
                    "BIC"=BIC_val[which.min(BIC_val)])
   }
 
@@ -106,7 +105,7 @@ FitGoM <- function(data,
       }
 
       Topic_clus <- out[[which.max(BF_val)]][[1]]
-      ll <- list("topic_fit"=Topic_clus,
+      ll <- list("fit"=Topic_clus,
                  "BF"=BF_val[which.max(BF_val)])
   }
 
@@ -124,7 +123,6 @@ FitGoM <- function(data,
 FitGoM_skeleton <- function(data,
                    K,
                    tol=0.1,
-                   path_rda = NULL,
                    control=list())
 {
     ## dealing with blank rows: we first remove them
@@ -167,9 +165,5 @@ FitGoM_skeleton <- function(data,
     })
 
     names(Topic_clus_list) <- paste0("clust_",K)
-    if(!is.null(path_rda)){
-        save(Topic_clus_list, file = path_rda);
-    }else{
-        return(Topic_clus_list)
-    }
+    return(Topic_clus_list)
 }

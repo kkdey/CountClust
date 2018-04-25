@@ -13,10 +13,24 @@ We added an option for making StructureGGplot without phenotype information.
 For the FitGoM function that fits the Grade of Membership model, added a maximum number of iterations input, set to 10,000 as default but flexible to user change.
 
 
-
 version 1.5.1
 	+ Release
 
 We have added a FitGoMpool() function that automatically performs GoM model with multiple starting points
 and outputs the one run with the most optimal BIC. Besides, removed switch_axis_position() as a dependency from cowplot as the function has been deprecated.
-r
+
+
+version 1.6.1
+	+ Release
+
+Deprecated the cg_topics() and  FitGoMpool() functions. Modified the FitGoM() function so that it has the flexibility
+to run multiple runs using the num_trials argument and also returns the BIC for each model fit. Modified the compGoM()
+function so that it can take either a topic model object, as well as a list of topic model objects. Also deprecated
+the base R graphics for the Structureplot and modified the StructureGGplot() function to take single label samples.
+
+
+
+
+
+
+
