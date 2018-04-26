@@ -65,15 +65,7 @@ FitGoM <- function(data,
 
   control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
                           kill=2, ord=TRUE, verb=1, admix=TRUE,
-                          nbundles=1,
-                          use_squarem=FALSE,
-                          init.adapt=TRUE,
-                          type="full",
-                          ind_model_indices = NULL,
-                          signatures=NULL,
-                          light=1,
-                          method_admix=1,
-                          sample_init=TRUE,tmax=1000)
+                          tmax=1000)
   namc=names(control)
   if (!all(namc %in% names(control.default)))
       stop("unknown names in control: ",
@@ -130,15 +122,7 @@ FitGoM_skeleton <- function(data,
 
     control.default <- list(shape=NULL, initopics=NULL, bf=TRUE,
                             kill=2, ord=TRUE, verb=1, admix=TRUE,
-                            nbundles=1,
-                            use_squarem=FALSE,
-                            init.adapt=FALSE,
-                            type="full",
-                            ind_model_indices = NULL,
-                            signatures=NULL,
-                            light=1,
-                            method_admix=1,
-                            sample_init=TRUE,tmax=1000)
+                            tmax=1000)
 
     namc=names(control)
     if (!all(namc %in% names(control.default)))
