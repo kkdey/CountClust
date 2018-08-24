@@ -76,7 +76,6 @@ compGoM <- function(data, model)
         compgom_list <- list()
         num_models <- length(model)
         for(j in 1:num_models){
-            if(class(model[[j]]) != "topics") stop("the elements of the model list must be of class topics")
             theta <- model[[j]]$theta
             omega <- model[[j]]$omega
             probs <- omega %*% t(theta)
