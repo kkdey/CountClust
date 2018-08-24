@@ -22,14 +22,9 @@ Taddy M (2012). On Estimation and Selection for Topic Models. *AISTATS, JMLR* 22
 
 ## Installation
 
-`CountClust` requires the following CRAN-R packages:  `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`. Also the user needs to install the latest `maptpx` package from Github.
+`CountClust` requires the following CRAN-R packages:  `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`.
 
-```
-library(devtools)
-install_github('TaddyLab/maptpx')
-```
-
-Then one can install `CountClust` from Bioc as follows 
+One can install `CountClust` from Bioc as follows 
 
 ```
 source("http://bioconductor.org/biocLite.R")
@@ -41,6 +36,14 @@ For installing the working version of this package from Github please run
 ```
 install_github('kkdey/CountClust')
 ```
+
+To avoid bug issues for large datasets, we recommend the user to install the latest `maptpx` package from Github.
+
+```
+library(devtools)
+install_github('TaddyLab/maptpx')
+```
+
 
 To replicate the data example in this README, please install the following data package.
 
