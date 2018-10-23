@@ -54,7 +54,18 @@ FitGoM <- function(data,
                    path_rda = NULL,
                    control=list())
 {
+  if(!all(is.finite(data))){
+    stop("input data must be finite")
+  }
   
+  if(!is.numeric(data)){
+    stop("input data must be numeric")
+  }
+
+  if(!is.matrix(data) && !is.data.frame(data)){
+    stop("input data must be a matrix or a data frame.")
+  }
+
   if(all(data != floor(data))){
     stop("data input must be counts")
   }
