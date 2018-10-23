@@ -54,6 +54,27 @@ FitGoM <- function(data,
                    path_rda = NULL,
                    control=list())
 {
+  
+  if(all(data != floor(data))){
+    stop("data input must be counts")
+  }
+  
+  if(length(which(data < 0)) > 0){
+    stop("elements of the data input cannot be negative")
+  }
+  
+  if(length(which(is.na(data))) > 0){
+    stop("NA detected in input data, see handleNA() function. aborting !")
+  }
+  
+  if (K > dim(data)[1]){
+    stop("K chosen must be smaller than the number of rows of input data (samples)")
+  }
+  
+  if ( K > dim(data)[2]){
+    stop("K must be smaller than the number of columns in input data (features/genes)")
+  }
+  
   if(missing(options)){
       message("options not specified: switching to default BIC, other choice is BF for Bayes factor")
       options <- "BIC"
