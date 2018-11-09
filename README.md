@@ -6,7 +6,7 @@ A R package for Grade of Membership (GoM) model fit and Visualization of counts 
 
 ## Updates 
 
-CountClust version 1.6.1 is now out. Check the NEWS file for the updates!. 
+CountClust version 1.6.2 is now out. We now have added a StructurePie() feature to integrate CountClust clustering with t-SNE or PCA plots! See the README below! 
 
 
 ## How to cite
