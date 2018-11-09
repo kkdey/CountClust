@@ -68,7 +68,7 @@ deng.meta_data <- pData(Deng2014MouseESC)
 deng.gene_names <- rownames(deng.counts)
 ```
 
-### Fitting CountClust 
+## CountClust Model
 
 We apply the `FitGoM` function (which is a wrapper of the `topics` function in the maptpx package) for a user specified number of clusters (K=6 for the example below).
 
@@ -141,7 +141,7 @@ StructurePie(t(deng.counts), input_type="apply_pca",
 
 <img src="vignettes/structure_pie_pca.png" alt="Structure Plot" height="400" width="600">
 
-### Cluster annotations
+## CountClust Cluster Annotations
 
 We can extract the features that drive the clusters for K=6 as follows 
 
