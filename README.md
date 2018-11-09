@@ -126,7 +126,7 @@ StructurePie(t(deng.counts), input_type="apply_tsne",
              use_voom=FALSE, omega = omega, xlab="TSNE1",
              ylab = "TSNE2", main = "STRUCTURE K=6 pie on tSNE")
 ```
-<img src="vignettes/structure_pie_tsne.png" alt="Structure Plot" height="700" width="400">
+<img src="vignettes/structure_pie_tsne.png" alt="Structure Plot" height="400" width="600">
 
 PCA + CountClust grades coloring 
 
@@ -136,7 +136,7 @@ StructurePie(t(deng.counts), input_type="apply_pca",
            ylab = "PCA2", main = "STRUCTURE K=6 pie on PCA")
 ```
 
-<img src="vignettes/structure_pie_pca.png" alt="Structure Plot" height="700" width="400">
+<img src="vignettes/structure_pie_pca.png" alt="Structure Plot" height="400" width="600">
 
 ### Cluster annotations
 
