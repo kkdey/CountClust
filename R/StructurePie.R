@@ -47,11 +47,13 @@
 #' StructurePie(t(deng.counts), input_type="apply_tsne",
 #'             use_voom=FALSE, omega = omega, xlab="TSNE1",
 #'             ylab = "TSNE2",
-#'             main = "STRUCTURE K=6 pie on tSNE")
+#'             main = "STRUCTURE K=6 pie on tSNE",
+#'             control = list(bg = "lightcyan"))
 #' StructurePie(t(deng.counts), input_type="apply_pca",
 #'             use_voom = TRUE, omega = omega, xlab="PCA1",
 #'             ylab = "PCA2",
-#'             main = "STRUCTURE K=6 pie on PCA")
+#'             main = "STRUCTURE K=6 pie on PCA",
+#'             control = list(bg = "lightcyan"))
 #'
 #' @importFrom Rtsne Rtsne
 #' @importFrom limma voom
@@ -70,17 +72,32 @@ StructurePie <- function(input_data,
                         control = list()){
 
     control.default <- list(color_intensity = 0.9,
-                            bg = "lightblue",
+                            bg = "white",
                             padding = c(2,2),
                             legend_pie_radius = 2,
                             legend_pie_cex = 0.8,
                             legendx = NULL,
-                            legendy = NULL)
+                            legendy = NULL,
+                            edges = 200, clockwise = TRUE,
+                            init.angle = 90, density = NULL,
+                            angle = 45, border = NA,
+                            lty = NULL, label.dist = 1.1)
+
     namc=names(control)
     if (!all(namc %in% names(control.default)))
         stop("unknown names in control: ",
              namc[!(namc %in% names(control.default))])
     control <- modifyList(control.default, control)
+
+    pie_control = list(edges = control$edges,
+                       clockwise = control$clockwise,
+                       init.angle = control$init.angle,
+                       density = control$density,
+                       angle = control$angle,
+                       border = control$border,
+                       lty = control$lty,
+                       label.dist = control$label.dist)
+
 
 
     if(any(omega < 0) | any(omega > 1)){
@@ -164,8 +181,11 @@ StructurePie <- function(input_data,
              ylim=c(min(coord2) - control$padding[2],
                     max(coord2) + control$padding[2]),
              main = main, xlab = xlab, ylab = ylab, bg=control$bg)
-    mapplots::draw.pie(coord1, coord2, 100*omega_norm, radius = pie_radius,
-             col=control$color_with_intensity)
+    do.call(mapplots::draw.pie,
+            append(list(
+                x = coord1, y = coord2, z = 100*omega_norm,
+                radius = pie_radius, col = color_with_intensity),
+                pie_control))
     mapplots::legend.pie(control$legendx, control$legendy,
                labels=paste0("c", 1:ncol(omega_norm)),
                radius=control$legend_pie_radius, bty="n",
