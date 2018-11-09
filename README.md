@@ -57,7 +57,7 @@ Then load the `CountClust` package in R:
 library(CountClust)
 ```
 
-## Application of CountClust
+## Preprocessing
 
 We load the single cell RNA-seq data due to [Deng et al 2014](http://www.ncbi.nlm.nih.gov/pubmed/24408435). The data contains RNA-seq read counts for single cells at different stages of mouse embryo development (from zygote to blastocyst). 
 
@@ -68,21 +68,22 @@ deng.meta_data <- pData(Deng2014MouseESC)
 deng.gene_names <- rownames(deng.counts)
 ```
 
-### GoM Model fit 
+### Fitting CountClust 
 
-We apply the `StructureObj` function (which is a wrapper of the `topics` function in the maptpx package) for a vector of number of clusters, ranging from 2 to 7. 
+We apply the `FitGoM` function (which is a wrapper of the `topics` function in the maptpx package) for a user specified number of clusters (K=6 for the example below).
 
 ```
-FitGoM(t(deng.counts),
-            K=c(3,6), tol=0.1,
-            path_rda="data/MouseDeng2014.FitGoM.rda")
+FitGoM(t(deng.counts),K=3,path_rda="data/MouseDeng2014.FitGoM.rda")
 ```
 
-This function will output a list, each element representing a GoM model fit output for a particular cluster number. 
+This function will output a list - of which the key components are the two matrices `omega` and `theta`. `omega` denotes the matrix of cluster memberships for each sample and `theta` denotes the matrix of proportional contribution of each feature to a cluster. 
 
-### Cluster Visualization
+## CountClust Visualization
 
-One can plot the `omega` from the `StructureObj` fit using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. 
+
+### Structure Bar Plot 
+
+One can plot the `omega` from the `FitGoM` functionusing a Structure Bar plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. 
 
 ```
 data("MouseDeng2014.FitGoM")
@@ -115,6 +116,8 @@ StructureGGplot(omega = omega,
 ```
 
 <img src="vignettes/structure_plot.png" alt="Structure Plot" height="700" width="400">
+
+### STRUCTURE Pie + tSNE/PCA
 
 One can also visualize the STRUCTURE grades of membership colorings aggregated
 with the t-SNE or the PCA plots, as follows.
