@@ -7,9 +7,7 @@
 #'
 #' @param data counts data \eqn{N x G}, with \eqn{N}, the number of samples
 #'       along the rows and \eqn{G}, number of genes along columns.
-#' @param K the vector of clusters or topics to be fitted. Must be an integer,
-#'       unlike in ]\code{FitGom()}. So you need to apply this function separately
-#'       for each K.
+#' @param K the number of clusters to fit. Must be an integer.
 #' @param tol Tolerance value for GoM model absolute log posterior increase
 #'            at successive iterations (set to 0.1 as default).
 #' @param num_trials The number of trials with different starting points used.
@@ -48,7 +46,7 @@
 
 FitGoM <- function(data,
                    K,
-                   tol=0.1,
+                   tol=100,
                    num_trials = 1,
                    options,
                    path_rda = NULL,
@@ -57,7 +55,7 @@ FitGoM <- function(data,
   if(!all(is.finite(data))){
     stop("input data must be finite")
   }
-  
+
   if(!is.numeric(data)){
     stop("input data must be numeric")
   }
@@ -69,23 +67,23 @@ FitGoM <- function(data,
   if(all(data != floor(data))){
     stop("data input must be counts")
   }
-  
+
   if(length(which(data < 0)) > 0){
     stop("elements of the data input cannot be negative")
   }
-  
+
   if(length(which(is.na(data))) > 0){
     stop("NA detected in input data, see handleNA() function. aborting !")
   }
-  
+
   if (K > dim(data)[1]){
     stop("K chosen must be smaller than the number of rows of input data (samples)")
   }
-  
+
   if ( K > dim(data)[2]){
     stop("K must be smaller than the number of columns in input data (features/genes)")
   }
-  
+
   if(missing(options)){
       message("options not specified: switching to default BIC, other choice is BF for Bayes factor")
       options <- "BIC"

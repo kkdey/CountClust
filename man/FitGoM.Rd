@@ -4,16 +4,14 @@
 \alias{FitGoM}
 \title{Run Grade of Membership (GoM) model with multiple starting points !}
 \usage{
-FitGoM(data, K, tol = 0.1, num_trials = 1, options, path_rda = NULL,
+FitGoM(data, K, tol = 100, num_trials = 1, options, path_rda = NULL,
   control = list())
 }
 \arguments{
 \item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of samples
 along the rows and \eqn{G}, number of genes along columns.}
 
-\item{K}{the vector of clusters or topics to be fitted. Must be an integer,
-unlike in ]\code{FitGom()}. So you need to apply this function separately
-for each K.}
+\item{K}{the number of clusters to fit. Must be an integer.}
 
 \item{tol}{Tolerance value for GoM model absolute log posterior increase
 at successive iterations (set to 0.1 as default).}
