@@ -4,3 +4,8 @@
 .RData
 inst/doc
 test/
+vignettes/count-clust.aux
+vignettes/count-clust.synctex.gz
+vignettes/count-clust.toc
+vignettes/count-clust.out
+vignettes/count-clust.log

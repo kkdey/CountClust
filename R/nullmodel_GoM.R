@@ -26,6 +26,7 @@
 #' @importFrom  picante randomizeMatrix
 #' @import slam
 #' @importFrom stats dmultinom density
+#' @importFrom graphics abline
 #' @export
 #'
 #' @examples

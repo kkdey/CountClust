@@ -34,16 +34,21 @@
 #'                      the order in the data.
 #' @param sample_order_decreasing If order_sample=TRUE, then order the sample in
 #'                  descending (TRUE) or ascending order.
+#' @param sample_order_opts Orders by different choices of clusters in a batch.
+#'                          Can take the values 1, 2, 3 or 4 corresponding
+#'                          to 4 ordering options. Default equal to 1.
 #' @param split_line Control parameters for the line that separates phenotype
 #'                  subgroups in the plot.
 #' @param axis_tick Control parameters for x-axis and y-axis tick sizes.
 #' @param plot_labels If TRUE, the plot the axis labels.
-#' @param title_size The size of the title of the plot.
+#' @param legend_title_size The size of the title of the Structure Plot
+#'                           representation.
+#' @param legend_key_size The size of the legend key in Structure plot.
+#' @param legend_text_size the size specification of the legend text.
 #'
 #' @return Plots the Structure plot visualization of the GoM model
 #'
 #' @examples
-#' # Example 1
 #' data("MouseDeng2014.FitGoM")
 #'
 #' # extract the omega matrix: membership weights of each cell
@@ -76,55 +81,10 @@
 #'                                   axis_label_size = 7,
 #'                                   axis_label_face = "bold"))
 #'
-#' # Example 2
-#' # Import Deng et al data
-#'
-#' # function to read Deng data from GitHub
-#' read.data <- function() {
-#'   x <- tempfile()
-#'   download.file(paste0("https://cdn.rawgit.com/kkdey/",
-#'                          "singleCellRNASeqMouseDeng2014",
-#'                          "/master/data/Deng2014MouseEsc.rda"),
-#'                 destfile = x, quiet = TRUE)
-#'   z <- get(load((x)))
-#'   return(z)
-#'   }
-#' Deng2014MouseESC <-read.data()
-#'
-#' deng.counts <- Biobase::exprs(Deng2014MouseESC)
-#' deng.meta_data <- Biobase::pData(Deng2014MouseESC)
-#' deng.gene_names <- rownames(deng.counts)
-#'
-#' samples_subvector <- which(!duplicated(deng.meta_data$cell_type))[1:3]
-#'
-#' # Fit GoM on 3 samples with K = 3
-#' fit_k3 <- FitGoM( t(deng.counts[,samples_subvector]),
-#'                   K = 3, tol=0.1)
-#'
-#' names(fit_k3$clust_3)
-#' omega <- fit_k3$clust_3$omega
-#'
-#' # make annotation matrix
-#' annotation <- data.frame(
-#'      sample_id = paste0("X", c(1:NROW(omega))),
-#'      tissue_label = factor( as.character(deng.meta_data$cell_type[samples_subvector]),
-#'              levels = rev( as.character(deng.meta_data$cell_type[samples_subvector])  ) )
-#'      )
-#' rownames(omega) <- annotation$sample_id
-#' StructureGGplot(omega = omega,
-#'                  annotation = annotation,
-#'                  palette = RColorBrewer::brewer.pal(3, "Accent"),
-#'                  yaxis_label = "development phase",
-#'                  order_sample = TRUE,
-#'                  axis_tick = list(axis_ticks_length = .1,
-#'                                   axis_ticks_lwd_y = .1,
-#'                                   axis_ticks_lwd_x = .1,
-#'                                   axis_label_size = 7,
-#'                                   axis_label_face = "bold"))
-#'
 #' @import ggplot2
 #' @importFrom cowplot ggdraw panel_border plot_grid
 #' @import plyr
+#' @import grDevices
 #' @import reshape2
 #' @export
 
@@ -134,6 +94,7 @@ StructureGGplot <- function(omega, annotation = NULL,
                             yaxis_label = "Tissue type",
                             order_sample = TRUE,
                             sample_order_decreasing = TRUE,
+                            sample_order_opts = 1,
                             split_line = list(split_lwd = 1,
                                               split_col = "white"),
                             plot_labels = TRUE,
@@ -146,7 +107,6 @@ StructureGGplot <- function(omega, annotation = NULL,
                             legend_key_size = 0.4,
                             legend_text_size = 5) {
 
-
     # check if the number of colors is same as or more than the number of clusters
     if (dim(omega)[2] > length(palette)) {
         stop("Color choices is smaller than the number of clusters!")
@@ -158,8 +118,8 @@ StructureGGplot <- function(omega, annotation = NULL,
     }
 
     # check the annotation data.frame
-    null_annotation <- FALSE
-    if (is.data.frame(annotation) & length(annotation)>1 ) { null_annotation <- TRUE }
+    null_annotation <- TRUE
+    if (is.data.frame(annotation) & length(annotation)>1 ) { null_annotation <- FALSE }
     if (null_annotation) {
       annotation <- data.frame(
                         sample_id = paste("X", c(1:NROW(omega))),
@@ -181,6 +141,7 @@ StructureGGplot <- function(omega, annotation = NULL,
                           temp_df <- omega[which(annotation$tissue_label == temp_label), , drop=FALSE]
 
                           is_single_sample <- (nrow(temp_df) == 1)
+
                           # find the dominant cluster in each sample
                           if ( is_single_sample ) {
                               each_sample_order <- which.max(temp_df)
@@ -189,7 +150,17 @@ StructureGGplot <- function(omega, annotation = NULL,
                           }
 
                           # find the dominant cluster across samples
-                          sample_order <- as.numeric(attr(table(each_sample_order), "name")[1])
+                          tab_samp_order <- table(each_sample_order)
+
+                          if(sample_order_opts == 1)
+                              sample_order <- as.numeric(attr(tab_samp_order, "name")[1])
+                          if(sample_order_opts == 2)
+                           sample_order <- as.numeric(attr(tab_samp_order, "name")[which.max(tab_samp_order)])
+                          if(sample_order_opts == 3)
+                              sample_order <- as.numeric(attr(tab_samp_order, "name")[length(tab_samp_order)])
+                          if(sample_order_opts == 4)
+                              sample_order <- as.numeric(attr(tab_samp_order, "name")[which.min(tab_samp_order)])
+
 
                           if (order_sample == TRUE & !is_single_sample) {
                               # reorder the matrix
@@ -296,14 +267,12 @@ StructureGGplot <- function(omega, annotation = NULL,
             -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
         size = split_line$split_lwd)
-
     b
 
     # filename = paste0(output_dir, "structure.png")
     # png(paste0(filename), width = output_width, height = output_height)
     # ggsave(file=paste0(filename))
     # dev.off()
-
     } else if (null_annotation) {
       # make ggplot
       a <- ggplot2::ggplot(df_mlt,

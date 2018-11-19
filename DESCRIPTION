@@ -1,7 +1,7 @@
 Package: CountClust
 Type: Package
 Title: Clustering and Visualizing RNA-Seq Expression Data using Grade of Membership Models
-Version: 1.3.1
+Version: 1.6.2
 Date: 2016-03-13
 Authors@R: c(
     person("Kushal", "Dey", email = "kkdey@uchicago.edu", role = c("aut","cre")),
@@ -10,15 +10,17 @@ Authors@R: c(
 Maintainer: Kushal Dey <kkdey@uchicago.edu>
 Description: Fits grade of membership models (GoM, also known as admixture models) to cluster RNA-seq gene expression count data, identifies characteristic genes driving cluster memberships, and provides a visual summary of the cluster memberships.
 Depends:
-    R (>= 3.2),
+    R (>= 3.4),
     ggplot2 (>= 2.1.0)
 URL: https://github.com/kkdey/CountClust
 License: GPL (>= 2)
 LazyData: true
 Encoding: UTF-8
-Imports: maptpx, SQUAREM, slam, plyr(>= 1.7.1), cowplot, gtools, flexmix, picante, limma, parallel, reshape2, stats, utils, graphics, grDevices
+Imports: SQUAREM, slam, maptpx, plyr(>= 1.7.1), cowplot, gtools, flexmix, picante,
+         limma, parallel, reshape2, stats, utils, graphics, grDevices, Rtsne, 
+         mapplots, RColorBrewer
 Suggests:
-    knitr, kableExtra, BiocStyle, Biobase, roxygen2, RColorBrewer, devtools, xtable
+    knitr, kableExtra, BiocStyle, Biobase, roxygen2, devtools, xtable
 VignetteBuilder: knitr
 biocViews: RNASeq, GeneExpression, Clustering, Sequencing, StatisticalMethod,
     Software, Visualization

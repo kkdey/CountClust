@@ -1,36 +1,63 @@
 # CountClust
 
-[![Build Status](https://travis-ci.org/kkdey/CountClust.svg?branch=master)](https://travis-ci.org/kkdey/CountClust)
-
 A R package for Grade of Membership (GoM) model fit and Visualization of counts data-
 
 [Kushal K Dey](http://kkdey.github.io/), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
 
+## Updates 
+
+CountClust version 1.6.2 is now out. We now have added a StructurePie() feature to integrate CountClust clustering with t-SNE or PCA plots! See the README below! 
+
+
+## How to cite
+
+If you are find CountClust useful, please cite:
+
+Dey K, Hsiao C, and Stephens M (2017). Visualizing the structure of
+RNA-seq expression data using grade of membership models. *PLoS
+Genetics*  **13**: e1006599
+
+Taddy M (2012). On Estimation and Selection for Topic Models. *AISTATS, JMLR* 22.
+
 
 ## Installation
 
-`CountClust` requires the following CRAN-R packages: `maptpx`, `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`.
+`CountClust` requires the following CRAN-R packages:  `slam`, `ggplot2`, `cowplot`, `parallel` along with the Bioconductor package: `limma`.
+
+One can install `CountClust` from Bioc as follows 
 
 ```
 source("http://bioconductor.org/biocLite.R")
 biocLite("CountClust")
 ```
 
-For installing the working version of this package and loading the data required for this vignette, we use CRAN-R package `devtools`.
+For installing the working version of this package from Github please run
+
+```
+install_github('kkdey/CountClust')
+```
+
+To avoid bug issues for large datasets, we recommend the user to install the latest `maptpx` package from Github.
 
 ```
 library(devtools)
-install_github('kkdey/CountClust')
+install_github('TaddyLab/maptpx')
+```
+
+
+To replicate the data example in this README, please install the following data package.
+
+```
 install_github('kkdey/singleCellRNASeqMouseDeng2014') 
 ```
 
-Then load the package with:
+Then load the `CountClust` package in R:
 
 ```
 library(CountClust)
 ```
 
-## Application of CountClust
+## Preprocessing
 
 We load the single cell RNA-seq data due to [Deng et al 2014](http://www.ncbi.nlm.nih.gov/pubmed/24408435). The data contains RNA-seq read counts for single cells at different stages of mouse embryo development (from zygote to blastocyst). 
 
@@ -41,21 +68,22 @@ deng.meta_data <- pData(Deng2014MouseESC)
 deng.gene_names <- rownames(deng.counts)
 ```
 
-### GoM Model fit 
+## CountClust Model
 
-We apply the `StructureObj` function (which is a wrapper of the `topics` function in the maptpx package) for a vector of number of clusters, ranging from 2 to 7. 
+We apply the `FitGoM` function (which is a wrapper of the `topics` function in the maptpx package) for a user specified number of clusters (K=6 for the example below).
 
 ```
-FitGoM(t(deng.counts),
-            K=c(3,6), tol=0.1,
-            path_rda="data/MouseDeng2014.FitGoM.rda")
+FitGoM(t(deng.counts),K=3,path_rda="data/MouseDeng2014.FitGoM.rda")
 ```
 
-This function will output a list, each element representing a GoM model fit output for a particular cluster number. 
+This function will output a list - of which the key components are the two matrices `omega` and `theta`. `omega` denotes the matrix of cluster memberships for each sample and `theta` denotes the matrix of proportional contribution of each feature to a cluster. 
 
-### Cluster Visualization
+## CountClust Visualization
 
-One can plot the `omega` from the `StructureObj` fit using a Structure plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. 
+
+### Structure Bar Plot 
+
+One can plot the `omega` from the `FitGoM` functionusing a Structure Bar plot. Here we provide an example of the Structure plot for K=6 for the above GoM model fit. 
 
 ```
 data("MouseDeng2014.FitGoM")
@@ -89,8 +117,35 @@ StructureGGplot(omega = omega,
 
 <img src="vignettes/structure_plot.png" alt="Structure Plot" height="700" width="400">
 
+### STRUCTURE Pie + tSNE/PCA
 
-### Cluster annotations
+One can also visualize the STRUCTURE grades of membership colorings aggregated
+with the t-SNE or the PCA plots, as follows.
+
+t-SNE + CountClust grades coloring
+
+```
+StructurePie(t(deng.counts), input_type="apply_tsne",
+             use_voom=FALSE, omega = omega, xlab="TSNE1",
+             ylab = "TSNE2",
+             main = "STRUCTURE K=6 pie on tSNE",
+             control = list(bg = "lightcyan"))
+```
+<img src="vignettes/structure_pie_tsne.png" alt="Structure Plot" height="400" width="600">
+
+PCA + CountClust grades coloring 
+
+```
+StructurePie(t(deng.counts), input_type="apply_pca",
+             use_voom = TRUE, omega = omega, xlab="PCA1",
+             ylab = "PCA2",
+             main = "STRUCTURE K=6 pie on PCA",
+             control = list(bg = "lightcyan"))
+```
+
+<img src="vignettes/structure_pie_pca.png" alt="Structure Plot" height="400" width="600">
+
+## CountClust Cluster Annotations
 
 We can extract the features that drive the clusters for K=6 as follows 
 
@@ -115,5 +170,5 @@ For any questions or comments, please contact [kkdey@uchicago.edu](kkdey@uchicag
 ## Acknowledgements
 
 - Raman Shah
-
+- Peter Carbonetto
 

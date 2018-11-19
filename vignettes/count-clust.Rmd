@@ -54,19 +54,21 @@ Many software packages available for document clustering are applicable to model
 
 `r Biocpkg("CountClust")` requires the following CRAN-R packages: `r CRANpkg("maptpx")`, `r CRANpkg("ggplot2")`, `r CRANpkg("cowplot")`, `r CRANpkg("parallel")`, `r CRANpkg("reshape2")`, `r CRANpkg("RColorBrewer")`, `r CRANpkg("flexmix")`,`r CRANpkg("gtools")`, `r CRANpkg("devtools")` along with the Bioconductor package: `r Biocpkg("limma")`.
 
+Before installing \Countclust{}, pelase install the latest version of the `r CRANpkg("maptpx")` package on Github. 
+
+```{r install_github, eval=TRUE}
+library(devtools)
+install_github("TaddyLab/maptpx")
+```
+
+Then one can install the \CountClust{} package from Bioc as follows 
+
 ```{r install_countclust_bio, eval=FALSE}
 source("http://bioconductor.org/biocLite.R")
 biocLite("CountClust")
 ```
 
-For the latest updated version of the `r CRANpkg("maptpx")` package (with some bug fixes from the CRAN version), we recommend the user to install the Github version.
-
-```{r install_github, eval=TRUE}
-library(devtools)
-install_github("kkdey/maptpx")
-```
-
-The development version of the `r Biocpkg("CountClust")` package is available on Github, along with the data packages used in examples for this vignette.
+The development version of the `r Biocpkg("CountClust")` package is available on Github, along with some data packages used in examples for this vignette.
 
 ```{r install_countclust_github, eval=FALSE}
 install_github('kkdey/CountClust')
@@ -156,15 +158,15 @@ As an example, we fit the topic model for `k=4` on the GTEx V6 Brain data and sa
 
 ```{r topic_fit_gtex, eval=FALSE}
 FitGoM(t(gtex.counts),
-            K=4, tol=0.1,
+            K=4, tol=1,
             path_rda="../data/GTExV6Brain.FitGoM.rda")
 ```
 
-One can also input a vector of clusters under `nclus_vec` as we do for a list of cluster numbers from $2$ to $7$ for Deng *et al* 2014 data.
+Applying the same functionality for K=6 for the Deng et al single cell data.
 
 ```{r topic_fit_deng, eval=FALSE}
 FitGoM(t(deng.counts),
-            K=2:7, tol=0.1,
+            K=6, tol=0.1,
             path_rda="../data/MouseDeng2014.FitGoM.rda")
 ```
 
@@ -172,9 +174,7 @@ FitGoM(t(deng.counts),
 
 # Structure plot visualization
 
-Now we perform the visualization for `k=6` for the Deng *et al* 2014 data.
-
-We load the GoM fit for `k=6`.
+We have saved the results from the above clustering model fit on the GTEx Brain (dor K = 4) and the Deng et al data (for K=3,6). We perform the visualization for `k=6` for the Deng *et al* 2014 data.
 
 ```{r prepare_deng_gom,eval=TRUE, warning=FALSE}
 data("MouseDeng2014.FitGoM")
@@ -213,6 +213,33 @@ StructureGGplot(omega = omega,
 ```
 
 In the above plot, the samples in each batch have been sorted by the proportional memebership of the most representative cluster in that batch. One can also use `order_sample=FALSE` for the un-ordered version, which retains the order as in the data (see Supplementary analysis for example).
+
+PCA and t-SNE are commonly used approaches to visualizing data in single cell and bulk RNA-seq experiments, we have aggregated CountClust grades of membership clustering with the PCA and/or t-SNE plots.
+
+PCA  + CountClust coloring for Deng et al data : 
+
+Plot PC1 and PC2 and color each point as a pie chart with CountClust grades of membership colors. 
+
+
+```{r plot_topic_pie_tsne,eval=TRUE, warning=FALSE, fig.align = "center", fig.show="asis", dpi=144, fig.width=6, fig.height=4}
+StructurePie(t(deng.counts), input_type="apply_tsne",
+             use_voom=FALSE, omega = omega, xlab="TSNE1",
+             ylab = "TSNE2", main = "STRUCTURE K=6 pie on tSNE")
+```
+
+T-SNE + CountClust coloring for Deng et al data :
+
+Plot the first two co-ordinates of t-SNE and each point is colored as a pie chart witj CountClust grades of membership colors.
+
+```{r plot_topic_pie_pca,eval=TRUE, warning=FALSE, fig.align = "center", fig.show="asis", dpi=144, fig.width=6, fig.height=4}
+StructurePie(t(deng.counts), input_type="apply_pca",
+           use_voom = TRUE, omega = omega, xlab="PCA1",
+           ylab = "PCA2", main = "STRUCTURE K=6 pie on PCA")
+```
+
+The `use_coom` option is used to specify whether to perform the log CPM normalization on the counts data before applying the PCA or t-SNE.
+
+
 
 Now we perform the Structure plot visualization for `k=4` for GTEx V6 data for Brain samples .
 
