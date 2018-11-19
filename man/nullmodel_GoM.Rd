@@ -4,9 +4,9 @@
 \alias{nullmodel_GoM}
 \title{Null models for Grade of Membership (GoM) cluster validation}
 \usage{
-nullmodel_GoM(counts, K, tol = 0.1, null.model = c("frequency", "richness",
-  "independentswap", "trialswap"), iter_fill = 1000, iter_randomized = 100,
-  plot = TRUE)
+nullmodel_GoM(counts, K, tol = 0.1, null.model = c("frequency",
+  "richness", "independentswap", "trialswap"), iter_fill = 1000,
+  iter_randomized = 100, plot = TRUE)
 }
 \arguments{
 \item{counts}{The counts matrix (N x G): N- the number of samples, G- number

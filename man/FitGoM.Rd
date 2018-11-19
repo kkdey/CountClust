@@ -24,8 +24,10 @@ BF is more trustworthy, but BIC can be used for better model comparison.}
 \item{path_rda}{The directory path for saving the GoM model output.
 If NULL, it will return the output to console.}
 
-\item{control}{Control parameters for the GoM model fits. Same as topics() function of
-maptpx package.}
+\item{control}{Control parameters. Same as topics() function of
+maptpx package. For example, verb controls information that are 
+shown on the screen. verb=1 prints log2 Bayes factor. 
+verb=2 prints log posterior at each iteration in addition to log2BF.}
 }
 \value{
 Outputs the best GoM model fit output for cluster K and saves it
