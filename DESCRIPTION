@@ -22,4 +22,4 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: RNASeq, GeneExpression, Clustering, Sequencing, StatisticalMethod,
     Software, Visualization
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

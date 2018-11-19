@@ -7,11 +7,11 @@
 StructureGGplot(omega, annotation = NULL,
   palette = RColorBrewer::brewer.pal(8, "Accent"), figure_title = "",
   yaxis_label = "Tissue type", order_sample = TRUE,
-  sample_order_decreasing = TRUE, split_line = list(split_lwd = 1, split_col
-  = "white"), plot_labels = TRUE, axis_tick = list(axis_ticks_length = 0.1,
-  axis_ticks_lwd_y = 0.1, axis_ticks_lwd_x = 0.1, axis_label_size = 3,
-  axis_label_face = "bold"), legend_title_size = 8, legend_key_size = 0.4,
-  legend_text_size = 5)
+  sample_order_decreasing = TRUE, split_line = list(split_lwd = 1,
+  split_col = "white"), plot_labels = TRUE,
+  axis_tick = list(axis_ticks_length = 0.1, axis_ticks_lwd_y = 0.1,
+  axis_ticks_lwd_x = 0.1, axis_label_size = 3, axis_label_face = "bold"),
+  legend_title_size = 8, legend_key_size = 0.4, legend_text_size = 5)
 }
 \arguments{
 \item{omega}{Cluster membership probabilities of each sample. Usually a
@@ -25,7 +25,7 @@ tissue_label is a vector consisting of factor type of variable,
 which indicates the sample phenotype that is to be used in
 sorting and grouping the samples in the Structre plot; for example,
 tissue of origin in making Structure plot of the GTEx samples.
-Default is set to NULL for when no phenotype information is used to
+Default is set to "none for when no phenotype information is used to
 order the sample vectors.}
 
 \item{palette}{Colors assigned to label the clusters. The first color in the palette

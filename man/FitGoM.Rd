@@ -19,7 +19,9 @@ at successive iterations (set to 0.1 as default).}
 If NULL, it will return the output to console.}
 
 \item{control}{Control parameters. Same as topics() function of
-maptpx package.}
+maptpx package. For example, verb controls information that are 
+shown on the screen. verb=1 prints log2 Bayes factor. 
+verb=2 prints log posterior at each iteration in addition to log2BF.}
 }
 \value{
 Saves the GoM model fit output for each cluster in vector K at the
