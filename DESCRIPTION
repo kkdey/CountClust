@@ -1,12 +1,13 @@
 Package: CountClust
 Type: Package
 Title: Clustering and Visualizing RNA-Seq Expression Data using Grade of Membership Models
-Version: 1.6.2
-Date: 2016-03-13
+Version: 1.6.3
+Date: 2020-07-09
 Authors@R: c(
     person("Kushal", "Dey", email = "kkdey@uchicago.edu", role = c("aut","cre")),
     person("Joyce", "Hsiao", email = "joyce.hsiao1@gmail.com", role = "aut"),
-    person("Matthew", "Stephens", email = "stephens999@gmail.com", role ="aut"))
+    person("Matthew", "Stephens", email = "stephens999@gmail.com", role ="aut"),
+    person("Peter","Carbonetto",role="ctb"))
 Maintainer: Kushal Dey <kkdey@uchicago.edu>
 Description: Fits grade of membership models (GoM, also known as admixture models) to cluster RNA-seq gene expression count data, identifies characteristic genes driving cluster memberships, and provides a visual summary of the cluster memberships.
 Depends:
