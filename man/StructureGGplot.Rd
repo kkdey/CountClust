@@ -4,38 +4,47 @@
 \alias{StructureGGplot}
 \title{Struture plot using ggplot2}
 \usage{
-StructureGGplot(omega, annotation = NULL,
-  palette = RColorBrewer::brewer.pal(8, "Accent"), figure_title = "",
-  yaxis_label = "Tissue type", order_sample = TRUE,
-  sample_order_decreasing = TRUE, split_line = list(split_lwd = 1,
-  split_col = "white"), plot_labels = TRUE,
-  axis_tick = list(axis_ticks_length = 0.1, axis_ticks_lwd_y = 0.1,
-  axis_ticks_lwd_x = 0.1, axis_label_size = 3, axis_label_face = "bold"),
-  legend_title_size = 8, legend_key_size = 0.4, legend_text_size = 5)
+StructureGGplot(
+  omega,
+  annotation = NULL,
+  palette = brewer.pal(8, "Accent"),
+  figure_title = "",
+  yaxis_label = "Tissue type",
+  order_sample = TRUE,
+  sample_order_decreasing = TRUE,
+  sample_order_opts = 1,
+  split_line = list(split_lwd = 1, split_col = "white"),
+  plot_labels = TRUE,
+  axis_tick = list(axis_ticks_length = 0.1, axis_ticks_lwd_y = 0.1, axis_ticks_lwd_x =
+    0.1, axis_label_size = 3, axis_label_face = "bold"),
+  legend_title_size = 8,
+  legend_key_size = 0.4,
+  legend_text_size = 5
+)
 }
 \arguments{
-\item{omega}{Cluster membership probabilities of each sample. Usually a
-sample by cluster matrix in the Topic model output.
-The cluster weights sum to 1 for each sample.}
+\item{omega}{Cluster membership probabilities of each
+sample. Usually a sample by cluster matrix in the Topic model
+output. The cluster weights sum to 1 for each sample.}
 
-\item{annotation}{data.frame of two columns: sample_id and tissue_label.
-sample_id is a vetor consisting of character type of variable,
-which indicates the unique identifying number of each sample.
-tissue_label is a vector consisting of factor type of variable,
-which indicates the sample phenotype that is to be used in
-sorting and grouping the samples in the Structre plot; for example,
-tissue of origin in making Structure plot of the GTEx samples.
-Default is set to "none for when no phenotype information is used to
-order the sample vectors.}
+\item{annotation}{data.frame of two columns: sample_id and
+  tissue_label. sample_id is a vetor consisting of character type of
+  variable, which indicates the unique identifying number of each
+sample. tissue_label is a vector consisting of factor type of
+variable, which indicates the sample phenotype that is to be used
+in sorting and grouping the samples in the Structre plot; for
+example, tissue of origin in making Structure plot of the GTEx
+samples. Default is set to "none for when no phenotype information
+is used to order the sample vectors.}
 
-\item{palette}{Colors assigned to label the clusters. The first color in the palette
-is assigned to the cluster that is labeled 1 (usually arbitrarily
-assigned during the clustering process). Note: The number of colors
-must be the same or greater than the number of clusters. When
-the number of clusters is greater than the number of colors,
-the clusters that are not assigned a color are filled with white
-in the figure. The recommended choice of color palette is RColorBrewer,
-for instance RColorBrewer::brewer.pal(8, "Accent") or
+\item{palette}{Colors assigned to label the clusters. The first
+color in the palette is assigned to the cluster that is labeled 1
+(usually arbitrarily assigned during the clustering process). Note:
+The number of colors must be the same or greater than the number of
+clusters. When the number of clusters is greater than the number of
+colors, the clusters that are not assigned a color are filled with
+white in the figure. The recommended choice of color palette is
+RColorBrewer, for instance RColorBrewer::brewer.pal(8, "Accent") or
 RColorBrewwer::brewer.pal(9, "Set1").}
 
 \item{figure_title}{Title of the plot.}
@@ -75,7 +84,8 @@ representation.}
 Plots the Structure plot visualization of the GoM model
 }
 \description{
-Make the traditional Structure plot of GoM model with ggplot2
+Make the traditional Structure plot of GoM model with
+  ggplot2.
 }
 \examples{
 data("MouseDeng2014.FitGoM")

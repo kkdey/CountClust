@@ -17,12 +17,8 @@
 #'          and another \eqn{K x num_genes} matrix of the absolute values of the
 #'          correlations.
 #'
-#' @import  stats
 #' @export
 #'
-
-
-
 ExtractHighCorFeatures <- function(omega,
                                    data,
                                    num_genes=100){

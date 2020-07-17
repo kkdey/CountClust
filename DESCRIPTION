@@ -3,7 +3,7 @@ Type: Package
 Package: CountClust
 Title: Clustering and Visualizing RNA-Seq Expression Data using 
     Grade of Membership Models
-Version: 1.6.4
+Version: 1.6.5
 Date: 2020-07-16
 Authors@R: c(
     person("Kushal","Dey",email="kkdey@uchicago.edu",role=c("aut","cre")),
@@ -46,7 +46,8 @@ Suggests:
     Biobase,
     roxygen2,
     devtools,
-    xtable
+    xtable,
+    singleCellRNASeqMouseDeng2014
 biocViews: 
     RNASeq,
     GeneExpression,
@@ -58,6 +59,6 @@ biocViews:
 LazyData: true
 NeedsCompilation: no
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Remotes: 
     stephenslab/fastTopics

@@ -2,30 +2,29 @@
 % Please edit documentation in R/compGoM.R
 \name{compGoM}
 \alias{compGoM}
-\title{compGoM: compare GoM model fits across K or across different runs
-through log-likelihood, BIC and null loglikelihood}
+\title{Compare GoM model fits across K or across different runs
+  through log-likelihood, BIC and null loglikelihood}
 \usage{
 compGoM(data, model)
 }
 \arguments{
-\item{data}{matrix on which GoM model is fitted (samples along rows, genes
-along columns)}
+\item{data}{Matrix on which GoM model is fitted (samples along
+rows, genes along columns)}
 
 \item{model}{\code{FitGoM} or\code{maptpx::topics} function output
-(either a class \code{topics} or a  \code{list} of class
- \code{topics}).}
+(either a class \code{topics} or a \code{list} of class
+\code{topics}).}
 }
 \value{
-compGoM_models a vector list that returns the  BIC and loglikelihood
-               values for each of the fitted models in \code{model}.
+compGoM_models a vector list that returns the BIC and
+  loglikelihood values for each of the fitted models in \code{model}.
 }
 \description{
-This function takes the \code{FitGoM}/maptpx fitted model
-             and computes log likelihood, BIC and null model loglikelihood
-             for the fitted GoM models.
+This function takes the \code{FitGoM}/maptpx fitted
+  model and computes log likelihood, BIC and null model loglikelihood
+  for the fitted GoM models.
 }
 \examples{
-
 read.data <- function() {
   x <- tempfile()
   download.file(paste0("https://cdn.rawgit.com/kkdey/",

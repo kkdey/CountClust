@@ -2,15 +2,17 @@
 % Please edit documentation in R/compare_omega.R
 \name{compare_omega}
 \alias{compare_omega}
-\title{Re-ordering cluster membership proportion matrices and Information
-     calculation}
+\title{Re-ordering cluster membership proportion matrices and
+  Information calculation}
 \usage{
 compare_omega(omega1, omega2)
 }
 \arguments{
-\item{omega1}{cluster membership proportion matrix (N x K) from model 1}
+\item{omega1}{Cluster membership proportion matrix (N x K) from
+model 1.}
 
-\item{omega2}{cluster membership proportion matrix (N x K) from model 2}
+\item{omega2}{Cluster membership proportion matrix (N x K) from
+model 2.}
 }
 \value{
 Returns a list containing
@@ -33,23 +35,25 @@ Returns a list containing
                                 from 0 to 1}
 }
 \description{
-This function computes a re-ordering of the clusters from GoM
-     model fit in one model to make it comparable with that from another.
-     The two models are applied on the same set of samples with same number
-     of clusters, but the features may change from one model to another.
-     The two models may not be of same type as well. One could be a DAPC
-     model, the other a standard topic model. Aids in checking for
-     consistency in topic proportion patterns across multiple GoM methods
-     or across different types of feature sets.
+This function computes a re-ordering of the clusters
+from GoM model fit in one model to make it comparable with that
+from another. The two models are applied on the same set of
+samples with same number of clusters, but the features may change
+from one model to another.  The two models may not be of same type
+as well. One could be a DAPC model, the other a standard topic
+model. Aids in checking for consistency in topic proportion
+patterns across multiple GoM methods or across different types of
+feature sets.
 }
 \examples{
-tt=10;
-omega1=matrix(rbind(gtools::rdirichlet(tt*10,c(3,4,2,6)),
-                     gtools::rdirichlet(tt*10,c(1,4,6,3)),
-                      gtools::rdirichlet(tt*10,c(4,1,2,2))), nrow=3*10*tt);
-omega2=matrix(rbind(gtools::rdirichlet(tt*10,c(1,2,4,6)),
-                       gtools::rdirichlet(tt*10,c(1,4,6,3)),
-                      gtools::rdirichlet(tt*10,c(3,1,5,2))), nrow=3*10*tt);
+library(gtools)
+tt <- 10
+omega1 <- matrix(rbind(rdirichlet(tt*10,c(3,4,2,6)),
+                     rdirichlet(tt*10,c(1,4,6,3)),
+                      rdirichlet(tt*10,c(4,1,2,2))), nrow=3*10*tt)
+omega2 <- matrix(rbind(rdirichlet(tt*10,c(1,2,4,6)),
+                       rdirichlet(tt*10,c(1,4,6,3)),
+                      rdirichlet(tt*10,c(3,1,5,2))), nrow=3*10*tt)
 out <- compare_omega(omega1, omega2)
 
 }

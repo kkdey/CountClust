@@ -3,7 +3,6 @@
 %   R/ExtractHighCorFeatures.R
 \name{ExtractHighCorFeatures}
 \alias{ExtractHighCorFeatures}
-\alias{ExtractHighCorFeatures}
 \title{Extracting most highly correlated genes with GoM topics/clusters}
 \usage{
 ExtractHighCorFeatures(omega, data, num_genes = 100)
@@ -11,15 +10,6 @@ ExtractHighCorFeatures(omega, data, num_genes = 100)
 ExtractHighCorFeatures(omega, data, num_genes = 100)
 }
 \arguments{
-\item{omega}{\eqn{\boldsymbol{omega}} matrix, the relative grades of memberships
-from the GoM model fitting (a \eqn{N x K} matrix where \eqn{N} is
-number of samples, \eqn{K} number of topics).}
-
-\item{data}{\eqn{G x N} matrix of the expression profile of genes across samples,
-where \eqn{G} is the number of features and \eqn{N} number of samples}
-
-\item{num_genes}{The number of top associated genes with each cluster. Defaults to 100}
-
 \item{omega}{\eqn{\boldsymbol{omega}} matrix, the relative grades of memberships
 from the GoM model fitting (a \eqn{N x K} matrix where \eqn{N} is
 number of samples, \eqn{K} number of topics).}
@@ -61,4 +51,5 @@ read.data1 = function() {
 Deng2014MouseESC <- read.data1()
 deng.counts <- Biobase::exprs(Deng2014MouseESC)
 out <- ExtractHighCorFeatures(omega_mat, deng.counts, num_genes=10)
+
 }

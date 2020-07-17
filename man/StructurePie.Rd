@@ -4,35 +4,45 @@
 \alias{StructurePie}
 \title{Struture Pie plot using ggplot2}
 \usage{
-StructurePie(input_data, input_type, omega, color_set = NULL,
-  use_voom = TRUE, pie_radius = 0.8, xlab = "Co-ordinate1",
-  ylab = "Co-ordinate2", main = "STRUCTURE pie chart", control = list())
+StructurePie(
+  input_data,
+  input_type,
+  omega,
+  color_set = NULL,
+  use_voom = TRUE,
+  pie_radius = 0.8,
+  xlab = "Co-ordinate1",
+  ylab = "Co-ordinate2",
+  main = "STRUCTURE pie chart",
+  control = list()
+)
 }
 \arguments{
-\item{input_data}{The input data matrix with samples along the rows and
-the columns either represnting either features (for
-\code{input_type = apply_tsne/apply_pca}) on which
-to apply t-SNE/PCA, or columns representing the
-2 co-ordinates to plot in STRUCTURE pie chart plot.}
+\item{input_data}{The input data matrix with samples along the rows
+and the columns either represnting either features (for
+\code{input_type = apply_tsne/apply_pca}) on which to apply
+t-SNE/PCA, or columns representing the 2 co-ordinates to plot in
+STRUCTURE pie chart plot.}
 
-\item{input_type}{The type of input data provided. One of three possible
-options:
-\code{apply_tsne} : input data on which t-SNE is applied
-and the STRUCTURE pie chart co-ordinates defined by first
-two dimensions of the t-SNE
- \code{apply_pca} : input data on which PCA is applied and
- the STRUCTURE pie chart co-ordinates are defined by
- first two dimensions of the PCA.
- \code{coord}: Co-ordinates data with 2 columns representing
- the two co-ordinate axes of the STRUCTURE pie chart.}
+\item{input_type}{The type of input data provided. One of three
+possible options: \code{apply_tsne} : input data on which t-SNE is
+applied and the STRUCTURE pie chart co-ordinates defined by first
+two dimensions of the t-SNE \code{apply_pca} : input data on which
+PCA is applied and the STRUCTURE pie chart co-ordinates are defined
+by first two dimensions of the PCA.  \code{coord}: Co-ordinates
+data with 2 columns representing the two co-ordinate axes of the
+STRUCTURE pie chart.}
 
-\item{omega}{Cluster membership probabilities of each sample. Usually a
-sample by cluster matrix in the Topic model output.
-The cluster weights sum to 1 for each sample.}
+\item{omega}{Cluster membership probabilities of each
+sample. Usually a sample by cluster matrix in the Topic model
+output. The cluster weights sum to 1 for each sample.}
 
-\item{color_set}{The set of colors used for the pie charts in STRUCTURE pie.
-Defaults to NULL, which uses a set of 75 qualitatively
-distinct colors.}
+\item{color_set}{The set of colors used for the pie charts in
+STRUCTURE pie.  Defaults to NULL, which uses a set of 75
+qualitatively distinct colors.}
+
+\item{use_voom}{Use \code{\link[limma]{voom}} to transform the
+count data before performing PCA or t-SNE.}
 
 \item{pie_radius}{The radius of the pie chart in STRUCTUREpie plot.}
 
@@ -45,20 +55,19 @@ distinct colors.}
 \item{control}{Control paramaters for the STRUCTURE pie chart plot.
 User can add padding to the X and Y axes using \code{padding}
 option in control, tune legend pie radius and size
-(\code{legend_pie_radius} and \code{legend_pie_cex}),
-the plot background (\code{bg}),
-the color intensity of pie charts (\code{color_intensity})
-and legend location (\code{legendx} and \code{legendy}).}
+(\code{legend_pie_radius} and \code{legend_pie_cex}), the plot
+background (\code{bg}), the color intensity of pie charts
+(\code{color_intensity}) and legend location (\code{legendx} and
+\code{legendy}).}
 }
 \value{
-Plots the Structure Pie chart visualization of the t-SNE or PCA or
-        user defined co-ordinate decomposition of data.
+Plots the Structure Pie chart visualization of the t-SNE or
+  PCA or user defined co-ordinate decomposition of data.
 }
 \description{
-Make a Pie chart with STRUCTURE grades of membership
+Make a Pie chart with STRUCTURE grades of membership.
 }
 \examples{
-
 library(singleCellRNASeqMouseDeng2014)
 deng.counts <- exprs(Deng2014MouseESC)
 data("MouseDeng2014.FitGoM")
@@ -67,10 +76,12 @@ set.seed(1000)
 StructurePie(t(deng.counts), input_type="apply_tsne",
             use_voom=FALSE, omega = omega, xlab="TSNE1",
             ylab = "TSNE2",
-            main = "STRUCTURE K=6 pie on tSNE")
+            main = "STRUCTURE K=6 pie on tSNE",
+            control = list(bg = "lightcyan"))
 StructurePie(t(deng.counts), input_type="apply_pca",
             use_voom = TRUE, omega = omega, xlab="PCA1",
             ylab = "PCA2",
-            main = "STRUCTURE K=6 pie on PCA")
+            main = "STRUCTURE K=6 pie on PCA",
+            control = list(bg = "lightcyan"))
 
 }

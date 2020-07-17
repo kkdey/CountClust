@@ -4,44 +4,52 @@
 \alias{ExtractTopFeatures}
 \title{Extracting top driving genes of GoM clusters}
 \usage{
-ExtractTopFeatures(theta, top_features = 10, method = c("poisson",
-  "bernoulli"), options = c("min", "max"), shared = FALSE)
+ExtractTopFeatures(
+  theta,
+  top_features = 10,
+  method = c("poisson", "bernoulli"),
+  options = c("min", "max"),
+  shared = FALSE
+)
 }
 \arguments{
-\item{theta}{\eqn{\boldsymbol{theta}} matrix, the relative gene expression profile of the GoM clusters
-(cluster probability distributions)
-from the GoM model fitting (a \eqn{G x K} matrix where \eqn{G} is
-number of features, \eqn{K} number of topics).}
+\item{theta}{\eqn{\boldsymbol{theta}} matrix, the relative gene
+expression profile of the GoM clusters (cluster probability
+distributions) from the GoM model fitting (a \eqn{G x K} matrix
+where \eqn{G} is number of features, \eqn{K} number of topics).}
 
-\item{top_features}{The top features in each cluster \eqn{k} that are selected based on the feature's
-ability to distinguish cluster \eqn{k} from cluster \eqn{1, \dots, K}
-for all cluster \eqn{k \ne l}. Default: \eqn{10}.}
+\item{top_features}{The top features in each cluster \eqn{k} that
+are selected based on the feature's ability to distinguish cluster
+\eqn{k} from cluster \eqn{1, \dots, K} for all cluster \eqn{k \ne
+l}. Default: \eqn{10}.}
 
-\item{method}{The underlying model assumed for KL divergence measurement.
-Two choices considered are "bernoulli" and "poisson". Default: poisson.}
+\item{method}{The underlying model assumed for KL divergence
+measurement. Two choices considered are "bernoulli" and
+"poisson". Default: poisson.}
 
-\item{options}{if "min", for each cluster k, we select features that
-maximize the minimum KL divergence of cluster k against
-all other clusters for each feature. If "max", we select
-features  that maximize the maximum KL divergence of cluster
-k against all other clusters for each feature.}
+\item{options}{If "min", for each cluster k, we select features
+that maximize the minimum KL divergence of cluster k against all
+other clusters for each feature. If "max", we select features that
+maximize the maximum KL divergence of cluster k against all other
+clusters for each feature.}
 
-\item{shared}{if TRUE, then we report genes that can be highly expressed in more than one cluster. Else, we stick to
-only those genes that are highest expressed only in a specific cluster.}
+\item{shared}{If \code{TRUE}, then we report genes that can be highly
+expressed in more than one cluster. Else, we stick to only those
+genes that are highest expressed only in a specific cluster.}
 }
 \value{
 A matrix (K x top_features) which tabulates in k-th row the
-       top feature indices driving the cluster k.
+  top feature indices driving the cluster k.
 }
 \description{
-This function uses relative gene expression profile of the GoM
-       clusters and applies a KL-divergence based method to
-       obtain a list of top features that drive each of the clusters.
+This function uses relative gene expression profile of
+the GoM clusters and applies a KL-divergence based method to obtain
+a list of top features that drive each of the clusters.
 }
 \examples{
 data("MouseDeng2014.FitGoM")
-theta_mat <- MouseDeng2014.FitGoM$clust_6$theta;
-top_features <- ExtractTopFeatures(theta_mat, top_features=100, method="poisson", options="min");
+theta_mat <- MouseDeng2014.FitGoM$clust_6$theta
+top_features <- ExtractTopFeatures(theta_mat, top_features=100, method="poisson", options="min")
 top_features$indices
 top_features$scores
 

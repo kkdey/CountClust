@@ -4,7 +4,9 @@
 \name{AbundanceGoM}
 \alias{AbundanceGoM}
 \title{GoM model fit for abundance data}
-\format{A list of GoM model output}
+\format{
+A list of GoM model output
+}
 \usage{
 AbundanceGoM
 }

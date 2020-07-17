@@ -2,26 +2,36 @@
 % Please edit documentation in R/FitGoMpool.R
 \name{FitGoMpool}
 \alias{FitGoMpool}
-\title{Run Grade of Membership (GoM) model with multiple starting points !}
+\title{Run Grade of Membership (GoM) model with multiple starting
+  points!}
 \usage{
-FitGoMpool(data, K, tol = 0.1, burn_trials = 10, options = c("BF",
-  "BIC"), path_rda = NULL, control = list())
+FitGoMpool(
+  data,
+  K,
+  tol = 0.1,
+  burn_trials = 10,
+  options = c("BF", "BIC"),
+  path_rda = NULL,
+  control = list()
+)
 }
 \arguments{
-\item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of samples
-along the rows and \eqn{G}, number of genes along columns.}
+\item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of
+samples along the rows and \eqn{G}, number of genes along columns.}
 
-\item{K}{the vector of clusters or topics to be fitted. Must be an integer,
-unlike in ]\code{FitGom()}. So you need to apply this function separately
-for each K.}
+\item{K}{the vector of clusters or topics to be fitted. Must be an
+integer, unlike in ]\code{FitGom()}. So you need to apply this
+function separately for each K.}
 
-\item{tol}{Tolerance value for GoM model absolute log posterior increase
-at successive iterations (set to 0.1 as default).}
+\item{tol}{Tolerance value for GoM model absolute log posterior
+increase at successive iterations (set to 0.1 as default).}
 
-\item{burn_trials}{The number of trials with different starting points used.}
+\item{burn_trials}{The number of trials with different starting
+points used.}
 
-\item{options}{the measure used to choose best fit, either "BF" or "BIC" measures can be used.
-BF is more trustworthy, but BIC can be used for better model comparison.}
+\item{options}{the measure used to choose best fit, either "BF" or
+"BIC" measures can be used.  BF is more trustworthy, but BIC can be
+used for better model comparison.}
 
 \item{path_rda}{The directory path for saving the GoM model output.
 If NULL, it will return the output to console.}
@@ -30,29 +40,26 @@ If NULL, it will return the output to console.}
 maptpx package.}
 }
 \value{
-Outputs the best GoM model fit output for cluster K and saves it
-        at the directory path in path_rda if the latter is provided.
+Outputs the best GoM model fit output for cluster K and
+  saves it at the directory path in path_rda if the latter is
+  provided.
 }
 \description{
-Fits grade of membership model \code{FitGoM()} to count data
-       with multiple starting points and choose the best fit using BIC (Bayesian
-       Information Criterion). the multiple starting points ensure that
-       the output is more reliable.
+Fits grade of membership model \code{FitGoM()} to
+  count data with multiple starting points and choose the best fit
+  using BIC (Bayesian Information Criterion). the multiple starting
+  points ensure that the output is more reliable.
 }
 \examples{
-
 data("ex.counts")
 out <- FitGoMpool(ex.counts, K=2, tol=100, burn_trials=3,
                    control=list(tmax=100))
 
 }
 \references{
-Matt Taddy. On Estimation and Selection for Topic Models.
-               AISTATS 2012, JMLR W\&CP 22.
-
-           Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.
-               Inference of population structure using multilocus genotype
-               data. Genetics 155.2 (2000): 945-959.
+Pritchard, Jonathan K., Matthew Stephens, and Peter
+Donnelly. Inference of population structure using multilocus
+genotype data. Genetics 155.2 (2000): 945-959.
 }
 \keyword{Structure}
 \keyword{clustering,}

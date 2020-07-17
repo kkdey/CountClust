@@ -1,18 +1,21 @@
-#' @title Re-ordering cluster membership proportion matrices and Information
-#'      calculation
+#' @title Re-ordering cluster membership proportion matrices and
+#'   Information calculation
 #'
-#' @description This function computes a re-ordering of the clusters from GoM
-#'      model fit in one model to make it comparable with that from another.
-#'      The two models are applied on the same set of samples with same number
-#'      of clusters, but the features may change from one model to another.
-#'      The two models may not be of same type as well. One could be a DAPC
-#'      model, the other a standard topic model. Aids in checking for
-#'      consistency in topic proportion patterns across multiple GoM methods
-#'      or across different types of feature sets.
+#' @description This function computes a re-ordering of the clusters
+#' from GoM model fit in one model to make it comparable with that
+#' from another. The two models are applied on the same set of
+#' samples with same number of clusters, but the features may change
+#' from one model to another.  The two models may not be of same type
+#' as well. One could be a DAPC model, the other a standard topic
+#' model. Aids in checking for consistency in topic proportion
+#' patterns across multiple GoM methods or across different types of
+#' feature sets.
 #'
-#' @param omega1 cluster membership proportion matrix (N x K) from model 1
-#' @param omega2 cluster membership proportion matrix (N x K) from model 2
-#'
+#' @param omega1 Cluster membership proportion matrix (N x K) from
+#'   model 1.
+#' 
+#' @param omega2 Cluster membership proportion matrix (N x K) from
+#'   model 2.
 #'
 #' @return  Returns a list containing
 #'            \item{kl.dist}{A symmetric KL divergence matrix across the
@@ -34,22 +37,22 @@
 #'                                 from 0 to 1}
 #'
 #' @examples
-#' tt=10;
-#' omega1=matrix(rbind(gtools::rdirichlet(tt*10,c(3,4,2,6)),
-#'                      gtools::rdirichlet(tt*10,c(1,4,6,3)),
-#'                       gtools::rdirichlet(tt*10,c(4,1,2,2))), nrow=3*10*tt);
-#' omega2=matrix(rbind(gtools::rdirichlet(tt*10,c(1,2,4,6)),
-#'                        gtools::rdirichlet(tt*10,c(1,4,6,3)),
-#'                       gtools::rdirichlet(tt*10,c(3,1,5,2))), nrow=3*10*tt);
+#' library(gtools)
+#' tt <- 10
+#' omega1 <- matrix(rbind(rdirichlet(tt*10,c(3,4,2,6)),
+#'                      rdirichlet(tt*10,c(1,4,6,3)),
+#'                       rdirichlet(tt*10,c(4,1,2,2))), nrow=3*10*tt)
+#' omega2 <- matrix(rbind(rdirichlet(tt*10,c(1,2,4,6)),
+#'                        rdirichlet(tt*10,c(1,4,6,3)),
+#'                       rdirichlet(tt*10,c(3,1,5,2))), nrow=3*10*tt)
 #' out <- compare_omega(omega1, omega2)
 #'
-#' @import gtools
 #' @importFrom flexmix KLdiv
 #' @importFrom stats cor
+#' 
 #' @export
-
-compare_omega <- function(omega1, omega2)
-{
+#' 
+compare_omega <- function(omega1, omega2) {
     if(nrow(omega1) != nrow(omega2)) stop("The number of rows of the two omega matrices must be same")
     if(ncol(omega1) != ncol(omega2)) warning("The number of columns in two omega matrices are not equal")
     min_val <- min(min(omega1), min(omega2))
@@ -57,13 +60,13 @@ compare_omega <- function(omega1, omega2)
     omega2[omega2==0] <- min_val/(1e15)
 
     cor.out <- 1 - cor(omega1, omega2)
-    kl.out <- matrix(0,dim(omega1)[2],dim(omega2)[2]);
+    kl.out <- matrix(0,dim(omega1)[2],dim(omega2)[2])
     for(m in 1:dim(omega1)[2])
     {
         for(n in 1:dim(omega2)[2])
         {
-            KLdiv.mat <- flexmix::KLdiv(as.matrix(cbind(omega1[,m],omega2[,n])));
-            kl.out[m,n] <- 0.5* (KLdiv.mat[1,2]+ KLdiv.mat[2,1]);
+            KLdiv.mat <- KLdiv(as.matrix(cbind(omega1[,m],omega2[,n])))
+            kl.out[m,n] <- 0.5* (KLdiv.mat[1,2]+ KLdiv.mat[2,1])
         }
     }
 
@@ -78,6 +81,6 @@ compare_omega <- function(omega1, omega2)
                "kl.information_content"=kl.information_content,
                "cor.dist"=cor.out,
                "cor.order_model2_topics"=cor.order_model2_topics,
-               "cor.information_content"=cor.information_content);
+               "cor.information_content"=cor.information_content)
     return(ll)
 }

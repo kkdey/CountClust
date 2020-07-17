@@ -1,49 +1,63 @@
-#' Struture plot using ggplot2
+#' @title Struture plot using ggplot2
 #'
-#' Make the traditional Structure plot of GoM model with ggplot2
+#' @description Make the traditional Structure plot of GoM model with
+#'   ggplot2.
 #'
-#' @param omega Cluster membership probabilities of each sample. Usually a
-#'              sample by cluster matrix in the Topic model output.
-#'              The cluster weights sum to 1 for each sample.
-#' @param annotation data.frame of two columns: sample_id and tissue_label.
-#'                  sample_id is a vetor consisting of character type of variable,
-#'                  which indicates the unique identifying number of each sample.
-#'                  tissue_label is a vector consisting of factor type of variable,
-#'                  which indicates the sample phenotype that is to be used in
-#'                  sorting and grouping the samples in the Structre plot; for example,
-#'                  tissue of origin in making Structure plot of the GTEx samples.
-#'                  Default is set to "none for when no phenotype information is used to
-#'                  order the sample vectors.
-#' @param palette Colors assigned to label the clusters. The first color in the palette
-#'                  is assigned to the cluster that is labeled 1 (usually arbitrarily
-#'                  assigned during the clustering process). Note: The number of colors
-#'                  must be the same or greater than the number of clusters. When
-#'                  the number of clusters is greater than the number of colors,
-#'                  the clusters that are not assigned a color are filled with white
-#'                  in the figure. The recommended choice of color palette is RColorBrewer,
-#'                  for instance RColorBrewer::brewer.pal(8, "Accent") or
-#'                  RColorBrewwer::brewer.pal(9, "Set1").
+#' @param omega Cluster membership probabilities of each
+#'   sample. Usually a sample by cluster matrix in the Topic model
+#'   output. The cluster weights sum to 1 for each sample.
+#' 
+#' @param annotation data.frame of two columns: sample_id and
+#'   tissue_label. sample_id is a vetor consisting of character type of
+#'   variable, which indicates the unique identifying number of each
+#' sample. tissue_label is a vector consisting of factor type of
+#' variable, which indicates the sample phenotype that is to be used
+#' in sorting and grouping the samples in the Structre plot; for
+#' example, tissue of origin in making Structure plot of the GTEx
+#' samples. Default is set to "none for when no phenotype information
+#' is used to order the sample vectors.
+#' 
+#' @param palette Colors assigned to label the clusters. The first
+#' color in the palette is assigned to the cluster that is labeled 1
+#' (usually arbitrarily assigned during the clustering process). Note:
+#' The number of colors must be the same or greater than the number of
+#' clusters. When the number of clusters is greater than the number of
+#' colors, the clusters that are not assigned a color are filled with
+#' white in the figure. The recommended choice of color palette is
+#' RColorBrewer, for instance RColorBrewer::brewer.pal(8, "Accent") or
+#' RColorBrewwer::brewer.pal(9, "Set1").
+#' 
 #' @param figure_title Title of the plot.
+#' 
 #' @param yaxis_label Axis label for the phenotype used to order the samples,
 #'                    for example, tissue type or cell type.
+#' 
 #' @param order_sample Whether to order the samples that are of the same tissue label
 #'                      or phenotype lable, that is, having the same label in the
 #'                      tissue_label variable. If TRUE, we order samples that are of
 #'                      the same phenotype label and sort the samples by membership
 #'                      of most representative cluster. If FALSE, we keep
 #'                      the order in the data.
+#' 
 #' @param sample_order_decreasing If order_sample=TRUE, then order the sample in
 #'                  descending (TRUE) or ascending order.
+#' 
 #' @param sample_order_opts Orders by different choices of clusters in a batch.
 #'                          Can take the values 1, 2, 3 or 4 corresponding
 #'                          to 4 ordering options. Default equal to 1.
+#' 
 #' @param split_line Control parameters for the line that separates phenotype
 #'                  subgroups in the plot.
+#' 
 #' @param axis_tick Control parameters for x-axis and y-axis tick sizes.
+#' 
 #' @param plot_labels If TRUE, the plot the axis labels.
+#' 
 #' @param legend_title_size The size of the title of the Structure Plot
 #'                           representation.
+#' 
 #' @param legend_key_size The size of the legend key in Structure plot.
+#' 
 #' @param legend_text_size the size specification of the legend text.
 #'
 #' @return Plots the Structure plot visualization of the GoM model
@@ -81,15 +95,35 @@
 #'                                   axis_label_size = 7,
 #'                                   axis_label_face = "bold"))
 #'
-#' @import ggplot2
-#' @importFrom cowplot ggdraw panel_border plot_grid
-#' @import plyr
-#' @import grDevices
-#' @import reshape2
+#' @importFrom plyr rename
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 element_blank
+#' @importFrom ggplot2 element_line
+#' @importFrom ggplot2 element_text
+#' @importFrom ggplot2 geom_bar
+#' @importFrom ggplot2 geom_vline
+#' @importFrom ggplot2 xlab
+#' @importFrom ggplot2 ylab
+#' @importFrom ggplot2 labs
+#' @importFrom ggplot2 ggtitle
+#' @importFrom ggplot2 unit
+#' @importFrom ggplot2 coord_flip
+#' @importFrom ggplot2 scale_x_discrete
+#' @importFrom ggplot2 scale_y_continuous
+#' @importFrom ggplot2 scale_fill_manual
+#' @importFrom ggplot2 theme
+#' @importFrom ggplot2 theme_set
+#' @importFrom ggplot2 theme_bw
+#' @importFrom ggplot2 theme_update
+#' @importFrom cowplot ggdraw
+#' @importFrom cowplot panel_border
+#' @importFrom cowplot plot_grid
+#'
 #' @export
-
+#'
 StructureGGplot <- function(omega, annotation = NULL,
-                            palette = RColorBrewer::brewer.pal(8, "Accent"),
+                            palette = brewer.pal(8, "Accent"),
                             figure_title = "",
                             yaxis_label = "Tissue type",
                             order_sample = TRUE,
@@ -172,8 +206,8 @@ StructureGGplot <- function(omega, annotation = NULL,
                           temp_df_ord
                       }) )
 
-    df_mlt <- reshape2::melt(t(df_ord))
-    df_mlt <- plyr::rename(df_mlt, replace = c("Var1" = "topic",
+    df_mlt <- melt(t(df_ord))
+    df_mlt <- rename(df_mlt, replace = c("Var1" = "topic",
                                                "Var2" = "document"))
     df_mlt$document <- factor(df_mlt$document)
     df_mlt$topic <- factor(df_mlt$topic)
@@ -237,14 +271,11 @@ StructureGGplot <- function(omega, annotation = NULL,
         ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         # Add tissue axis labels
-        # ggplot2::scale_x_discrete(breaks = as.character(as.numeric(levels(df_mlt$document)[round(tissue_breaks)])),
-        #                           labels = names(tissue_breaks)) +
         ggplot2::scale_x_discrete(breaks = as.character((levels(df_mlt$document)[round(tissue_breaks)])),
                                   labels = names(tissue_breaks)) +
         # Add legend title
         ggplot2::labs(fill = "Clusters") +
         ggplot2::coord_flip()
-
 
     # width = 1: increase bar width and in turn remove space
     # between bars
@@ -269,11 +300,8 @@ StructureGGplot <- function(omega, annotation = NULL,
         size = split_line$split_lwd)
     b
 
-    # filename = paste0(output_dir, "structure.png")
-    # png(paste0(filename), width = output_width, height = output_height)
-    # ggsave(file=paste0(filename))
-    # dev.off()
     } else if (null_annotation) {
+        
       # make ggplot
       a <- ggplot2::ggplot(df_mlt,
                            ggplot2::aes(x = df_mlt$document,
@@ -285,7 +313,6 @@ StructureGGplot <- function(omega, annotation = NULL,
                        legend.key.size = ggplot2::unit(legend_key_size, "cm"),
                        legend.text = ggplot2::element_text(size = legend_text_size),
                        ##<-- TBD: center legend title
-                       #              legend.title = element_text(hjust = 1),
                        axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
                                                          face = axis_tick$axis_label_face),
                        axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
@@ -295,6 +322,7 @@ StructureGGplot <- function(omega, annotation = NULL,
         ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         ggplot2::scale_x_discrete(breaks = NULL) +
+            
         # Add legend title
         ggplot2::labs(fill = "Clusters") +
         ggplot2::coord_flip()
@@ -312,30 +340,7 @@ StructureGGplot <- function(omega, annotation = NULL,
       }
 
       # remove plot border
-      b <- b + cowplot::panel_border(remove = TRUE)
-
-      b
-
-      # filename = paste0(output_dir, "structure.png")
-      # png(paste0(filename), width = output_width, height = output_height)
-      # ggsave(file=paste0(filename))
-      # dev.off()
-
-    #   if(!save_structure){
-    #     print(b)
-    #   }else{
-    #     filename = paste0(output_dir, "structure.png")
-    #     png(filename, width = output_width, height = output_height)
-    #     print(b)
-    #     dev.off()
-    #   }
-    #
+      b <- b + panel_border(remove = TRUE)
+      return(b)
      }
-
-    # if (!plot_labels) {
-    #     b
-    # } else {
-    #     b <- cowplot::ggdraw(cowplot::switch_axis_position((b), axis = "y"))
-    #     b
-    # }
 }

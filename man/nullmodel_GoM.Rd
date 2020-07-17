@@ -4,24 +4,32 @@
 \alias{nullmodel_GoM}
 \title{Null models for Grade of Membership (GoM) cluster validation}
 \usage{
-nullmodel_GoM(counts, K, tol = 0.1, null.model = c("frequency",
-  "richness", "independentswap", "trialswap"), iter_fill = 1000,
-  iter_randomized = 100, plot = TRUE)
+nullmodel_GoM(
+  counts,
+  K,
+  tol = 0.1,
+  null.model = c("frequency", "richness", "independentswap", "trialswap"),
+  iter_fill = 1000,
+  iter_randomized = 100,
+  plot = TRUE
+)
 }
 \arguments{
-\item{counts}{The counts matrix (N x G): N- the number of samples, G- number
-of features}
+\item{counts}{The counts matrix (N x G): N- the number of samples,
+G- number of features.}
 
 \item{K}{The number of clusters to fit}
 
-\item{tol}{The tolerance of the GoM model fitted}
+\item{tol}{The tolerance of the GoM model fitted.}
 
 \item{null.model}{The type of nullmodel used (similar to the
-randomizeMatrix() function argument in picante package)}
+randomizeMatrix() function argument in picante package).}
 
-\item{iter_fill}{The number of swaps/fills in each randomized matrix build}
+\item{iter_fill}{The number of swaps/fills in each randomized
+matrix build.}
 
-\item{iter_randomized}{The number of randomization matrices generated}
+\item{iter_randomized}{The number of randomization matrices
+generated.}
 
 \item{plot}{If TRUE, plots density of log Bayes factor}
 }
@@ -35,13 +43,13 @@ Returns a list with
        ones from randomized matrices}
 }
 \description{
-Use null models (popular in ecology) to generate randomized
-matrix of counts given the observed data matrix, fit the GoM model to these
-null matrices and compare the fit on null model data with that on the
-observed data. Used for validating the GoM clusters
+Use null models (popular in ecology) to generate
+  randomized matrix of counts given the observed data matrix, fit the
+  GoM model to these null matrices and compare the fit on null model
+  data with that on the observed data. Used for validating the GoM
+  clusters.
 }
 \examples{
-
 data("ex.counts")
 nullmodel_GoM(ex.counts,
               K=2,
@@ -49,4 +57,5 @@ nullmodel_GoM(ex.counts,
               null.model="frequency",
               iter_randomized=3,
               plot=FALSE)
+
 }

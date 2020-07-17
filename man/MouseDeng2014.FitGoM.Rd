@@ -3,8 +3,11 @@
 \docType{data}
 \name{MouseDeng2014.FitGoM}
 \alias{MouseDeng2014.FitGoM}
-\title{GoM model fit for Deng et al 2014 single cell RNA-seq data on mouse}
-\format{A list of GoM model output for 6 clusters (k=2:7)}
+\title{GoM model fit for Deng et al 2014 single cell RNA-seq data
+  on mouse}
+\format{
+A list of GoM model output for 6 clusters (k=2:7)
+}
 \usage{
 MouseDeng2014.FitGoM
 }
@@ -12,6 +15,7 @@ MouseDeng2014.FitGoM
 A list of GoM model output for 6 clusters (k=2:7)
 }
 \description{
-GoM model fit for Deng et al 2014 single cell RNA-seq data on mouse
+GoM model fit for Deng et al 2014 single cell RNA-seq data
+  on mouse
 }
 \keyword{datasets}

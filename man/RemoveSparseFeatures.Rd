@@ -2,16 +2,16 @@
 % Please edit documentation in R/RemoveSparseFeatures.R
 \name{RemoveSparseFeatures}
 \alias{RemoveSparseFeatures}
-\title{Removes features with a lot of 0 counts}
+\title{Removes features with a lot of zero counts}
 \usage{
 RemoveSparseFeatures(data, filter_prop = 0.9)
 }
 \arguments{
-\item{data}{count data in a sample by feature matrix.}
+\item{data}{Count data in a sample by feature matrix.}
 
-\item{filter_prop}{threshold proportion. If the proportion of zeros for
-the feature exceeds this threshold then we remove the
-feature altogether. Default is 0.9.}
+\item{filter_prop}{Threshold proportion. If the proportion of zeros
+for the feature exceeds this threshold then we remove the feature
+altogether. Default is 0.9.}
 }
 \value{
 Returns a list with
@@ -20,12 +20,12 @@ Returns a list with
                           found sparse and removed}
 }
 \description{
-This function deals with zero counts in the counts dataset.
-              If for a feature, the proportion of zeros across the
-             samples is greater than filter_prop, then we remove the feature.
+This function deals with zero counts in the counts
+  dataset. If for a feature, the proportion of zeros across the
+  samples is greater than filter_prop, then we remove the feature.
 }
 \examples{
-mat <- rbind(c(2,0,3,0,4),c(4,5,5,0,0),c(30,34,63,25,0),c(0,0,0,0,0));
+mat <- rbind(c(2,0,3,0,4),c(4,5,5,0,0),c(30,34,63,25,0),c(0,0,0,0,0))
 RemoveSparseFeatures(mat, filter_prop = 0.5)
 RemoveSparseFeatures(mat)
 

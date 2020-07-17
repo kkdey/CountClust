@@ -1,23 +1,23 @@
-#' @title compGoM: compare GoM model fits across K or across different runs
-#' through log-likelihood, BIC and null loglikelihood
+#' @title Compare GoM model fits across K or across different runs
+#'   through log-likelihood, BIC and null loglikelihood
 #'
-#' @description This function takes the \code{FitGoM}/maptpx fitted model
-#'              and computes log likelihood, BIC and null model loglikelihood
-#'              for the fitted GoM models.
+#' @description This function takes the \code{FitGoM}/maptpx fitted
+#'   model and computes log likelihood, BIC and null model loglikelihood
+#'   for the fitted GoM models.
 #'
-#' @param data matrix on which GoM model is fitted (samples along rows, genes
-#'              along columns)
+#' @param data Matrix on which GoM model is fitted (samples along
+#'   rows, genes along columns)
+#' 
 #' @param model \code{FitGoM} or\code{maptpx::topics} function output
-#'              (either a class \code{topics} or a  \code{list} of class
-#'               \code{topics}).
+#'   (either a class \code{topics} or a \code{list} of class
+#'   \code{topics}).
 #'
-#' @return compGoM_models a vector list that returns the  BIC and loglikelihood
-#'                values for each of the fitted models in \code{model}.
+#' @return compGoM_models a vector list that returns the BIC and
+#'   loglikelihood values for each of the fitted models in \code{model}.
 #'
 #' @keywords GoM, model fit
 #'
 #' @examples
-#'
 #' read.data <- function() {
 #'   x <- tempfile()
 #'   download.file(paste0("https://cdn.rawgit.com/kkdey/",
@@ -41,18 +41,20 @@
 #' compGoM(data = t(deng.counts),
 #'            model = MouseDeng2014.FitGoM$clust_3)
 #'
-#' @importFrom slam col_sums row_sums as.simple_triplet_matrix
+#' @importFrom slam col_sums
+#' @importFrom slam row_sums
+#' @importFrom slam as.simple_triplet_matrix
+#' 
 #' @export
-
-compGoM <- function(data, model)
-{
-    X <- CheckCounts(data+1e-04);
+#'
+compGoM <- function(data, model) {
+    X <- CheckCounts(data+1e-04)
     p <- ncol(X)
     n <- nrow(X)
 
     ## Null model log probability
     sx <- sum(X)
-    qnull <- slam::col_sums(X)/sx
+    qnull <- col_sums(X)/sx
     null_loglik <- sum( X$v*log(qnull[X$j]) ) - 0.5*(n+p)*(log(sx) - log(2*pi))
 
     if(class(model) == "topics"){
@@ -69,7 +71,7 @@ compGoM <- function(data, model)
             dmultinom(x = data[i,], prob = probs[i,], log = TRUE)
         }) )
         BIC <- -2*loglik + NROW(theta)*(NCOL(theta)-1)*log(NROW(data))
-        ll <- list("BIC"=BIC, "loglik"=loglik, "null_loglik"=null_loglik);
+        ll <- list("BIC"=BIC, "loglik"=loglik, "null_loglik"=null_loglik)
         return(ll)
     }
     if(class(model) == "list"){
@@ -89,7 +91,7 @@ compGoM <- function(data, model)
                 dmultinom(x = data[i,], prob = probs[i,], log = TRUE)
             }) )
             BIC <- -2*loglik + NROW(theta)*(NCOL(theta)-1)*log(NROW(data))
-            compgom_list[[j]] <- list("BIC"=BIC, "loglik"=loglik, "null_loglik"=null_loglik);
+            compgom_list[[j]] <- list("BIC"=BIC, "loglik"=loglik, "null_loglik"=null_loglik)
         }
         if(!is.null(names(model))) names(compgom_list) <- names(model)
         return(compgom_list)
@@ -103,9 +105,9 @@ CheckCounts <- function(fcounts){
     if(class(fcounts)[1] == "TermDocumentMatrix"){ fcounts <- t(fcounts) }
     if(is.null(dimnames(fcounts)[[1]])){ dimnames(fcounts)[[1]] <- paste("doc",1:nrow(fcounts)) }
     if(is.null(dimnames(fcounts)[[2]])){ dimnames(fcounts)[[2]] <- paste("wrd",1:ncol(fcounts)) }
-    empty <- slam::row_sums(fcounts) == 0
+    empty <- row_sums(fcounts) == 0
     if(sum(empty) != 0){
         fcounts <- fcounts[!empty,]
         cat(paste("Removed", sum(empty), "blank documents.\n")) }
-    return(slam::as.simple_triplet_matrix(fcounts))
+    return(as.simple_triplet_matrix(fcounts))
 }

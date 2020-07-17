@@ -4,7 +4,9 @@
 \name{ex.counts}
 \alias{ex.counts}
 \title{counts data for GTEx V6 Brain data for 200 genes}
-\format{A data frame 1259 by 200 in dimensions}
+\format{
+A data frame 1259 by 200 in dimensions
+}
 \usage{
 ex.counts
 }

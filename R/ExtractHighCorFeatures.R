@@ -29,12 +29,9 @@
 #' Deng2014MouseESC <- read.data1()
 #' deng.counts <- Biobase::exprs(Deng2014MouseESC)
 #' out <- ExtractHighCorFeatures(omega_mat, deng.counts, num_genes=10)
-#' @import  stats
+#'
 #' @export
 #'
-
-
-
 ExtractHighCorFeatures <- function(omega,
                                    data,
                                    num_genes=100){

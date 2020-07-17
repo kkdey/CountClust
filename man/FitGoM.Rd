@@ -4,55 +4,61 @@
 \alias{FitGoM}
 \title{Run Grade of Membership (GoM) model with multiple starting points !}
 \usage{
-FitGoM(data, K, tol = 100, num_trials = 1, options, path_rda = NULL,
-  control = list())
+FitGoM(
+  data,
+  K,
+  tol = 100,
+  num_trials = 1,
+  options,
+  path_rda = NULL,
+  control = list()
+)
 }
 \arguments{
-\item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of samples
-along the rows and \eqn{G}, number of genes along columns.}
+\item{data}{counts data \eqn{N x G}, with \eqn{N}, the number of
+samples along the rows and \eqn{G}, number of genes along columns.}
 
 \item{K}{the number of clusters to fit. Must be an integer.}
 
-\item{tol}{Tolerance value for GoM model absolute log posterior increase
-at successive iterations (set to 0.1 as default).}
+\item{tol}{Tolerance value for GoM model absolute log posterior
+increase at successive iterations (set to 0.1 as default).}
 
-\item{num_trials}{The number of trials with different starting points used.}
+\item{num_trials}{The number of trials with different starting
+points used.}
 
-\item{options}{the measure used to choose best fit, either "BF" or "BIC" measures can be used.
-BF is more trustworthy, but BIC can be used for better model comparison.}
+\item{options}{the measure used to choose best fit, either "BF" or
+"BIC" measures can be used.  BF is more trustworthy, but BIC can be
+used for better model comparison.}
 
 \item{path_rda}{The directory path for saving the GoM model output.
 If NULL, it will return the output to console.}
 
 \item{control}{Control parameters. Same as topics() function of
-maptpx package. For example, verb controls information that are 
-shown on the screen. verb=1 prints log2 Bayes factor. 
-verb=2 prints log posterior at each iteration in addition to log2BF.}
+maptpx package. For example, verb controls information that are
+shown on the screen. verb=1 prints log2 Bayes factor.  verb=2
+prints log posterior at each iteration in addition to log2BF.}
 }
 \value{
-Outputs the best GoM model fit output for cluster K and saves it
-        at the directory path in path_rda if the latter is provided.
+Outputs the best GoM model fit output for cluster K and
+  saves it at the directory path in path_rda if the lattera is
+  provided.
 }
 \description{
-Fits grade of membership model \code{FitGoM()} to count data
-       with multiple starting points and choose the best fit using BIC (Bayesian
-       Information Criterion). the multiple starting points ensure that
-       the output is more reliable.
+Fits grade of membership model \code{FitGoM()} to
+  count data with multiple starting points and choose the best fit
+  using BIC (Bayesian Information Criterion). the multiple starting
+  points ensure that the output is more reliable.
 }
 \examples{
-
 data("ex.counts")
 out <- FitGoM(ex.counts, K=2, tol=100, num_trials=5,
                    control=list(tmax=100))
 
 }
 \references{
-Matt Taddy. On Estimation and Selection for Topic Models.
-               AISTATS 2012, JMLR W\&CP 22.
-
-           Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.
-               Inference of population structure using multilocus genotype
-               data. Genetics 155.2 (2000): 945-959.
+Pritchard, Jonathan K., Matthew Stephens, and Peter Donnelly.
+Inference of population structure using multilocus genotype
+data. Genetics 155.2 (2000): 945-959.
 }
 \keyword{Structure}
 \keyword{clustering,}

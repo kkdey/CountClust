@@ -4,7 +4,9 @@
 \name{GTExV6Brain.FitGoM}
 \alias{GTExV6Brain.FitGoM}
 \title{GoM model fit for GTEx V6 Brain bulk-RNA data}
-\format{A list of GoM model output for k=7}
+\format{
+A list of GoM model output for k=7
+}
 \usage{
 GTExV6Brain.FitGoM
 }
