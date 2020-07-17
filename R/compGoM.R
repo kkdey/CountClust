@@ -18,6 +18,8 @@
 #' @keywords GoM, model fit
 #'
 #' @examples
+#' library(Biobase)
+#' 
 #' read.data <- function() {
 #'   x <- tempfile()
 #'   download.file(paste0("https://cdn.rawgit.com/kkdey/",
@@ -30,7 +32,7 @@
 #' Deng2014MouseESC <-read.data()
 #'
 #' # Extract observed counts
-#' deng.counts <- Biobase::exprs(Deng2014MouseESC)
+#' deng.counts <- exprs(Deng2014MouseESC)
 #'
 #' # Import GoM fitting results
 #' data("MouseDeng2014.FitGoM")

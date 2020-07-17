@@ -88,6 +88,7 @@ Make the traditional Structure plot of GoM model with
   ggplot2.
 }
 \examples{
+library(RColorBrewer)
 data("MouseDeng2014.FitGoM")
 
 # extract the omega matrix: membership weights of each cell
@@ -111,7 +112,7 @@ rownames(omega) <- annotation$sample_id
 
 StructureGGplot(omega = omega,
                  annotation = annotation,
-                 palette = RColorBrewer::brewer.pal(8, "Accent"),
+                 palette = brewer.pal(8, "Accent"),
                  yaxis_label = "development phase",
                  order_sample = TRUE,
                  axis_tick = list(axis_ticks_length = .1,

@@ -63,6 +63,7 @@
 #' @return Plots the Structure plot visualization of the GoM model
 #'
 #' @examples
+#' library(RColorBrewer)
 #' data("MouseDeng2014.FitGoM")
 #'
 #' # extract the omega matrix: membership weights of each cell
@@ -86,7 +87,7 @@
 #'
 #' StructureGGplot(omega = omega,
 #'                  annotation = annotation,
-#'                  palette = RColorBrewer::brewer.pal(8, "Accent"),
+#'                  palette = brewer.pal(8, "Accent"),
 #'                  yaxis_label = "development phase",
 #'                  order_sample = TRUE,
 #'                  axis_tick = list(axis_ticks_length = .1,
@@ -96,6 +97,8 @@
 #'                                   axis_label_face = "bold"))
 #'
 #' @importFrom plyr rename
+#' @importFrom reshape2 melt
+#' @importFrom RColorBrewer brewer.pal
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 element_blank
@@ -213,11 +216,11 @@ StructureGGplot <- function(omega, annotation = NULL,
     df_mlt$topic <- factor(df_mlt$topic)
 
     # set blank background
-    ggplot2::theme_set(ggplot2::theme_bw(base_size = 12)) +
-        ggplot2::theme_update( panel.grid.minor.x = ggplot2::element_blank(),
-                               panel.grid.minor.y = ggplot2::element_blank(),
-                               panel.grid.major.x = ggplot2::element_blank(),
-                               panel.grid.major.y = ggplot2::element_blank() )
+    theme_set(theme_bw(base_size = 12)) +
+        theme_update( panel.grid.minor.x = element_blank(),
+                               panel.grid.minor.y = element_blank(),
+                               panel.grid.major.x = element_blank(),
+                               panel.grid.major.y = element_blank() )
 
     # inflat nubmers to avoid rounding errors
     value_ifl <- 10000
@@ -250,36 +253,36 @@ StructureGGplot <- function(omega, annotation = NULL,
     names(tissue_breaks) <- tissue_names
 
     # make ggplot
-    a <- ggplot2::ggplot(df_mlt,
-                         ggplot2::aes(x = df_mlt$document,
+    a <- ggplot(df_mlt,
+                         aes(x = df_mlt$document,
                                       y = df_mlt$value*10000,
                                       fill = factor(df_mlt$topic)) ) +
-        ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
-        ggplot2::scale_fill_manual(values = palette) +
-        ggplot2::theme(legend.position = "right",
-                       legend.key.size = ggplot2::unit(legend_key_size, "cm"),
-                       legend.text = ggplot2::element_text(size = legend_text_size),
+        xlab(yaxis_label) + ylab("") +
+        scale_fill_manual(values = palette) +
+        theme(legend.position = "right",
+                       legend.key.size = unit(legend_key_size, "cm"),
+                       legend.text = element_text(size = legend_text_size),
                        ##<-- TBD: center legend title
                        #              legend.title = element_text(hjust = 1),
-                       axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
+                       axis.text = element_text(size = axis_tick$axis_label_size,
                                                          face = axis_tick$axis_label_face),
-                       axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
-                       axis.ticks.x = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_x),
-                       axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
-                       title = ggplot2::element_text(size = legend_title_size) ) +
-        ggplot2::ggtitle(figure_title) +
-        ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
+                       axis.ticks.y = element_line(size = axis_tick$axis_ticks_lwd_y),
+                       axis.ticks.x = element_line(size = axis_tick$axis_ticks_lwd_x),
+                       axis.ticks.length = unit(axis_tick$axis_ticks_length, "cm"),
+                       title = element_text(size = legend_title_size) ) +
+        ggtitle(figure_title) +
+        scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
         # Add tissue axis labels
-        ggplot2::scale_x_discrete(breaks = as.character((levels(df_mlt$document)[round(tissue_breaks)])),
+        scale_x_discrete(breaks = as.character((levels(df_mlt$document)[round(tissue_breaks)])),
                                   labels = names(tissue_breaks)) +
         # Add legend title
-        ggplot2::labs(fill = "Clusters") +
-        ggplot2::coord_flip()
+        labs(fill = "Clusters") +
+        coord_flip()
 
     # width = 1: increase bar width and in turn remove space
     # between bars
-    b <- a + ggplot2::geom_bar(stat = "identity",
+    b <- a + geom_bar(stat = "identity",
                                position = "stack",
                                width = 1)
     # sample labels option
@@ -290,10 +293,10 @@ StructureGGplot <- function(omega, annotation = NULL,
     }
 
     # remove plot border
-    b <- b + cowplot::panel_border(remove = TRUE)
+    b <- b + panel_border(remove = TRUE)
 
     # Add demarcation
-    b <- b + ggplot2::geom_vline(
+    b <- b + geom_vline(
         xintercept = cumsum(table(droplevels(annotation$tissue_label)))[
             -length(table(droplevels(annotation$tissue_label)))] + .5,
         col = split_line$split_col,
@@ -303,33 +306,33 @@ StructureGGplot <- function(omega, annotation = NULL,
     } else if (null_annotation) {
         
       # make ggplot
-      a <- ggplot2::ggplot(df_mlt,
-                           ggplot2::aes(x = df_mlt$document,
+      a <- ggplot(df_mlt,
+                           aes(x = df_mlt$document,
                                         y = df_mlt$value*10000,
                                         fill = factor(df_mlt$topic)) ) +
-        ggplot2::xlab(yaxis_label) + ggplot2::ylab("") +
-        ggplot2::scale_fill_manual(values = palette) +
-        ggplot2::theme(legend.position = "right",
-                       legend.key.size = ggplot2::unit(legend_key_size, "cm"),
-                       legend.text = ggplot2::element_text(size = legend_text_size),
+        xlab(yaxis_label) + ylab("") +
+        scale_fill_manual(values = palette) +
+        theme(legend.position = "right",
+                       legend.key.size = unit(legend_key_size, "cm"),
+                       legend.text = element_text(size = legend_text_size),
                        ##<-- TBD: center legend title
-                       axis.text = ggplot2::element_text(size = axis_tick$axis_label_size,
+                       axis.text = element_text(size = axis_tick$axis_label_size,
                                                          face = axis_tick$axis_label_face),
-                       axis.ticks.y = ggplot2::element_line(size = axis_tick$axis_ticks_lwd_y),
-                       axis.ticks.length = ggplot2::unit(axis_tick$axis_ticks_length, "cm"),
-                       title = ggplot2::element_text(size = legend_title_size) ) +
-        ggplot2::ggtitle(figure_title) +
-        ggplot2::scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
+                       axis.ticks.y = element_line(size = axis_tick$axis_ticks_lwd_y),
+                       axis.ticks.length = unit(axis_tick$axis_ticks_length, "cm"),
+                       title = element_text(size = legend_title_size) ) +
+        ggtitle(figure_title) +
+        scale_y_continuous( breaks = seq(0, value_ifl, length.out = ticks_number),
                                      labels = seq(0, 1, 1/(ticks_number -1 ) ) ) +
-        ggplot2::scale_x_discrete(breaks = NULL) +
+        scale_x_discrete(breaks = NULL) +
             
         # Add legend title
-        ggplot2::labs(fill = "Clusters") +
-        ggplot2::coord_flip()
+        labs(fill = "Clusters") +
+        coord_flip()
 
       # width = 1: increase bar width and in turn remove space
       # between bars
-      b <- a + ggplot2::geom_bar(stat = "identity",
+      b <- a + geom_bar(stat = "identity",
                                  position = "stack",
                                  width = 1)
       # sample labels option

@@ -21,7 +21,7 @@ Depends:
     R (>= 3.4),
     ggplot2 (>= 2.1.0)
 Imports: 
-    SQUAREM, 
+    SQUAREM,
     slam,
     maptpx,
     plyr (>= 1.7.1),
@@ -61,4 +61,5 @@ NeedsCompilation: no
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0
 Remotes: 
+    kkdey/singleCellRNASeqMouseDeng2014,
     stephenslab/fastTopics

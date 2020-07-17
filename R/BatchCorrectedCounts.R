@@ -54,6 +54,7 @@
 #'
 #' @importFrom gtools rdirichlet
 #' @importFrom limma voom
+#' @importFrom parallel detectCores
 #' @importFrom parallel mclapply
 #' @importFrom stats lm
 #' 

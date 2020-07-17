@@ -25,6 +25,8 @@ This function takes the \code{FitGoM}/maptpx fitted
   for the fitted GoM models.
 }
 \examples{
+library(Biobase)
+
 read.data <- function() {
   x <- tempfile()
   download.file(paste0("https://cdn.rawgit.com/kkdey/",
@@ -37,7 +39,7 @@ read.data <- function() {
 Deng2014MouseESC <-read.data()
 
 # Extract observed counts
-deng.counts <- Biobase::exprs(Deng2014MouseESC)
+deng.counts <- exprs(Deng2014MouseESC)
 
 # Import GoM fitting results
 data("MouseDeng2014.FitGoM")

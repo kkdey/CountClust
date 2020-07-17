@@ -64,8 +64,14 @@
 #'             main = "STRUCTURE K=6 pie on PCA",
 #'             control = list(bg = "lightcyan"))
 #'
+#' @importFrom stats prcomp
 #' @importFrom Rtsne Rtsne
 #' @importFrom limma voom
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom RColorBrewer brewer.pal.info
+#' @importFrom mapplots draw.pie
+#' @importFrom mapplots legend.pie
+#' @importFrom ggplot2 alpha
 #'
 #' @export
 #'
@@ -197,8 +203,11 @@ StructurePie <- function(input_data,
                label.dist=1.3)
 }
 
-basemap2 <- function(xlim,ylim,xlab="Longitude",ylab="Latitude",
-                     bg="lightblue",...){
+#' @importFrom graphics plot
+#' @importFrom graphics rect
+#' @importFrom graphics par
+basemap2 <- function (xlim,ylim,xlab="Longitude",ylab="Latitude",
+                      bg = "lightblue",...){
     # more-or-less appropriateaspect ratio
     plot(NA,NA,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,...)
     # background colour (does not work properly if you re-size plot window)
