@@ -25,30 +25,17 @@ This function takes the \code{FitGoM}/maptpx fitted
   for the fitted GoM models.
 }
 \examples{
-library(Biobase)
-
-read.data <- function() {
-  x <- tempfile()
-  download.file(paste0("https://cdn.rawgit.com/kkdey/",
-                         "singleCellRNASeqMouseDeng2014",
-                         "/master/data/Deng2014MouseEsc.rda"),
-                destfile = x, quiet = TRUE)
-  z <- get(load((x)))
-  return(z)
-  }
-Deng2014MouseESC <-read.data()
-
 # Extract observed counts
+library(singleCellRNASeqMouseDeng2014)
+data("Deng2014MouseEsc")
 deng.counts <- exprs(Deng2014MouseESC)
 
 # Import GoM fitting results
 data("MouseDeng2014.FitGoM")
 names(MouseDeng2014.FitGoM)
 
-compGoM(data = t(deng.counts),
-           model = MouseDeng2014.FitGoM)
-compGoM(data = t(deng.counts),
-           model = MouseDeng2014.FitGoM$clust_3)
+compGoM(data = t(deng.counts),model = MouseDeng2014.FitGoM)
+compGoM(data = t(deng.counts),model = MouseDeng2014.FitGoM$clust_3)
 
 }
 \keyword{GoM,}

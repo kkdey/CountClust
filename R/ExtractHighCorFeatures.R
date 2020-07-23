@@ -4,7 +4,6 @@
 #'  cluster in GoM model fit with the data expression profile to identify
 #'  genes that are mostly strongly associated with each topic.
 #'
-#'
 #' @param omega \eqn{\boldsymbol{omega}} matrix, the relative grades of memberships
 #'                from the GoM model fitting (a \eqn{N x K} matrix where \eqn{N} is
 #'                number of samples, \eqn{K} number of topics).
@@ -18,16 +17,12 @@
 #'          correlations.
 #'
 #' @examples
-#'data("MouseDeng2014.FitGoM")
-#' omega_mat <- MouseDeng2014.FitGoM$clust_6$omega;
-#' read.data1 = function() {
-#'     x = tempfile()
-#'    download.file('https://cdn.rawgit.com/kkdey/singleCellRNASeqMouseDeng2014/master/data/Deng2014MouseEsc.rda', destfile=x, quiet=TRUE)
-#'    z = get(load((x)))
-#'    return(z)
-#' }
-#' Deng2014MouseESC <- read.data1()
-#' deng.counts <- Biobase::exprs(Deng2014MouseESC)
+#' library(singleCellRNASeqMouseDeng2014)
+#' library(Biobase)
+#' data(MouseDeng2014.FitGoM)
+#' data(Deng2014MouseEsc)
+#' omega_mat <- MouseDeng2014.FitGoM$clust_6$omega
+#' deng.counts <- exprs(Deng2014MouseESC)
 #' out <- ExtractHighCorFeatures(omega_mat, deng.counts, num_genes=10)
 #'
 #' @export
