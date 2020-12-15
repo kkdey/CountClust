@@ -5,11 +5,11 @@ of counts data.
 
 [Kushal K Dey](http://kkdey.github.io), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
 
-**Important update:** We are encouraging CountClust users to use
-our new R package, [fastTopics](https://github.com/stephenslab/fastTopics).
-This new package has most of CountClust's features, plus several important
-improvements, including model fitting algorithms that are faster and
-more accurate.
+**IMPORTANT UPDATE:** We encourage CountClust users to use our new R
+package, [fastTopics](https://github.com/stephenslab/fastTopics).
+This new package has most of CountClust's features, plus several
+important improvements, including model fitting algorithms that are
+faster and more accurate.
 
 ## How to cite
 
