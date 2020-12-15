@@ -1,13 +1,21 @@
 # CountClust
 
-A R package for Grade of Membership (GoM) model fit and Visualization of counts data-
+An R package for Grade of Membership (GoM) model fit and visualization
+of counts data.
 
-[Kushal K Dey](http://kkdey.github.io/), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
+[Kushal K Dey](http://kkdey.github.io), [Chiaowen Joyce Hsiao](http://jhsiao999.github.io/), [Matthew Stephens](http://stephenslab.uchicago.edu/)
 
 ## Updates 
 
-CountClust version 1.6.2 is now out. We now have added a StructurePie() feature to integrate CountClust clustering with t-SNE or PCA plots! See the README below! 
+**Important update:** We are encouraging all CountClust users to use
+our new R package, [fastTopics](https://github.com/stephenslab/fastTopics).
+This new package has most of CountClust's features, plus several important
+improvements, including model fitting algorithms that are faster and
+more accurate.
 
+CountClust version 1.6.2 is now out. We now have added a
+StructurePie() feature to integrate CountClust clustering with t-SNE
+or PCA plots! See the README below!
 
 ## How to cite
 
